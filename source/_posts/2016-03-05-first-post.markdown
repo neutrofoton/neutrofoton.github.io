@@ -7,7 +7,7 @@ categories:
 ---
 Alhamdulillah, It is friday and finally my blog is up and can be accessed on internet after for couple days just stay in localhost :) . One of the reasons because I did upgrade (actually did fresh install) my OS to Mountain Lion
 
-{% img /images/post/MountainLionHero1.png mountain lion %}
+{% img left /images/post/MountainLionHero1.png mountain lion %}
 
 At the time of this first post, it is Ramadhan fasting day. So I would like to say happy fasting for all of moslem reader. Hopefully I can post more articles in this blog which can be useful for me and others :)
 
