@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>http://neutrofoton.github.io/blog/2016/03/05/hello-octopress/</loc>
+<lastmod>2016-03-05T00:07:02+08:00</lastmod>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/archives/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/about/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/new-page/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/life/</loc>
+</url>
+</urlset>
