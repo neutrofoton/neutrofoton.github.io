@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-03-05T16:28:42+08:00</updated>
+  <updated>2016-03-05T19:46:39+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -23,7 +23,7 @@
 <ul>
   <li>Item 1</li>
   <li>Item 2</li>
-  <li>Item 3</li>
+  <li>Item 3 <code>just some code</code></li>
 </ul>
 
 
@@ -207,6 +207,21 @@
 
 <p><img class="left" src="http://neutrofoton.github.io/images/ironman.png" title="This is ironman" >
 Hello test test contecnt</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[First Post]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/03/first-post/"/>
+    <updated>2012-08-03T19:29:08+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/03/first-post</id>
+    <content type="html"><![CDATA[<p>Alhamdulillah, It is friday and finally my blog is up and can be accessed on internet after for couple days just stay in localhost :) . One of the reasons because I did upgrade (actually did fresh install) my OS to Mountain Lion</p>
+
+<p><img src="http://neutrofoton.github.io/images/post/MountainLionHero1.png" title="mountain lion" ></p>
+
+<p>At the time of this first post, it is Ramadhan fasting day. So I would like to say happy fasting for all of moslem reader. Hopefully I can post more articles in this blog which can be useful for me and others :)</p>
+
+<p>Anyway thanks for visiting my blog and see you in the next post.</p>
 ]]></content>
   </entry>
   

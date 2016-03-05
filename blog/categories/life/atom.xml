@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Life | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/life/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-03-05T16:28:42+08:00</updated>
+  <updated>2016-03-05T19:46:39+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -23,7 +23,7 @@
 <ul>
   <li>Item 1</li>
   <li>Item 2</li>
-  <li>Item 3</li>
+  <li>Item 3 <code>just some code</code></li>
 </ul>
 
 
