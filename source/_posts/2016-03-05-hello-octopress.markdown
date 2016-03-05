@@ -10,7 +10,7 @@ Sample post
 <ul>
   <li>Item 1</li>
   <li>Item 2</li>
-  <li>Item 3</li>
+  <li>Item 3 <code>just some code</code></li>
 </ul>
 
 ``` csharp sample code
