@@ -1,0 +1,50 @@
+// This File is imported last, and will override other styles in the cascade
+// Add styles here to make changes without digging in too much
+
+body>header {
+    background: #184650;
+}
+
+#content .blog-index article h1 a {
+    color: #2292A7;
+}
+
+article header h1 {
+    margin: 0;
+    color: #2292A7;
+}
+
+aside.sidebar section h1 {
+    margin: 1.5em 0 0;
+    padding-bottom: .2em;
+    border-bottom: 1px solid #e0e0e0;
+    color: #2292A7;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.circular {
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	background: no-repeat;
+}
+
+.circular img {
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+aside.sidebar img {
+  width: 350px;
+	height: 350px;
+	border-radius: 250px;
+	-webkit-border-radius: 250px;
+	-moz-border-radius: 250px;
+	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  margin-top:20px
+}
