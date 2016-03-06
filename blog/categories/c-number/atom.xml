@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: C#, | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/c-number/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-03-06T17:05:55+08:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
+    <updated>2013-11-23T16:15:03+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
+    <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
+<code>
+Xamarin Studio
+Version 4.2.1 (build 1)
+Runtime:
+Mono 3.2.5 ((no/964e8f0)
+GTK+ 2.24.20 theme: Raleigh
+GTK# (2.12.0.0)
+Package version: 302050000
+</code></p>
+
+<p>Xamarin Studio includes with ASP.NET MVC 2 and 3 project template. While trying to create ASP.NET MVC 3 project, I got couples of errors such as authorization access etc. The good news is even though there is no project template for ASP.NET MVC 4, we still can convert our ASP.NET MVC 3 to run as ASP.NET MVC 4. The steps are :</p>
+
+<ol type="1">
+<li>
+Create an ASP.NET MVC 3 project either with aspx or razor view engine
+</li>
+<li>
+Run the project via Xamarin studio menu (Run > Run With > Mono Soft Debugger for ASP.NET. While running the project, we may got an error message :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.UnauthorizedAccessException
+</span><span class='line'>Access to the path &quot;/Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry&quot; is denied.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>......
+</span></code></pre></td></tr></table></div></figure>
+To solve the error, run the following command in terminal :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span><span class='line'>sudo chmod g+rwx /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Re-run again the ASP.NET MVC project. We may get another error message.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.IO.FileNotFoundException
+</span><span class='line'>Could not load file or assembly &#39;System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&#39; or one of its dependencies. The system cannot find the file specified.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+To solve the error message, just use NuGet package manager, search for “ASP.NET MVC 4″ and add reference to it and its dependencies.
+
+</li>
+<li>
+Re-run the ASP.NET MVC again. Now we may get another error message as following :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.InvalidOperationException
+</span><span class='line'>Conflicting versions of ASP.NET Web Pages detected: specified version is &quot;1.0.0.0&quot;, but the version in bin is &quot;2.0.0.0&quot;. To continue, remove files from the application&#39;s bin directory or remove the version specification in web.config.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): System.Web.WebPages.Deployment.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+As the error message, we need to make our ASP.NET Web Pages version to 2.0.0.0 in web.config. So just open web.config and change webpages:Version to 2.0.0.0. as follow :
+
+<figure class='code'><figcaption><span>web.config</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">&quot;webpages:Version&quot;</span> <span class="na">value=</span><span class="s">&quot;2.0.0.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/add&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Change assembly version declared in root <code>web.config</code> and <code>/View/web.config</code> of the following
+
+<table style="width:80%">
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td>assembly</td>
+    <td>from</td>
+    <td>to</td>
+  </tr>
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td><code>System.Web.WebPages.Razor</code></td>
+    <td>1.0.0.0</td>
+    <td>2.0.0.0</td>
+  </tr>
+  <tr>
+    <td><code>System.Web.Mvc</code></td>
+    <td>3.0.0.0</td>
+    <td>4.0.0.0</td>
+  </tr>
+</table>
+
+</li>
+</ol>
+
+
+<p>Now re-run the project again via Xamarin Studio and our project should run well as expected.</p>
+
+<h4>References</h4>
+
+
+<p><ol type="1">
+<li> <a href="http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html">http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html</a>
+</li>
+<ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Generic Singleton Pattern in C#]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/"/>
+    <updated>2013-08-29T15:27:41+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number</id>
+    <content type="html"><![CDATA[<p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
+
+<p>Honestly in my daily coding activity, sometimes I need to implement singleton pattern. Jon wrote a good singleton article in C# <a href="http://www.yoda.arachsys.com/csharp/singleton.html">here</a>. Another case I want to implement singleton pattern in generic way. I convert what has been wrotten by Jon into generic.</p>
+
+<pre><code class="c# generic singleton">/// &lt;summary&gt;
+    /// Generic class which makes non singleton class to be singleton.
+    /// Calling singleton instance of class should be Singleton&lt;T&gt;.Instance, otherwise the returned class is not singleton one.    ///
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name="T"&gt;Genric class type to be singletonized&lt;/typeparam&gt;
+    public sealed class Singleton&lt;T&gt; where T : class, new()
+    {
+        /// &lt;summary&gt;
+        /// Private constuctor to avoid this class instantiated
+        /// &lt;/summary&gt;
+        Singleton()
+        {
+        }
+
+        /// &lt;summary&gt;
+        /// Property to get access to singleton instance
+        /// &lt;/summary&gt;
+        public static T Instance
+        {
+            get
+            {
+                return Nested.instance;
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Private nested class which acts as singleton class instantiator. This class should not be accessible outside &lt;see cref="Singleton&lt;T&gt;"/&gt;
+        /// &lt;/summary&gt;
+        class Nested
+        {
+            /// &lt;summary&gt;
+            /// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+            /// &lt;/summary&gt;
+            static Nested()
+            {
+            }
+
+            /// &lt;summary&gt;
+            /// Static instance variable
+            /// &lt;/summary&gt;
+            internal static readonly T instance = new T()
+        }
+    }
+</code></pre>
+
+<p>The following snipped code is a sample how to use the generic singleton class.
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Processor</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">void</span> <span class="n">Execute</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">class</span> <span class="nc">void</span> <span class="n">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">Processor</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>From the sample above is shown that we can make a non singleton class to be singleton at runtime. But we can still create a non singleton instance as we need. That’s really nice flexible thing.</p>
+
+<h3>Reference</h3>
+
+
+<p>[1] <a href="http://en.wikipedia.org/wiki/Singleton_pattern">http://en.wikipedia.org/wiki/Singleton_pattern</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.NET Session State in Database]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/"/>
+    <updated>2013-07-22T15:12:34+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database</id>
+    <content type="html"><![CDATA[<p>At some point we need to store information when dealing with web application.
+Storing information in web application can be implemented in some ways such as session and cookies.</p>
+
+<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
+
+<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
+
+<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
+First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
+
+<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
+
+<pre><code class="vctreestatus aspnet_regsql">C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
+</code></pre>
+
+<pre><code class="vctreestatus generate session state database">C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
+</code></pre>
+
+<p>The command will create database, tables and store procedures.
+In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
+
+<pre><code class="xml session state configuration">&lt;system.web&gt;
+    &lt;sessionstate mode="SQLServer" allowcustomsqldatabase="true" sqlconnectionstring="Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}" cookieless="false" timeout="20"&gt;
+
+  &lt;/sessionstate&gt;
+&lt;/system.web&gt;
+</code></pre>
+
+<p>To test our session storage, just create simple aspx page.</p>
+
+<pre><code class="aspx-cs sample.aspx">&lt;asp:button id="btnAddSession" runat="server" text="Add Session" onclick="btnAddSession_Click"/&gt;
+
+&lt;asp:button id="btnRemoveSession" runat="server" text="Remove Session" onclick="btnRemoveSession_Click"/&gt;
+
+&lt;br&gt;
+&lt;asp:label id="ctlLblSessionDisplay" runat="server" text=""&gt;&lt;/asp:label&gt;
+</code></pre>
+
+<pre><code class="c# sample.aspx.cs">protected void Page_Load(object sender, EventArgs e)
+{
+    if (Session[Constant.SessionKey] != null)
+        ctlLblSessionDisplay.Text = Session[Constant.SessionKey].ToString();
+    else
+        ctlLblSessionDisplay.Text = "NO Session";
+}
+
+protected void btnAddSession_Click(object sender, EventArgs e)
+{
+    Session.Add(Constant.SessionKey, "Hello");
+}
+
+protected void btnRemoveSession_Click(object sender, EventArgs e)
+{
+    Session.Remove(Constant.SessionKey);
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jomla Encryption in C#]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number/"/>
+    <updated>2012-08-06T10:21:53+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number</id>
+    <content type="html"><![CDATA[<p>Couple days ago I got a task to migrate user from an existing website which build based on Jomla CMS to an ASP.NET website user. Both of them use different encryption technique. The plan was that the Jomla based website would be replaced with the .NET website. In sort the scenario was :</p>
+
+<ol>
+<li>Replace PHP website build on top Jomla CMS with .NET</li>
+<li>Migrate users from Jomla so they can login into the new .NET website using old password</li>
+<li>Migrate some roles</li>
+</ol>
+
+
+<p>The first thing that come to my mind is to check whether they use the different encryption algorithm or not. And yup…they use different algorithm :( . So I decide to extend the <code>MembershipProvider</code> used by the .NET. In my case, thankfully I just need to override one method on that is <code>ValidateUser</code>. I will not talk the the detail what inside the methods is. The main point is just to validate if user login using existing password created by jomla can be validated by the .NET. To do that I create a simple class called <code>JomlaEncryption</code> to validate if user enter valid Jomla password.</p>
+
+<pre><code class="c# encrypt with jomla algorithm">public class JomlaEncryption
+{
+    public static bool IsValidPassword(string password, string encryptedPassword)
+    {
+        return EncryptUsingJomlaAlgorithm(password, encryptedPassword) == encryptedPassword;
+    }
+
+    /// &lt;summary&gt;
+    /// Source : http://stackoverflow.com/questions/2727043/using-php-to-create-a-joomla-user-password
+    ///   From joomla Forum, that's what happen behind:
+    ///
+    ///   1. Generate a password
+    ///   2. Generate 32 random characters
+    ///   3. Concatenate 1 and 2
+    ///   4. md5(3)
+    ///   5. store 4:2
+    ///   Example:
+    ///
+    ///   1. Generate a password - we'll use 'password'
+    ///   2. Generate 32 random characters - we'll use 'WnvTroeiBmd5bjGmmsVUnNjppadH7giK'
+    ///   3. Concatenate 1 and 2 - passwordWnvTroeiBmd5bjGmmsVUnNjppadH7giK
+    ///   4. md5(3) - 3c57ebfec712312f30c3fd1981979f58
+    ///   5. store 4:2 - 3c57ebfec712312f30c3fd1981979f58:WnvTroeiBmd5bjGmmsVUnNjppadH7giK
+    /// &lt;/summary&gt;
+    /// &lt;param name="password"&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    static string EncryptUsingJomlaAlgorithm(string password, string encryptedPassword)
+    {
+        if (!encryptedPassword.Contains(":"))
+            return null;
+
+        string randChar32Bit = encryptedPassword.Split(':')[1];
+        if (string.IsNullOrEmpty(randChar32Bit) || randChar32Bit.Length != 32)
+            return null;
+
+        string concatePassAndRandChar32Bit = password + randChar32Bit;
+        string hashedConcatePassAndRandChar32Bit = MD5(concatePassAndRandChar32Bit);
+
+        return string.Format("{0}:{1}", hashedConcatePassAndRandChar32Bit, randChar32Bit);
+    }
+
+    static string MD5(string password)
+    {
+        byte[] bytes = System.Text.Encoding.Default.GetBytes(password);
+        try
+        {
+            System.Security.Cryptography.MD5CryptoServiceProvider cryptProvider;
+            cryptProvider = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] hash = cryptProvider.ComputeHash(bytes);
+            string ret = string.Empty;
+            foreach (byte a in hash)
+            {
+                if (a &lt; 16)
+                    ret += "0" + a.ToString("x");
+                else
+                    ret += a.ToString("x");
+            }
+            return ret;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+}
+</code></pre>
+
+<p>That&rsquo;s all for now and thanks for reading :)</p>
+]]></content>
+  </entry>
+  
+</feed>

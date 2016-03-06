@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ASP.NET Session State in Database - neutrofoton</title>
+  <meta name="author" content="neutro">
+
+  
+  <meta name="description" content="At some point we need to store information when dealing with web application.
+Storing information in web application can be implemented in some ways &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">neutrofoton</a></h1>
+  
+    <h2>Science, Technology and Life.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="neutrofoton.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!--<li><a href="/about">About</a></li>-->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">ASP.NET Session State in Database</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-07-22T15:12:34+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>3:12 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>At some point we need to store information when dealing with web application.
+Storing information in web application can be implemented in some ways such as session and cookies.</p>
+
+<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
+
+<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
+
+<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
+First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
+
+<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
+
+<figure class='code'><figcaption><span>aspnet_regsql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>generate session state database</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The command will create database, tables and store procedures.
+In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
+
+<figure class='code'><figcaption><span>session state configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;system.web&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;sessionstate</span> <span class="na">mode=</span><span class="s">&quot;SQLServer&quot;</span> <span class="na">allowcustomsqldatabase=</span><span class="s">&quot;true&quot;</span> <span class="na">sqlconnectionstring=</span><span class="s">&quot;Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}&quot;</span> <span class="na">cookieless=</span><span class="s">&quot;false&quot;</span> <span class="na">timeout=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;/sessionstate&gt;</span>
+</span><span class='line'><span class="nt">&lt;/system.web&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To test our session storage, just create simple aspx page.</p>
+
+<figure class='code'><figcaption><span>sample.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnAddSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Add Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnAddSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnRemoveSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Remove Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnRemoveSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;br&gt;</span>
+</span><span class='line'><span class="nt">&lt;asp:label</span> <span class="na">id=</span><span class="s">&quot;ctlLblSessionDisplay&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;/asp:label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>sample.aspx.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">Page_Load</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">]</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">&quot;NO Session&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnAddSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">,</span> <span class="s">&quot;Hello&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnRemoveSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">neutro</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2013-07-22T15:12:34+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>3:12 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>, <a class='category' href='/blog/categories/c-number/'>c#,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/" title="Previous Post: Mono on OS X 10.8 Mountain Lion">&laquo; Mono on OS X 10.8 Mountain Lion</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/" title="Next Post: Generic Singleton Pattern in C#">Generic Singleton Pattern in C# &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Me</h1>
+  <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
+  <p>
+    There are no many things to write about me here. Just the one who always enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/09/08/extract-c-number-exception/">Extract C# Exception</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/">Get Excel Column Name by Index and Vice Versa</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/">ASP.Net MVC 4 in Xamarin Studio</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/">Xcode Failed to Download Use the Purchases Page to Try Again</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Unsupported IClasspathEntry in Eclipse-STS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/29/generic-singleton-pattern-in-java/">Generic Singleton Pattern in Java</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/">Generic Singleton Pattern in C#</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - neutro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'neutrofoton';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

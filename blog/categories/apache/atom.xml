@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Apache, | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/apache/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-03-06T17:05:55+08:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-09-14T13:36:00+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
+
+<p>Extract the downloaded binary distribution onto <code>~/Download/apache-tomcat-7.0.30</code>.
+Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
+
+<pre><code class="bash tomcat installation">sudo mkdir /usr/local
+</code></pre>
+
+<p>Move <code>~/Download/apache-tomcat-7.0.30 </code> to <code>/usr/local</code></p>
+
+<pre><code class="bash tomcat installation">sudo mv ~/Downloads/apache-tomcat-7.0.30 /usr/local
+</code></pre>
+
+<p>To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat. Then we also will change owner and make script executable</p>
+
+<pre><code class="bash tomcat installation">sudo ln -s /usr/local/apache-tomcat-7.0.30/ /Library/Tomcat
+sudo chown -R neutrocode /Library/Tomcat
+sudo chmod +x /Library/Tomcat/bin/*.sh
+</code></pre>
+
+<p>The next step is creating user for tomcat admin by editing <code>tomcat-user.xml</code>
+<code>bash tomcat installation
+vi /Library/Tomcat/conf/tomcat-users.xml
+</code></p>
+
+<pre><code class="xml tomcat-users.xml">&lt;role rolename="admin-gui"/&gt;
+&lt;role rolename="admin-script"/&gt;
+&lt;role rolename="manager-gui"/&gt;
+&lt;role rolename="manager-script"/&gt;
+&lt;role rolename="manager-jmx"/&gt;
+&lt;role rolename="manager-status"/&gt;
+
+&lt;user username="admin" password="password" roles="admin-gui,admin-script" /&gt;
+&lt;user username="manager" password="password" roles="manager-gui,manager-script,manager-jmx,manager-status" /&gt;
+</code></pre>
+
+<p>Add the following text in current user profile .bash_profile
+<figure class='code'><figcaption><span>.bash_profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">CATALINA_HOME</span><span class="o">=</span>/Library/Tomcat
+</span><span class='line'><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>:<span class="nv">$PATH</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Start the server with the following command :
+<code>bash start tomcat
+$CATALINA_HOME/bin/catalina.sh start
+</code>
+or</p>
+
+<pre><code class="bash start tomcat">$CATALINA_HOME/bin/startup.sh
+</code></pre>
+
+<p><img class="center" src="/images/post/2012-09-14-tomcat.png"></p>
+
+<p>Stop the server with the following command :
+<code>bash start tomcat
+$CATALINA_HOME/bin/catalina.sh stop
+</code>
+or</p>
+
+<pre><code class="bash start tomcat">$CATALINA_HOME/bin/shutdown.sh
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

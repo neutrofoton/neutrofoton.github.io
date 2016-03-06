@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Osx, | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/osx/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-03-06T17:05:55+08:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode Failed to Download Use the Purchases Page to Try Again]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/"/>
+    <updated>2013-09-24T15:56:27+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again</id>
+    <content type="html"><![CDATA[<p>The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .</p>
+
+<p>The next thing is updating my Xcode, since I got a notification to update my xcode from version 4.6.3 to version 5.0 via app store of version 1.2.2. My OSX version is 10.8.5.
+While updatig process, several times I got error message <code>Xcode failed to download use the purchases page to try again</code>, and my download prosess suddenly stopped. Googling on internet and asking forum got many different suggestion and solution. Thankfully one of them success that is by clearing appstore download cache.</p>
+
+<p>The steps to get things to work are quite simple.</p>
+
+<ol>
+<li>
+Keep the AppStore App open. Open terminal and type
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /private/var/folders/
+</span></code></pre></td></tr></table></div></figure>
+
+Once there, search for com.apple.appstore
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . <span class="p">|</span> grep com.apple.appstore
+</span></code></pre></td></tr></table></div></figure>
+You will find folder structure like this <code>./40/lhn22jn901zdw2bpf82hkggw0000gn/C/com.apple.appstore</code>
+
+</li>
+
+<li>
+Once inside the folder, open it in finder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>open .
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+While keeping AppStore open, remove this folder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -rf *
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Now, go back to AppStore and click on Download again.
+</li>
+<li>
+If download/update disappear, close the appstore then reopen it.
+ </li>
+</ol>
+
+
+<p>That steps worked well to me. Good luck and have a nice day.</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://apple.stackexchange.com/questions/61646/xcode-failed-to-download-use-the-purchases-page-to-try-again/71202#71202</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mono on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-09-19T13:54:14+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;)</p>
+
+<p>First of all let’s download <a href="http://www.go-mono.com/mono-downloads/download.html">Mono SDK and MonoDevelop</a>. The order installation is Mono SDK first then MonoDevelop. The installation of Mono SDK and MonoDevelop should be easy by following the installation wizard.</p>
+
+<p>When the installation finish, open terminal :</p>
+
+<pre><code class="bash mono version">mono -V
+</code></pre>
+
+<p>We should get info about the version of mono installed in our machine.</p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic0.png"></p>
+
+<p>Try to create an ASP.NET Web Application project by selecting menu :
+<code>File > New > Solution</code>. Select <code>C# > ASP.NET > Web Application</code></p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic1.png"></p>
+
+<p>Click <code>Run > Run With > Mono Soft Debugger for ASP.NET</code></p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic2.png"></p>
+
+<h2>ASP.NET on Apache Web Server</h2>
+
+
+<p>To run ASP.Net on Apache web server, we need <a href="http://www.mono-project.com/Mod_mono">Mod mono</a> module. It is an Apache 2.0/2.2 module that provides ASP.Net support for Apache web server. The steps installation are :</p>
+
+<ol type="1">
+<li>Install Apache web server. The steps for OS X Mountain Lion can be found in my previous post
+</li>
+
+<li>Install Xcode, OS X development tool. It’s free and can be downloaded via App Store. We need it to compile mod mono installation source
+</li>
+
+<li>Download Mod mono source installation here. At the time of write this article I use <code>mod_mono-2.10.tar.bz2</code>
+</li>
+
+<li>Install mod mono module. Open terminal
+
+<figure class='code'><figcaption><span>mod mono installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir ~/modmono
+</span><span class='line'>cp ~/Downloads/mod_mono-2.10.tar.bz2 ~/modmono
+</span><span class='line'><span class="nb">cd</span> ~/modmono
+</span><span class='line'>tar xzf mod_mono-2.10.tar.bz2
+</span><span class='line'><span class="nb">cd </span>mod_mono-2.10
+</span><span class='line'>./configure
+</span><span class='line'>make
+</span><span class='line'>sudo make install
+</span><span class='line'>sudo cp /etc/apache2/mod_mono.conf /etc/apache2/other
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Add <code>mod_mono.conf</code> reference in <code>httpd.conf</code>
+<figure class='code'><figcaption><span>edit httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following code at the end of <code>httpd.conf</code>
+<figure class='code'><figcaption><span>httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Include /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Create a web directory with the path<code> ~/Projects/Mono/TestMonoApache/TestMonoApache/ </code>
+
+In that directory create an <code>index.aspx</code> file
+<figure class='code'><figcaption><span>index.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;center&gt;</span>mod_mono is working:<span class="nt">&lt;%=</span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span><span class="nt">%&gt;&lt;/center&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>Add an Apache configuration file for mono.
+<figure class='code'><figcaption><span>edit mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following line at the end of <code>mod_mono.conf</code>
+<figure class='code'><figcaption><span>mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>Alias /testmono &quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Directory</span> <span class="err">&quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    Options Indexes FollowSymLinks MultiViews
+</span><span class='line'>    AllowOverride None
+</span><span class='line'>
+</span><span class='line'>    Order allow,deny
+</span><span class='line'>    Allow from all
+</span><span class='line'><span class="nt">&lt;/Directory&gt;</span>
+</span><span class='line'>AddMonoApplications default &quot;/testmonoapache:/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Location</span> <span class="err">/testmonoapache</span><span class="nt">&gt;</span>
+</span><span class='line'> SetHandler mono
+</span><span class='line'><span class="nt">&lt;/Location&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Restart apache server with command :
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/sbin/apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li> Open browser and hit <code>http://localhost/testmonoapache/index.aspx</code>
+<img class="center" src="/images/post/2012-09-19-pic3.png">
+</li>
+
+</ol>
+
+
+<p>Cool, now our apache web server can receive request for asp.net page. Thanks for reading and see you in the next post :)</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://www.mono-project.com/Mod_mono</li>
+  <li>http://blog.coultard.com/2012/04/developing-using-c-and-mono-on-mac.html</li>
+  <li>http://www.ienablemuch.com/2010/10/aspnet-on-mac-os-x-snow-leopard-at-one.html</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-09-14T13:36:00+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
+
+<p>Extract the downloaded binary distribution onto <code>~/Download/apache-tomcat-7.0.30</code>.
+Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
+
+<pre><code class="bash tomcat installation">sudo mkdir /usr/local
+</code></pre>
+
+<p>Move <code>~/Download/apache-tomcat-7.0.30 </code> to <code>/usr/local</code></p>
+
+<pre><code class="bash tomcat installation">sudo mv ~/Downloads/apache-tomcat-7.0.30 /usr/local
+</code></pre>
+
+<p>To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat. Then we also will change owner and make script executable</p>
+
+<pre><code class="bash tomcat installation">sudo ln -s /usr/local/apache-tomcat-7.0.30/ /Library/Tomcat
+sudo chown -R neutrocode /Library/Tomcat
+sudo chmod +x /Library/Tomcat/bin/*.sh
+</code></pre>
+
+<p>The next step is creating user for tomcat admin by editing <code>tomcat-user.xml</code>
+<code>bash tomcat installation
+vi /Library/Tomcat/conf/tomcat-users.xml
+</code></p>
+
+<pre><code class="xml tomcat-users.xml">&lt;role rolename="admin-gui"/&gt;
+&lt;role rolename="admin-script"/&gt;
+&lt;role rolename="manager-gui"/&gt;
+&lt;role rolename="manager-script"/&gt;
+&lt;role rolename="manager-jmx"/&gt;
+&lt;role rolename="manager-status"/&gt;
+
+&lt;user username="admin" password="password" roles="admin-gui,admin-script" /&gt;
+&lt;user username="manager" password="password" roles="manager-gui,manager-script,manager-jmx,manager-status" /&gt;
+</code></pre>
+
+<p>Add the following text in current user profile .bash_profile
+<figure class='code'><figcaption><span>.bash_profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">CATALINA_HOME</span><span class="o">=</span>/Library/Tomcat
+</span><span class='line'><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>:<span class="nv">$PATH</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Start the server with the following command :
+<code>bash start tomcat
+$CATALINA_HOME/bin/catalina.sh start
+</code>
+or</p>
+
+<pre><code class="bash start tomcat">$CATALINA_HOME/bin/startup.sh
+</code></pre>
+
+<p><img class="center" src="/images/post/2012-09-14-tomcat.png"></p>
+
+<p>Stop the server with the following command :
+<code>bash start tomcat
+$CATALINA_HOME/bin/catalina.sh stop
+</code>
+or</p>
+
+<pre><code class="bash start tomcat">$CATALINA_HOME/bin/shutdown.sh
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install phpMyAdmin on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-08-10T11:39:53+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
+
+<p>The first thing that we need to do is open terminal and type</p>
+
+<pre><code class="bash symbolic link for mysql">sudo mkdir /var/mysql
+
+sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
+</code></pre>
+
+<p>Extract the downloaded <code>phpMyAdmin-3.5.2.1-english.zip</code> into web folder and rename as <code>phpMyAdmin</code>. So now we should have <code>~/Sites/phpMyAdmin</code> directory.</p>
+
+<p>On browser, open : <a href="http://localhost/~username/phpmyadmin">http://localhost/~username/phpmyadmin</a></p>
+
+<p><img class="center" src="/images/post/2012-08-10-phpmyadmin.png"></p>
+
+<p>Now we can login and administer MySQL database.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install MySQL on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-08-09T11:23:09+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>To install mysql the first thing that we need to do is download mysql installer on the <a href="http://dev.mysql.com/downloads/mysql/">mysql website</a>. In that web site we can see several versions of mysql. We will use Mac OS X ver. 10.6 (x86, 64-bit), DMG Archive. When we open the <code>mysql-5.5.27-osx10.6-x86_64.dmg</code> file, we will find 3 package installers.</p>
+
+<p><img class="center" src="/images/post/2012-08-09-msqlpkg.png"></p>
+
+<p>Install all the three packages with the following order :</p>
+
+<ol>
+<li>mysql-5.5.27-osx10.6-x86_64.pkg</li>
+<li>MySQLStartupItem.pkg</li>
+<li>MySQL.prefPane</li>
+</ol>
+
+
+<p>To start/stop MySQL we can use GUI tool from <code>System Preferences > MySQL</code></p>
+
+<p><img class="center" src="/images/post/2012-08-09-mysql-service.png"></p>
+
+<p>We can also start/stop MySQL via terminal</p>
+
+<pre><code class="bash start mysql">sudo /usr/local/mysql/support-files/mysql.server start
+</code></pre>
+
+<pre><code class="bash stop mysql">sudo /usr/local/mysql/support-files/mysql.server stop
+</code></pre>
+
+<pre><code class="bash get mysql version">sudo /usr/local/mysql/bin/mysql -v
+</code></pre>
+
+<p>In order to use MySQL command without have to specify MySQL installation full path, we need to add MySQL installation directory to shell path.</p>
+
+<pre><code class="bash bash profile">cd ~
+vi .bash_profile
+</code></pre>
+
+<pre><code class="bash path">export PATH="/usr/local/mysql/bin:$PATH"
+</code></pre>
+
+<p>Then reload the new PATH</p>
+
+<pre><code class="bash">source ~/.bash_profile
+</code></pre>
+
+<pre><code class="bash test get mysql version">mysql -v
+</code></pre>
+
+<pre><code class="bash set mysql password">cd ~
+/usr/local/mysql/bin/mysqladmin -u root password 'yourpassword'
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

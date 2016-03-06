@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>New-page - neutrofoton</title>
+  <title>Install PHP on OS X 10.8 Mountain Lion - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="New-page Mar 5th, 2016 10:14 am Mar 5th, 2016 10:14 am Tweet Comments Please enable JavaScript to view the comments powered by Disqus. Me There are &hellip;">
+  <meta name="description" content="On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/new-page/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -65,36 +65,88 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">New-page</h1>
-    <p class="meta">
-
-
-
-
-<time class='entry-date' datetime='2016-03-05T10:14:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:14 am</span></time></p>
-  </header>
-  
-  
-
-  
-    <footer>
+    
+      <h1 class="entry-title">Install PHP on OS X 10.8 Mountain Lion</h1>
+    
+    
       <p class="meta">
         
+
+
+
+
+<time class='entry-date' datetime='2012-08-09T11:13:16+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>11:13 am</span></time>
         
-
-
-
-
-<time class='entry-date' datetime='2016-03-05T10:14:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:14 am</span></time>
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain Lion. PHP actually is shipped in OS X 10.8. The first step is edit <code>httpd.conf</code> in apache directory.</p>
+
+<figure class='code'><figcaption><span>httpd configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uncommect (remove #) php module declaration</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>LoadModule php5_module libexec/apache2/libphp5.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To see and test PHP create a file with the content, and save in /Users/username/Sites as “test.php”. Then open in browser <a href="http://localhost/~username/test.php">http://localhost/~username/test.php</a></p>
+
+<figure class='code'><figcaption><span>test.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nb">phpinfo</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="/images/post/2012-08-09-php.png"></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/new-page/index.html" data-via="" data-counturl="http://neutrofoton.github.io/new-page/index.html" >Tweet</a>
+
+<span class="byline author vcard">Posted by <span class="fn">neutro</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2012-08-09T11:13:16+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>11:13 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/osx/'>osx,</a>, <a class='category' href='/blog/categories/php/'>php</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/" >Tweet</a>
   
   
   
@@ -102,9 +154,16 @@
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/" title="Previous Post: Configure Apache on OS X 10.8 Mountain Lion">&laquo; Configure Apache on OS X 10.8 Mountain Lion</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/" title="Next Post: Install MySQL on OS X 10.8 Mountain Lion">Install MySQL on OS X 10.8 Mountain Lion &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
   <section>
@@ -182,8 +241,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/new-page/index.html';
-        var disqus_url = 'http://neutrofoton.github.io/new-page/index.html';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/';
         var disqus_script = 'embed.js';
       
     (function () {

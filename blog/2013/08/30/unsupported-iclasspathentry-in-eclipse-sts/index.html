@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>New-page - neutrofoton</title>
+  <title>Unsupported IClasspathEntry in Eclipse-STS - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="New-page Mar 5th, 2016 10:14 am Mar 5th, 2016 10:14 am Tweet Comments Please enable JavaScript to view the comments powered by Disqus. Me There are &hellip;">
+  <meta name="description" content="I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was Unsupported IClasspathEntry kind &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/new-page/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -65,36 +65,79 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">New-page</h1>
-    <p class="meta">
-
-
-
-
-<time class='entry-date' datetime='2016-03-05T10:14:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:14 am</span></time></p>
-  </header>
-  
-  
-
-  
-    <footer>
+    
+      <h1 class="entry-title">Unsupported IClasspathEntry in Eclipse-STS</h1>
+    
+    
       <p class="meta">
         
+
+
+
+
+<time class='entry-date' datetime='2013-08-30T15:48:31+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>3:48 pm</span></time>
         
-
-
-
-
-<time class='entry-date' datetime='2016-03-05T10:14:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:14 am</span></time>
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
+
+<p>Googling for that problem finally got a trick how to resolve it.</p>
+
+<ol>
+<li>Right-click on your project, select <code>Maven > Disable Maven Nature</code></li>
+<li>
+Open your terminal, go to your project folder and do
+<figure class='code'><figcaption><span>clean eclipse cache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn eclipse:clean
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Right click on your Project and select <code>Configure > Convert into Maven Project</code>
+</li>
+
+</ol>
+
+
+<p>After converting into maven project, I can update my maven project and everything running well :)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/new-page/index.html" data-via="" data-counturl="http://neutrofoton.github.io/new-page/index.html" >Tweet</a>
+
+<span class="byline author vcard">Posted by <span class="fn">neutro</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2013-08-30T15:48:31+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>3:48 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/" >Tweet</a>
   
   
   
@@ -102,9 +145,16 @@
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/2013/08/29/generic-singleton-pattern-in-java/" title="Previous Post: Generic Singleton Pattern in Java">&laquo; Generic Singleton Pattern in Java</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/" title="Next Post: Xcode failed to download use the purchases page to try again">Xcode failed to download use the purchases page to try again &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
   <section>
@@ -182,8 +232,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/new-page/index.html';
-        var disqus_url = 'http://neutrofoton.github.io/new-page/index.html';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/';
         var disqus_script = 'embed.js';
       
     (function () {

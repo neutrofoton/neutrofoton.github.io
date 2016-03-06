@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Pattern | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/pattern/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-03-06T17:05:55+08:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Generic Singleton Pattern in Java]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/"/>
+    <updated>2013-08-29T15:38:32+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java</id>
+    <content type="html"><![CDATA[<p>In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.</p>
+
+<p>In this post I want to implement it in Java. As far as I know even though both C# and Java have generic feature, generic in C# quite different from the one in Java. While converting of what I did about generic singleton in C# to Java, I feel that the way I do in Java is not as elegant as in C#. The following code is the generic singleton code I write in Java.</p>
+
+<pre><code class="java generic singleton">import java.util.HashMap;
+import java.util.Map;
+
+public class Singleton{
+
+    private static final Singleton instance = new Singleton();
+
+    @SuppressWarnings( "rawtypes")
+    private Map&lt;Class,Object&gt; mapHolder = new HashMap&lt;Class,Object&gt;();
+
+    private Singleton() {}
+
+
+    @SuppressWarnings("unchecked")
+    public static &lt;T&gt; T getInstance(Class&lt;T&gt; classOf) throws InstantiationException, IllegalAccessException {
+
+
+        synchronized(instance){
+
+            if(!instance.mapHolder.containsKey(classOf)){
+
+                T obj = classOf.newInstance();  
+
+                instance.mapHolder.put(classOf, obj);
+            }
+
+            return (T)instance.mapHolder.get(classOf);          
+
+        }
+
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }   
+}
+</code></pre>
+
+<p>The following code show how to use the generic singleton class. It’s quite similar to the C# version.</p>
+
+<pre><code class="java sample">public class Starter {
+
+    /**
+     * @param args
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException  {
+        // TODO Auto-generated method stub
+
+        Employee emp1 = new Employee();
+        emp1.setName("neutro");
+
+        Employee emp2 = new Employee();
+        emp2.setName("neutro");
+
+        boolean isEqual = emp1.equals(emp1);
+
+        isEqual = emp1==emp2;       
+        System.out.println("Is Equal Test1 = "+ isEqual);
+
+        Singleton.getInstance(Employee.class).setName("Hello");
+        emp1 = Singleton.getInstance(Employee.class);
+        emp2 = Singleton.getInstance(Employee.class);
+
+        isEqual = emp1==emp2;       
+        System.out.println("Is Equal Test2 = "+ isEqual);
+
+        System.out.println("emp1 = "+ emp1.getName());
+        System.out.println("emp2 = "+ emp2.getName());
+
+
+        Singleton.getInstance(Departement.class).setName("Information Technology");
+        Departement dpt1 = Singleton.getInstance(Departement.class);
+        Departement dpt2 = Singleton.getInstance(Departement.class);
+
+        isEqual = dpt1==dpt2;       
+        System.out.println("Is Equal Test3 = "+ isEqual);
+
+        System.out.println("dpt1 = "+ dpt1.getName());
+        System.out.println("dpt2 = "+ dpt2.getName());
+
+    }
+}
+</code></pre>
+
+<p>Again, if we see from the sample code above it seems that generic singleton in C# is more elegant than in Java.
+The main thing that I should do is I have to use <code>HashMap</code> collection to hold any instance of what that want to be as singleton and reuse for the future need in the life cycle of my application.</p>
+
+<p>Anyway, if you have better and much more elegant solution how to implement generic singleton pattern in Java I am very appreciate for any suggestion. Finally I would like to thank you very much for visiting and reading my blog, and have a nice day.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Generic Singleton Pattern in C#]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/"/>
+    <updated>2013-08-29T15:27:41+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number</id>
+    <content type="html"><![CDATA[<p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
+
+<p>Honestly in my daily coding activity, sometimes I need to implement singleton pattern. Jon wrote a good singleton article in C# <a href="http://www.yoda.arachsys.com/csharp/singleton.html">here</a>. Another case I want to implement singleton pattern in generic way. I convert what has been wrotten by Jon into generic.</p>
+
+<pre><code class="c# generic singleton">/// &lt;summary&gt;
+    /// Generic class which makes non singleton class to be singleton.
+    /// Calling singleton instance of class should be Singleton&lt;T&gt;.Instance, otherwise the returned class is not singleton one.    ///
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name="T"&gt;Genric class type to be singletonized&lt;/typeparam&gt;
+    public sealed class Singleton&lt;T&gt; where T : class, new()
+    {
+        /// &lt;summary&gt;
+        /// Private constuctor to avoid this class instantiated
+        /// &lt;/summary&gt;
+        Singleton()
+        {
+        }
+
+        /// &lt;summary&gt;
+        /// Property to get access to singleton instance
+        /// &lt;/summary&gt;
+        public static T Instance
+        {
+            get
+            {
+                return Nested.instance;
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Private nested class which acts as singleton class instantiator. This class should not be accessible outside &lt;see cref="Singleton&lt;T&gt;"/&gt;
+        /// &lt;/summary&gt;
+        class Nested
+        {
+            /// &lt;summary&gt;
+            /// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+            /// &lt;/summary&gt;
+            static Nested()
+            {
+            }
+
+            /// &lt;summary&gt;
+            /// Static instance variable
+            /// &lt;/summary&gt;
+            internal static readonly T instance = new T()
+        }
+    }
+</code></pre>
+
+<p>The following snipped code is a sample how to use the generic singleton class.
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Processor</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">void</span> <span class="n">Execute</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">class</span> <span class="nc">void</span> <span class="n">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">Processor</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>From the sample above is shown that we can make a non singleton class to be singleton at runtime. But we can still create a non singleton instance as we need. That’s really nice flexible thing.</p>
+
+<h3>Reference</h3>
+
+
+<p>[1] <a href="http://en.wikipedia.org/wiki/Singleton_pattern">http://en.wikipedia.org/wiki/Singleton_pattern</a></p>
+]]></content>
+  </entry>
+  
+</feed>
