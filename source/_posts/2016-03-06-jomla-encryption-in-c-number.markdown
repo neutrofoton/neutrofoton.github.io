@@ -3,7 +3,7 @@ layout: post
 title: "Jomla Encryption in C#"
 date: 2012-08-06 10:21:53 +0800
 comments: true
-categories: c#, php
+categories: [csharp, php]
 ---
 Couple days ago I got a task to migrate user from an existing website which build based on Jomla CMS to an ASP.NET website user. Both of them use different encryption technique. The plan was that the Jomla based website would be replaced with the .NET website. In sort the scenario was :
 

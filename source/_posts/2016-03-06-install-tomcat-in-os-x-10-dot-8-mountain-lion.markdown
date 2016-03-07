@@ -3,7 +3,7 @@ layout: post
 title: "Install Tomcat in OS X 10.8 Mountain Lion"
 date: 2012-09-14 13:36:00 +0800
 comments: true
-categories: osx, apache, java
+categories: [osx, apache, java]
 ---
 In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.
 

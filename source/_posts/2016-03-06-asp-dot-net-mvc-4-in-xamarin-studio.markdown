@@ -3,7 +3,7 @@ layout: post
 title: "ASP.Net MVC 4 in Xamarin Studio"
 date: 2013-11-23 16:15:03 +0800
 comments: true
-categories: c#, xamarin
+categories: [csharp, xamarin]
 ---
 <a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
 <code>

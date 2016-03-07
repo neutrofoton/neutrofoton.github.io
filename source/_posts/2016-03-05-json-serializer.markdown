@@ -3,7 +3,7 @@ layout: post
 title: "Json Serializer"
 date: 2012-08-03 20:10:27 +0800
 comments: true
-categories: c#
+categories: [csharp]
 ---
 
 <code>Json or JavaScript Object Notation, is a text-based open standard designed for human-readable data interchange. It is derived from the JavaScript scripting language for representing simple data structures and associative arrays, called objects. Despite its relationship to JavaScript, it is language-independent, with parsers available for many languages [wikipedia]</code>

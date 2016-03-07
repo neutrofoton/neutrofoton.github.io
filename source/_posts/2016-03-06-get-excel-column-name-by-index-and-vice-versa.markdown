@@ -3,7 +3,7 @@ layout: post
 title: "Get Excel column name by index and vice versa"
 date: 2014-05-13 16:43:52 +0800
 comments: true
-categories: c#
+categories: [csharp]
 ---
 I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.
 

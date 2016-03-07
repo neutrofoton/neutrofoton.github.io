@@ -3,7 +3,7 @@ layout: post
 title: "Xcode failed to download use the purchases page to try again"
 date: 2013-09-24 15:56:27 +0800
 comments: true
-categories: osx, xcode
+categories: [osx, xcode]
 ---
 The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .
 

@@ -3,7 +3,7 @@ layout: post
 title: "Generic Singleton Pattern in Java"
 date: 2013-08-29 15:38:32 +0800
 comments: true
-categories: java, pattern
+categories: [java, pattern]
 ---
 In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.
 

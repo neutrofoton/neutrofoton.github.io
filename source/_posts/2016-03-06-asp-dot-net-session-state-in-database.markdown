@@ -3,7 +3,7 @@ layout: post
 title: "ASP.NET Session State in Database"
 date: 2013-07-22 15:12:34 +0800
 comments: true
-categories: c#, asp.net
+categories: [csharp, aspnet]
 ---
 At some point we need to store information when dealing with web application.
 Storing information in web application can be implemented in some ways such as session and cookies.

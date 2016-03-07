@@ -3,7 +3,7 @@ layout: post
 title: "Unsupported IClasspathEntry in Eclipse-STS"
 date: 2013-08-30 15:48:31 +0800
 comments: true
-categories: java
+categories: [java]
 ---
 I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code>
 
