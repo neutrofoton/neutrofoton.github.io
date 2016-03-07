@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: C#, | neutrofoton]]></title>
-  <link href="http://neutrofoton.github.io/blog/categories/c-number/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Csharp | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/csharp/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-03-06T17:05:55+08:00</updated>
+  <updated>2016-03-07T15:42:20+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,179 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Extract C# Exception]]></title>
+    <link href="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/"/>
+    <updated>2014-09-08T16:49:39+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception</id>
+    <content type="html"><![CDATA[<p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
+
+<p>The following snipped code shows how to extract detail exception message, innner excepion and its detail strack trace to be recorded / written on log.</p>
+
+<pre><code class="c# exception extractor">/// &lt;summary&gt;
+    /// Extracting &lt;seealso cref="System.Exception"&gt; class include its inner exception
+    /// &lt;/seealso&gt;&lt;/summary&gt;
+    public sealed class Extractor
+    {
+        /// &lt;summary&gt;
+        /// Parse the specified ex.
+        /// &lt;/summary&gt;
+        /// &lt;param name="exception"&gt;Ex.
+        public static string Parse(System.Exception exception)
+        {
+            string errMessage = Environment.NewLine;
+
+            errMessage += FormatErrorDescription(exception);
+
+            while (exception.InnerException != null)
+            {
+                errMessage += ExtractInnerException(exception.InnerException);
+                exception = exception.InnerException;
+            }
+
+            errMessage += Environment.NewLine;
+
+            return errMessage;
+        }
+
+
+
+        /// &lt;summary&gt;
+        /// Extract exception message and its strack trace
+        /// &lt;/summary&gt;
+        /// &lt;param name="innerException"&gt;inner excepion object
+        /// &lt;returns&gt;extracted exception info including message and strack trace&lt;/returns&gt;
+        static string ExtractInnerException(System.Exception innerException)
+        {
+            string errMessage = string.Empty;
+
+            errMessage += Environment.NewLine + " InnerException ";
+            errMessage += FormatErrorDescription(innerException);
+
+            return errMessage;
+        }
+
+        /// &lt;summary&gt;
+        /// Formating exception description format
+        /// &lt;/summary&gt;
+        /// &lt;param name="exception"&gt;
+        /// &lt;returns&gt;Error description&lt;/returns&gt;
+        static string FormatErrorDescription(System.Exception exception)
+        {
+            if (exception == null)
+                return string.Empty;
+
+            return Environment.NewLine + exception.Message + Environment.NewLine + exception.StackTrace;
+        }
+    }
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Get Excel Column Name by Index and Vice Versa]]></title>
+    <link href="http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/"/>
+    <updated>2014-05-13T16:43:52+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa</id>
+    <content type="html"><![CDATA[<p>I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.</p>
+
+<pre><code class="c# excel helper">public class ExcelUtility
+    {
+        /// &lt;summary&gt;
+        /// Convert Excel column name into number/index. Column number start from 1. A equal to 1
+        /// &lt;/summary&gt;
+        /// &lt;param name="columnName"&gt;Column name
+        /// &lt;returns&gt;Excel column in numeric&lt;/returns&gt;
+        public static int GetExcelColumnNumber(string columnName)
+        {
+            if (string.IsNullOrEmpty(columnName))
+                throw new ArgumentNullException("Invalid column name parameter");
+
+            columnName = columnName.ToUpperInvariant();
+
+            int sum = 0;
+
+            char ch;
+            for (int i = 0; i &lt; columnName.Length; i++)
+            {
+                ch = columnName[i];
+
+                if (char.IsDigit(ch))
+                    throw new ArgumentNullException("Invalid column name parameter on character " + ch);
+
+                sum *= 26;
+                sum += (ch - 'A' + 1);
+                //sum += (columnName[i] - 'A');
+            }
+
+            return sum;
+        }
+
+        /// &lt;summary&gt;
+        /// Convert Excel column index into name. Column start from 1
+        /// &lt;/summary&gt;
+        /// &lt;param name="columnNumber"&gt;Column name/number
+        /// &lt;returns&gt;Column name&lt;/returns&gt;
+        public static string GetExcelColumnName(int columnNumber)
+        {
+            int dividend = columnNumber;
+            string columnName = String.Empty;
+            int modulo;
+
+            while (dividend &gt; 0)
+            {
+                modulo = (dividend - 1) % 26;
+                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                dividend = (int)((dividend - modulo) / 26);
+            }
+
+            return columnName;
+        }
+    }
+</code></pre>
+
+<pre><code class="c# sample code">class Program
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                string columnName = "A";
+
+                int columnIndex = ExcelUtility.GetExcelColumnNumber(columnName);
+
+                Console.WriteLine("Index of {0} is {1} ", columnName, columnIndex);
+
+                //increment columnIndex
+                ++columnIndex;
+
+                Console.WriteLine("Increment index = " + columnIndex);
+
+                columnName = ExcelUtility.GetExcelColumnName(columnIndex);
+                Console.WriteLine("Column name of index {0} is {1}", columnIndex, columnName);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            Console.Read();
+
+        }
+    }
+</code></pre>
+
+<p>I write the code in my blog just to remind me in the future in case I get the same need. And it would be great if it can help others who have the same need as me :)</p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li> <a href="http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa">http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa</a>
+</li> <li><a href="http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number">http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number</a></li>
+</ol></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
@@ -324,93 +497,6 @@ protected void btnRemoveSession_Click(object sender, EventArgs e)
     Session.Remove(Constant.SessionKey);
 }
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jomla Encryption in C#]]></title>
-    <link href="http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number/"/>
-    <updated>2012-08-06T10:21:53+08:00</updated>
-    <id>http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number</id>
-    <content type="html"><![CDATA[<p>Couple days ago I got a task to migrate user from an existing website which build based on Jomla CMS to an ASP.NET website user. Both of them use different encryption technique. The plan was that the Jomla based website would be replaced with the .NET website. In sort the scenario was :</p>
-
-<ol>
-<li>Replace PHP website build on top Jomla CMS with .NET</li>
-<li>Migrate users from Jomla so they can login into the new .NET website using old password</li>
-<li>Migrate some roles</li>
-</ol>
-
-
-<p>The first thing that come to my mind is to check whether they use the different encryption algorithm or not. And yup…they use different algorithm :( . So I decide to extend the <code>MembershipProvider</code> used by the .NET. In my case, thankfully I just need to override one method on that is <code>ValidateUser</code>. I will not talk the the detail what inside the methods is. The main point is just to validate if user login using existing password created by jomla can be validated by the .NET. To do that I create a simple class called <code>JomlaEncryption</code> to validate if user enter valid Jomla password.</p>
-
-<pre><code class="c# encrypt with jomla algorithm">public class JomlaEncryption
-{
-    public static bool IsValidPassword(string password, string encryptedPassword)
-    {
-        return EncryptUsingJomlaAlgorithm(password, encryptedPassword) == encryptedPassword;
-    }
-
-    /// &lt;summary&gt;
-    /// Source : http://stackoverflow.com/questions/2727043/using-php-to-create-a-joomla-user-password
-    ///   From joomla Forum, that's what happen behind:
-    ///
-    ///   1. Generate a password
-    ///   2. Generate 32 random characters
-    ///   3. Concatenate 1 and 2
-    ///   4. md5(3)
-    ///   5. store 4:2
-    ///   Example:
-    ///
-    ///   1. Generate a password - we'll use 'password'
-    ///   2. Generate 32 random characters - we'll use 'WnvTroeiBmd5bjGmmsVUnNjppadH7giK'
-    ///   3. Concatenate 1 and 2 - passwordWnvTroeiBmd5bjGmmsVUnNjppadH7giK
-    ///   4. md5(3) - 3c57ebfec712312f30c3fd1981979f58
-    ///   5. store 4:2 - 3c57ebfec712312f30c3fd1981979f58:WnvTroeiBmd5bjGmmsVUnNjppadH7giK
-    /// &lt;/summary&gt;
-    /// &lt;param name="password"&gt;
-    /// &lt;returns&gt;&lt;/returns&gt;
-    static string EncryptUsingJomlaAlgorithm(string password, string encryptedPassword)
-    {
-        if (!encryptedPassword.Contains(":"))
-            return null;
-
-        string randChar32Bit = encryptedPassword.Split(':')[1];
-        if (string.IsNullOrEmpty(randChar32Bit) || randChar32Bit.Length != 32)
-            return null;
-
-        string concatePassAndRandChar32Bit = password + randChar32Bit;
-        string hashedConcatePassAndRandChar32Bit = MD5(concatePassAndRandChar32Bit);
-
-        return string.Format("{0}:{1}", hashedConcatePassAndRandChar32Bit, randChar32Bit);
-    }
-
-    static string MD5(string password)
-    {
-        byte[] bytes = System.Text.Encoding.Default.GetBytes(password);
-        try
-        {
-            System.Security.Cryptography.MD5CryptoServiceProvider cryptProvider;
-            cryptProvider = new System.Security.Cryptography.MD5CryptoServiceProvider();
-            byte[] hash = cryptProvider.ComputeHash(bytes);
-            string ret = string.Empty;
-            foreach (byte a in hash)
-            {
-                if (a &lt; 16)
-                    ret += "0" + a.ToString("x");
-                else
-                    ret += a.ToString("x");
-            }
-            return ret;
-        }
-        catch
-        {
-            throw;
-        }
-    }
-}
-</code></pre>
-
-<p>That&rsquo;s all for now and thanks for reading :)</p>
 ]]></content>
   </entry>
   
