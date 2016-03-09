@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Math in Web - neutrofoton</title>
+  <meta name="author" content="neutro">
+
+  
+  <meta name="description" content="There are several framework that can be use to display math equation on web page. Usually math equestion written in LaTeX format. LaTeX is used for &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">neutrofoton</a></h1>
+  
+    <h2>Science, Technology and Life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="neutrofoton.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!--<li><a href="/about">About</a></li>-->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Math in Web</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-09T22:41:47+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>There are several framework that can be use to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
+
+<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript framework that can render LaTeX expression to beautiful math equation in browser.</p>
+
+<p>The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
+To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code></p>
+
+<figure class='code'><figcaption><span>KaTeX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;div&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq1&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq2&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq3&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq4&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq5&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq6&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq7&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>KaTeX sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;c = \\pm\\sqrt{a^2 + b^2}&quot;</span><span class="p">,</span> <span class="nx">eq1</span><span class="p">);</span>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(a,b,c) = (a^2+b^2+c^2)^3&quot;</span><span class="p">,</span> <span class="nx">eq2</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx&quot;</span><span class="p">,</span> <span class="nx">eq3</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}&quot;</span><span class="p">,</span> <span class="nx">eq4</span><span class="p">);</span>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\oint \\vec{F} \\cdot d\\vec{s}=0&quot;</span><span class="p">,</span> <span class="nx">eq5</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)&quot;</span><span class="p">,</span> <span class="nx">eq6</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"/></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+
+
+
+
+<div>
+<p><span class="katex" id="eq1"></span></p>
+<p><span class="katex" id="eq2"></span></p>
+<p><span class="katex" id="eq3"></span></p>
+<p><span class="katex" id="eq4"></span></p>
+<p><span class="katex" id="eq5"></span></p>
+<p><span class="katex" id="eq6"></span></p>
+<p><span class="katex" id="eq7"></span></p>
+</div>
+
+
+
+
+<script>
+
+    katex.render("c = \\pm\\sqrt{a^2 + b^2}", eq1);
+    katex.render("f(a,b,c) = (a^2+b^2+c^2)^3", eq2);
+
+    katex.render("\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx", eq3);
+
+    katex.render("f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}", eq4);
+    katex.render("\\oint \\vec{F} \\cdot d\\vec{s}=0", eq5);
+
+    katex.render("\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)", eq6);
+</script>
+
+
+<p>The comparison between <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> can be found <a href="http://www.intmath.com/cg5/katex-mathjax-comparison.php">here</a>. At the time of writing this blog post, I got <a href="https://khan.github.io/KaTeX/">KaTeX</a> is faster than <a href="https://www.mathjax.org/">MathJax</a>. But <a href="https://khan.github.io/KaTeX/">KaTeX</a> at can not render a few expressions that <a href="https://www.mathjax.org/">MathJax</a> can.</p>
+
+<p>The comparison results could be changed in the next. Since both framework actively developed.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">neutro</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-03-09T22:41:47+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/mathematic/'>mathematic</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/" title="Previous Post: Create iOS ipa for In-House Distribution">&laquo; Create iOS ipa for In-House Distribution</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Me</h1>
+  <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
+  <p>
+    There are no many things to write about me here. Just the one who always enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/09/math-in-web/">Math in Web</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">Deploying iOS App to Real Device</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/08/extract-c-number-exception/">Extract C# Exception</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/">Get Excel Column Name by Index and Vice Versa</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/">ASP.Net MVC 4 in Xamarin Studio</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/">Xcode Failed to Download Use the Purchases Page to Try Again</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list">
+    
+    
+    <li><a href="/blog/categories/csharp/index.html">csharp ( 8 )</a></li>
+    
+    
+    <li><a href="/blog/categories/php/index.html">php ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/osx/index.html">osx ( 9 )</a></li>
+    
+    
+    <li><a href="/blog/categories/apache/index.html">apache ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/java/index.html">java ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/aspnet/index.html">aspnet ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xcode/index.html">xcode ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xamarin/index.html">xamarin ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - neutro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'neutrofoton';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2016/03/09/math-in-web/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2016/03/09/math-in-web/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

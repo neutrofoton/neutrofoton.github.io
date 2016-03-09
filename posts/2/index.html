@@ -9,7 +9,8 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;) First &hellip;">
+  <meta name="description" content="At some point we need to store information when dealing with web application.
+Storing information in web application can be implemented in some ways &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +67,132 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/22/asp-dot-net-session-state-in-database/">ASP.NET Session State in Database</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-07-22T15:12:34+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>3:12 pm</span></time>
+        
+           | <a href="/blog/2013/07/22/asp-dot-net-session-state-in-database/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At some point we need to store information when dealing with web application.
+Storing information in web application can be implemented in some ways such as session and cookies.</p>
+
+<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
+
+<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
+
+<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
+First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
+
+<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
+
+<figure class='code'><figcaption><span>aspnet_regsql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>generate session state database</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The command will create database, tables and store procedures.
+In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
+
+<figure class='code'><figcaption><span>session state configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;system.web&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;sessionstate</span> <span class="na">mode=</span><span class="s">&quot;SQLServer&quot;</span> <span class="na">allowcustomsqldatabase=</span><span class="s">&quot;true&quot;</span> <span class="na">sqlconnectionstring=</span><span class="s">&quot;Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}&quot;</span> <span class="na">cookieless=</span><span class="s">&quot;false&quot;</span> <span class="na">timeout=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;/sessionstate&gt;</span>
+</span><span class='line'><span class="nt">&lt;/system.web&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To test our session storage, just create simple aspx page.</p>
+
+<figure class='code'><figcaption><span>sample.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnAddSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Add Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnAddSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnRemoveSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Remove Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnRemoveSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;br&gt;</span>
+</span><span class='line'><span class="nt">&lt;asp:label</span> <span class="na">id=</span><span class="s">&quot;ctlLblSessionDisplay&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;/asp:label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>sample.aspx.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">Page_Load</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">]</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">&quot;NO Session&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnAddSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">,</span> <span class="s">&quot;Hello&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnRemoveSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1373,6 +1500,10 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/09/math-in-web/">Math in Web</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
       </li>
     
@@ -1394,10 +1525,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     
       <li class="post">
         <a href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/">Xcode Failed to Download Use the Purchases Page to Try Again</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Unsupported IClasspathEntry in Eclipse-STS</a>
       </li>
     
   </ul>
@@ -1438,6 +1565,12 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     
     
     <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
     
   </ul>
 </section>
