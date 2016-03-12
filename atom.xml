@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-03-13T00:37:39+08:00</updated>
+  <updated>2016-03-13T00:46:43+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -24,13 +24,13 @@
 
 <p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-12-pic01.png"></p>
 
-<p> Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally getting a clue <code>GroovyDynamicElementReader.groovy</code>.</p>
+<p> Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally get a clue <code>GroovyDynamicElementReader.groovy</code>.</p>
 
 <p>Installing <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> seems solve the problem.</p>
 
 <p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-12-pic02.png"></p>
 
-<p>In case you have the same problem as me, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.</p>
+<p>In case you have the same problem as what I got, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.</p>
 
 <h3>Reference</h3>
 

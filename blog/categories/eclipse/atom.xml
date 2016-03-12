@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Spring | neutrofoton]]></title>
-  <link href="http://neutrofoton.github.io/blog/categories/spring/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Eclipse | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/eclipse/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
   <updated>2016-03-13T00:46:43+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
@@ -40,6 +40,34 @@
 <li>http://blog.csdn.net/zlx510tsde/article/details/46241675</li>
 </ol>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Unsupported IClasspathEntry in Eclipse-STS]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/"/>
+    <updated>2013-08-30T15:48:31+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts</id>
+    <content type="html"><![CDATA[<p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
+
+<p>Googling for that problem finally got a trick how to resolve it.</p>
+
+<ol>
+<li>Right-click on your project, select <code>Maven > Disable Maven Nature</code></li>
+<li>
+Open your terminal, go to your project folder and do
+<figure class='code'><figcaption><span>clean eclipse cache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn eclipse:clean
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Right click on your Project and select <code>Configure > Convert into Maven Project</code>
+</li>
+
+</ol>
+
+
+<p>After converting into maven project, I can update my maven project and everything running well :)</p>
 ]]></content>
   </entry>
   
