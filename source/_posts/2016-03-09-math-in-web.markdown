@@ -7,7 +7,7 @@ categories: [mathematic, javascript]
 ---
 There are several framework that can be use to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.
 
-<a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript framework that can render LaTeX expression to beautiful math equation in browser.
+<a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript frameworks that can render LaTeX expression to beautiful math equation in browser.
 
 The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
 To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code>
