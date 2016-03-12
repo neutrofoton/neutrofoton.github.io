@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-03-11T08:53:22+08:00</updated>
+  <updated>2016-03-12T17:25:50+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -14,13 +14,43 @@
 
   
   <entry>
+    <title type="html"><![CDATA[GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/"/>
+    <updated>2016-03-12T16:08:34+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts</id>
+    <content type="html"><![CDATA[<p>Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
+
+<p><a href="https://spring.io/">Spring</a> is a popular framework in Java world. It&rsquo;s one of my favorite framework in Java. At the time of this blog post, I have just grabbed the source from <a href="https://github.com/spring-projects/spring-framework">github repository</a>. The source code is fantastic. Nice coding style, project structure, build tool and of course its documentations. While following the guidance to build and import to <a href="https://spring.io/tools">Spring Tool Suite</a>. I got an error on <code>spring-beans-groovy</code> project in <code>GroovyBeanDefinitionReader.java</code>. Navigating to the errors, STS seems try to find a class <code>GroovyDynamicElementReader</code> but not found.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-12-pic01.png"></p>
+
+<p> Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally getting a clue <code>GroovyDynamicElementReader.groovy</code>.</p>
+
+<p>Installing <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> seems solve the problem.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-12-pic02.png"></p>
+
+<p>In case you have the same problem as me, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.</p>
+
+<h3>Reference</h3>
+
+
+<ol>
+<li>https://github.com/groovy/groovy-eclipse/wiki</li>
+<li>http://blog.csdn.net/zlx510tsde/article/details/46241675</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Math in Web]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/"/>
     <updated>2016-03-09T22:41:47+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/09/math-in-web</id>
     <content type="html"><![CDATA[<p>There are several framework that can be use to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
 
-<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript framework that can render LaTeX expression to beautiful math equation in browser.</p>
+<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript frameworks that can render LaTeX expression to beautiful math equation in browser.</p>
 
 <p>The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
 To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code></p>
@@ -2404,21 +2434,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 <p>From the two serialize way above, Json.NET provide cleaner way, since it does not need any attributes in the target class. We just need to provide POCO (Plain CLR Object).</p>
 
 <p>Anyway the json result of the sample actually only one line of json text. To make it readable we can use online <a href="http://jsonprettyprint.com/">Json formatter</a> which may help us to check/analyse the json text before deploying/using in production.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First Post]]></title>
-    <link href="http://neutrofoton.github.io/blog/2012/08/03/first-post/"/>
-    <updated>2012-08-03T19:29:08+08:00</updated>
-    <id>http://neutrofoton.github.io/blog/2012/08/03/first-post</id>
-    <content type="html"><![CDATA[<p>Alhamdulillah, It is friday and finally my blog is up and can be accessed on internet after for couple days just stay in localhost :) . One of the reasons because I did upgrade (actually did fresh install) my OS to Mountain Lion</p>
-
-<p><img class="left" src="http://neutrofoton.github.io/images/post/MountainLionHero1.png" title="mountain lion" ></p>
-
-<p>At the time of this first post, it is Ramadhan fasting day. So I would like to say happy fasting for all of moslem reader. Hopefully I can post more articles in this blog which can be useful for me and others :)</p>
-
-<p>Anyway thanks for visiting my blog and see you in the next post.</p>
 ]]></content>
   </entry>
   
