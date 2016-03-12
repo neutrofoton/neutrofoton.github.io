@@ -3,7 +3,7 @@ layout: post
 title: "GroovyDynamicElementReader is Missing Import Spring Framework Source to Eclipse STS"
 date: 2016-03-12 16:08:34 +0800
 comments: true
-categories: [java, spring]
+categories: [java, spring, eclipse]
 ---
 
 Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.
@@ -12,13 +12,13 @@ Sometime for some reasons when dealing with open source technology we have inter
 
 {% img center /images/post/2016-03-12-pic01.png %}
 
- Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally getting a clue <code>GroovyDynamicElementReader.groovy</code>.
+ Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally get a clue <code>GroovyDynamicElementReader.groovy</code>.
 
 Installing <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> seems solve the problem.
 
 {% img center /images/post/2016-03-12-pic02.png %}
 
-In case you have the same problem as me, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.
+In case you have the same problem as what I got, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.
 
 <h3>Reference</h3>
 <ol>
