@@ -3,7 +3,7 @@ layout: post
 title: "Deploying iOS app to Real Device"
 date: 2016-03-08 13:35:31 +0800
 comments: true
-categories: [osx, ios]
+categories: [osx, ios, xcode]
 ---
 
 While developing ios app, sometime we don't just testing run the app on ios simulator we also need to test the app on real device though. The are couple of things that we need to prepare to make our app be able to run on real devices.
