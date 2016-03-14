@@ -24,4 +24,4 @@ The reasons that make me interest in <a href="http://octopress.org/">Octopress</
 
 I plan will not maintain http://www.neutrofoton.com anymore. Even though at the time of this blog post the site is still accessible and maybe some articles visible on google search. In case the links are broken, please kindly find the related articles on https://neutrofoton.github.io
 
-The last, I would say thank you very much to <a href="https://wordpress.com/">WordPress</a> for had been my platform writing blog, and welcome for <a href="http://octopress.org/">Octopress</a> for being the new one :)
+The last, I would say thank you very much to <a href="https://wordpress.com/">WordPress</a> for had been my platform writing blog, and welcome <a href="http://octopress.org/">Octopress</a> for being the new one :)
