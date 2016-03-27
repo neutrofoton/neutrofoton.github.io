@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Windows | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/windows/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-03-28T01:46:00+08:00</updated>
+  <updated>2016-03-28T01:58:39+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -38,13 +38,13 @@
 <h2>Installation Boost</h2>
 
 
-<p>Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</a> on various IDE, let&rsquo;s begin with <a href="http://www.boost.org/">Boost</a> installation. To be noted that on this post I run Xcode on OS X, Code::Block on Linux (Ubuntu) and Visual Studio on Windows. The detail environments I use are :</p>
+<p>Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</a> on various IDE, let&rsquo;s begin with <a href="http://www.boost.org/">Boost</a> installation. To be noted that on this post I run Xcode on OS X, <a href="http://www.codeblocks.org/">Code::Blocks</a>  on Linux (Ubuntu) and Visual Studio on Windows. The detail environments I use are :</p>
 
 <ol>
 <li>OS X 10.11.4 El Capitan</li>
 <li>Ubuntu 14.04.4 LTS</li>
 <li>Xcode Version 7.2</li>
-<li>Code::Blocks</li>
+<li>Code::Blocks 13.12, gcc 4.8.4</li>
 <li>Visual Studio 2013</li>
 <li>Boost 1.60.0</li>
 </ol>
@@ -159,7 +159,7 @@ As on OS X and Ubuntu, the last step quite take time.
 </span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">typedef</span> <span class="n">tee_device</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">ostream</span><span class="p">,</span> <span class="n">ofstream</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeDevice</span><span class="p">;</span>
 </span><span class='line'><span class="k">typedef</span> <span class="n">stream</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">TeeDevice</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeStream</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">ofstream</span> <span class="nf">ofs</span><span class="p">(</span><span class="s">&quot;/Users/neutro/Workspace/Learn/cpp/sample.txt&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">ofstream</span> <span class="nf">ofs</span><span class="p">(</span><span class="s">&quot;/Users/neutro/Workspace/cpp/sample.txt&quot;</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">TeeDevice</span> <span class="nf">my_tee</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span> <span class="n">ofs</span><span class="p">);</span>
 </span><span class='line'><span class="n">TeeStream</span> <span class="nf">my_split</span><span class="p">(</span><span class="n">my_tee</span><span class="p">);</span>
