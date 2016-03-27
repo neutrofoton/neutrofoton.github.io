@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/</loc>
+<lastmod>2016-03-27T21:38:49+08:00</lastmod>
+</url>
+<url>
 <loc>http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/</loc>
 <lastmod>2016-03-12T16:08:34+08:00</lastmod>
 </url>
@@ -147,6 +151,21 @@
 </url>
 <url>
 <loc>http://neutrofoton.github.io/blog/categories/spring/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/code-block/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/visual-studio/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/linux/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/windows/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/c-plus-plus/</loc>
 </url>
 <url>
 <loc>http://neutrofoton.github.io/posts/2/</loc>
