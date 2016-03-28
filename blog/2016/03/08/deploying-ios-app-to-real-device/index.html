@@ -88,86 +88,83 @@
   </header>
 
 
-<div class="entry-content"><p>While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though. The are couple of things that we need to prepare to make our app be able to run on real devices.</p>
+<div class="entry-content"><p><img class="left" src="/images/logo/ios.png">
+While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>
 
-<h2>Certificate</h2>
+<p><p/>
+The are couple of things that we need to prepare to make our app be able to run on real devices.</p>
 
-
-<p>Development certificate basically tells us that we are apple developers. To be it, our apple id has to be enrolled as an apple developer. Information about apple developer enrollment can be found at <a href="https://developer.apple.com/programs/enroll/">Apple Developer site</a>.</p>
+<p><h2>Certificate</h2>
+Development certificate basically tells us that we are apple developers. To be it, our apple id has to be enrolled as an apple developer. Information about apple developer enrollment can be found at <a href="https://developer.apple.com/programs/enroll/">Apple Developer site</a>.</p>
 
 <p>Once our apple id enrolled as an apple developer, there are couple of steps for preparing development certificate. App need to be signed to be able to deployed to real devices. To do that:</p>
 
-<ol type="1">
+<p><ol type="1"></p>
 
-<li>Go to <code>Launchpad</code> or <code>Spotlight Search</code>, type <code>Keychain Access</code> then open the app.
-</li>
+<p><li>Go to <code>Launchpad</code> or <code>Spotlight Search</code>, type <code>Keychain Access</code> then open the app.
+</li></p>
 
-<li>At top menu, click <code>Keychain Access</code> > <code>Certificate Assistance</code> > <code>Request a Certificate from a Certificate Authority</code>
+<p><li>At top menu, click <code>Keychain Access</code> > <code>Certificate Assistance</code> > <code>Request a Certificate from a Certificate Authority</code></p>
 
-<img class="center" src="/images/post/2016-03-08-pic01.png">
+<p><img class="center" src="/images/post/2016-03-08-pic01.png"></p>
 
-Fill the <code>Email</code> and <code>Common Name</code>. The email should be <code>apple id email</code> then select <code>save to disk</code> and checked <code>Let me specify key pair information</code>. When we click continue, we should get save dialog
+<p>Fill the <code>Email</code> and <code>Common Name</code>. The email should be <code>apple id email</code> then select <code>save to disk</code> and checked <code>Let me specify key pair information</code>. When we click continue, we should get save dialog</p>
 
-<img class="center" src="/images/post/2016-03-08-pic02.png">
+<p><img class="center" src="/images/post/2016-03-08-pic02.png"></p>
 
-Select Key Size <code>2048 bits</code> and <code>RSA</code> algorithm, click continue then done.
-<img class="center" src="/images/post/2016-03-08-pic03.png">
+<p>Select Key Size <code>2048 bits</code> and <code>RSA</code> algorithm, click continue then done.
+<img class="center" src="/images/post/2016-03-08-pic03.png"></p>
 
-The certificate request that we create just saved to disk (desktop in my case).
+<p>The certificate request that we create just saved to disk (desktop in my case).</p>
 
-</li>
+<p></li></p>
 
-<li>
+<p><li>
 Open <a href="https://developer.apple.com/membercenter/index.action">apple developer portal</a>, login using apple id that already enrolled as apple developer.
-<img class="center" src="/images/post/2016-03-08-pic04.png">
+<img class="center" src="/images/post/2016-03-08-pic04.png"></p>
 
-click <code>Certificates, Identifiers and Profiles</code>
+<p>click <code>Certificates, Identifiers and Profiles</code></p>
 
-</li>
+<p></li>
 <li>
 Select <code>Sertificates</code> group > <code>All</code>
-<img class="center" src="/images/post/2016-03-08-pic05.png">
+<img class="center" src="/images/post/2016-03-08-pic05.png"></p>
 
-On the right pane, select <code>add (+)</code> button, select type of certificate that we want to create. At this post we will create for development only. Not for production such as for deploy our app in app store nor internal store (in-house) like mobile device management.
-<img class="center" src="/images/post/2016-03-08-pic06.png">
+<p>On the right pane, select <code>add (+)</code> button, select type of certificate that we want to create. At this post we will create for development only. Not for production such as for deploy our app in app store nor internal store (in-house) like mobile device management.
+<img class="center" src="/images/post/2016-03-08-pic06.png"></p>
 
-If everything already done on this page, scroll down > click <code>continue</code>
+<p>If everything already done on this page, scroll down > click <code>continue</code></p>
 
-We may notice a information message that we have to ensure on our OS X development machine keychain installed <code>
-Worldwide Developer Relations Certificate Authority</code>
+<p>We may notice a information message that we have to ensure on our OS X development machine keychain installed <code>
+Worldwide Developer Relations Certificate Authority</code></p>
 
-<img class="center" src="/images/post/2016-03-08-pic07.png">
+<p><img class="center" src="/images/post/2016-03-08-pic07.png"></p>
 
-</li>
+<p></li>
 <li>
-Follow the wizard, till we're asked to upload our certificate request that we already created on previous step.
+Follow the wizard, till we&rsquo;re asked to upload our certificate request that we already created on previous step.</p>
 
-<img class="center" src="/images/post/2016-03-08-pic08.png">
+<p><img class="center" src="/images/post/2016-03-08-pic08.png"></p>
 
-</li>
+<p></li>
 <li>
 After completed the wizard, we should be able to download the generated certificate and ready to install on development machine.
-<img class="center" src="/images/post/2016-03-08-pic09.png">
+<img class="center" src="/images/post/2016-03-08-pic09.png"></p>
 
-</li>
+<p></li>
 <li>
 Download the <code>development certificate</code> > double click. The certificate should be installed on our <code>Keychain Access</code>
-<img class="center" src="/images/post/2016-03-08-pic10.png">
+<img class="center" src="/images/post/2016-03-08-pic10.png"></p>
 
-<code>
+<p><code>
 NOTE :
 Please ignore the distribution certificate on my screenshot. It just another certificate for distribution which is out of scope of this post.
 </code>
 </li>
-</ol>
+</ol></p>
 
-
-
-
-<h2>Devices</h2>
-
-
-<p>This part informs to the xcode that the device is belongs to me. So let me run my app on it. To register our devices, select <code>Devices</code> on the apple developer portal as we did for certificate section above.</p>
+<p><h2>Devices</h2>
+This part informs to the xcode that the device is belongs to me. So let me run my app on it. To register our devices, select <code>Devices</code> on the apple developer portal as we did for certificate section above.</p>
 
 <p><img class="center" src="/images/post/2016-03-08-pic11.png"></p>
 
@@ -181,10 +178,8 @@ Please ignore the distribution certificate on my screenshot. It just another cer
 <p>Follow the wizard till finish. We should be able to get our idevices listed on the device list.
 <img class="center" src="/images/post/2016-03-08-pic14.png"></p>
 
-<h2>App IDs</h2>
-
-
-<p>On Apple developer portal mentioned that an <code>App ID</code> is a string that defines both a keychain identity and a set of apps you are developing. Its primary use is as part of a provisioning profile, it specifies which apps are authorized by the profile to be signed and launched.</p>
+<p><h2>App IDs</h2>
+On Apple developer portal mentioned that an <code>App ID</code> is a string that defines both a keychain identity and a set of apps you are developing. Its primary use is as part of a provisioning profile, it specifies which apps are authorized by the profile to be signed and launched.</p>
 
 <p>To register <code>App ID</code>, click <code>Add (+)</code>. Fill <code>Name</code> and <code>Bundle ID</code>.</p>
 
@@ -197,10 +192,8 @@ We can get list all of <code>App IDs</code> that we registered by clicking  the 
 
 <p><img class="center" src="/images/post/2016-03-08-pic16.png"></p>
 
-<h2>Provisioning Profiles</h2>
-
-
-<p>On Apple Developer portal Provisioning Profiles defined that it allows us to install apps onto our iOS devices. A provisioning profile includes signing certificates, device identifiers, and an App ID. Development provisioning profiles are used to build and install versions of our app during the development cycle, while distribution provisioning profiles are used to submit our apps to the App Store and distribute them to beta testers.</p>
+<p><h2>Provisioning Profiles</h2>
+On Apple Developer portal Provisioning Profiles defined that it allows us to install apps onto our iOS devices. A provisioning profile includes signing certificates, device identifiers, and an App ID. Development provisioning profiles are used to build and install versions of our app during the development cycle, while distribution provisioning profiles are used to submit our apps to the App Store and distribute them to beta testers.</p>
 
 <p>To start create provisioning, click <code>add (+)</code> select <code>iOS App Development</code>. In this case I will create provisioning for test. For distribution we select on distribution group option as our need.</p>
 
@@ -223,14 +216,12 @@ We should get the similar picture as below.</p>
 
 <p>If the profiles are not downloaded yet, we can click <code>Download</code> button that make Xcode do for us.</p>
 
-<p>To test provisioning we created, let&rsquo;s create simple application. At the time of write this post, my development environment :</p>
-
+<p>To test provisioning we created, let&rsquo;s create simple application. At the time of write this post, my development environment :
 <ol type="1">
 <li> OS X El Capitan (10.11.3)</li>
 <li>Xcode (7.2)</li>
 <li>iphone 4s iOS 9.1</li>
-</ol>
-
+</ol></p>
 
 <p><img class="center" src="/images/post/2016-03-08-pic24.png">
 <img class="center" src="/images/post/2016-03-08-pic25.png"></p>
