@@ -5,6 +5,9 @@ date: 2016-03-09 00:10:44 +0800
 comments: true
 categories: [osx, ios, xcode]
 ---
+
+{% img left /images/logo/ios.png %}
+
 Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.
 
 In this post, I will not write about how to build the app with Apache Cordova, I just want to focus on how to create ipa distribution package for in house enterprise distribution. The steps should be the same for app that is created with native. I also will not discuss about how to deploy to MDM.

@@ -6,7 +6,10 @@ comments: true
 categories: [osx, ios, xcode]
 ---
 
-While developing ios app, sometime we don't just testing run the app on ios simulator we also need to test the app on real device though. The are couple of things that we need to prepare to make our app be able to run on real devices.
+{% img left /images/logo/ios.png %}
+While developing ios app, sometime we don't just testing run the app on ios simulator we also need to test the app on real device though.
+<p/>
+The are couple of things that we need to prepare to make our app be able to run on real devices.
 
 
 <h2>Certificate</h2>
