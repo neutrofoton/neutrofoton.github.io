@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Windows | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/windows/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-03-28T01:58:39+08:00</updated>
+  <updated>2016-03-28T08:56:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -19,7 +19,7 @@
     <updated>2016-03-27T21:38:49+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
-<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[1]</a></p>
+<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
 
 <p>The other interesting points of <a href="http://www.boost.org/">Boost</a> are :</p>
 
@@ -59,7 +59,8 @@
 
 <ol>
 <li>Download boost library from <a href="boost.org">Boost website</a></li>
-<li>Extract it</li>
+<li>Extract it.</li>
+<li>Open terminal, navigate to the extracted directory</li>
 <li>Create directory on <code>/usr/local/boost_1_60_0</code>, and ensure IDE has access to the directory. On my case I don't need this step on OS X, but on ubuntu it does.
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -79,12 +80,12 @@ This last step quite take time. So you can have coffee while waiting for it :)
 </ol>
 
 
-<p>Once the installation finish, we should have generated directory that are <code>/usr/local/boost_1_60_0/include</code> that contains header files and <code>/usr/local/boost_1_60_0/lib</code> that contains libraries.</p>
+<p>Once the installation finish, we should have generated directory. They are <code>/usr/local/boost_1_60_0/include</code> contains header files and <code>/usr/local/boost_1_60_0/lib</code> contains libraries.</p>
 
 <h4>Windows</h4>
 
 
-<p>The <a href="http://www.boost.org/">Boost</a> installation step on Windows is similar to the installation step on OS X and Ubuntu.
+<p>The <a href="http://www.boost.org/">Boost</a> installation step on Windows is also similar to the installation step on OS X and Ubuntu.
 The steps are :</p>
 
 <ol>
@@ -94,9 +95,9 @@ The steps are :</p>
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>C:<span class="se">\\</span>&gt; <span class="nb">cd </span>C:<span class="se">\\</span>boost_1_60_0
-</span><span class='line'>C:<span class="se">\\</span>boost_1_60_0&gt; bootstrap.bat
-</span><span class='line'>C:<span class="se">\\</span>boost_1_60_0&gt; .<span class="se">\b</span>2
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>C:\<span class="p">&gt;</span> <span class="n">cd</span> C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span><span class="p">&gt;</span> <span class="n">bootstrap</span>.bat
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>&gt; .\b<span class="m">2</span>
 </span></code></pre></td></tr></table></div></figure>
 As on OS X and Ubuntu, the last step quite take time.
 </li>
@@ -174,7 +175,7 @@ As on OS X and Ubuntu, the last step quite take time.
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-The snipped code above just print text and write it to a text file. We just want to ensure the IDE can build and run the code with the included Boost libraries.</p>
+The snipped code above just print text and write it to a text file. We just want to ensure the IDE&rsquo;s compiler can compile and build the code that includes <a href="http://www.boost.org/">Boost</a> libraries.</p>
 
 <ul>
   <li>
@@ -219,7 +220,7 @@ The snipped code above just print text and write it to a text file. We just want
 </ul>
 
 
-
+<p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
 
 <p><h4>Reference<h4>
 <ol type="1">
