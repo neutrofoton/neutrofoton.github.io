@@ -7,7 +7,7 @@ categories: [xcode, code block, visual studio, osx, linux, windows, c++]
 ---
 
 {% img left /images/post/2016-03-27-boost.png %}
-<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[1]</a>
+<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a>
 
 The other interesting points of <a href="http://www.boost.org/">Boost</a> are :
 <ol>
@@ -35,7 +35,8 @@ Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</
 There are several ways of <a href="http://www.boost.org/">Boost</a> installation. Instead of build from source code, we can use package manager such as <a href="https://www.macports.org/">MacPorts</a>, <a href="http://brew.sh/">Homebrew</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Packaging_Tool">Advance Package Tool</a>, etc. In this post we will build <a href="http://www.boost.org/">Boost</a> from source code. The installation steps (from source code) on OS X and Ubuntu are the similar. To make it consistent, I use the same installation path for OS X and Ubuntu that is <code>/usr/local/boost_1_60_0</code>. You can use different path if you want. The steps are :
 <ol>
 <li>Download boost library from <a href="boost.org">Boost website</a></li>
-<li>Extract it</li>
+<li>Extract it.</li>
+<li>Open terminal, navigate to the extracted directory</li>
 <li>Create directory on <code>/usr/local/boost_1_60_0</code>, and ensure IDE has access to the directory. On my case I don't need this step on OS X, but on ubuntu it does.
 ``` bash
 sudo mkdir /usr/local/boost_1_60_0
@@ -52,19 +53,19 @@ This last step quite take time. So you can have coffee while waiting for it :)
 </li>
 </ol>
 
-Once the installation finish, we should have generated directory that are <code>/usr/local/boost_1_60_0/include</code> that contains header files and <code>/usr/local/boost_1_60_0/lib</code> that contains libraries.
+Once the installation finish, we should have generated directory. They are <code>/usr/local/boost_1_60_0/include</code> contains header files and <code>/usr/local/boost_1_60_0/lib</code> contains libraries.
 
 <h4>Windows</h4>
-The <a href="http://www.boost.org/">Boost</a> installation step on Windows is similar to the installation step on OS X and Ubuntu.
+The <a href="http://www.boost.org/">Boost</a> installation step on Windows is also similar to the installation step on OS X and Ubuntu.
 The steps are :
 <ol>
 <li>Download boost library from <a href="boost.org">Boost website</a></li>
 <li>Extract it to C:\\boost_1_60_0 </li>
 <li>Open Visual Studio command prompt. I use Visual Studio 2013 x86 Native Tools Command Prompt native tool (I have not test using default Windows Command Prompt)
-``` bash
-C:\\> cd C:\\boost_1_60_0
-C:\\boost_1_60_0> bootstrap.bat
-C:\\boost_1_60_0> .\b2
+``` bat
+C:\> cd C:\boost_1_60_0
+C:\boost_1_60_0> bootstrap.bat
+C:\boost_1_60_0> .\b2
 ```
 As on OS X and Ubuntu, the last step quite take time.
 </li>
@@ -100,7 +101,7 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 ```
-The snipped code above just print text and write it to a text file. We just want to ensure the IDE can build and run the code with the included Boost libraries.
+The snipped code above just print text and write it to a text file. We just want to ensure the IDE's compiler can compile and build the code that includes <a href="http://www.boost.org/">Boost</a> libraries.
 
 <ul>
   <li>
@@ -144,7 +145,7 @@ The snipped code above just print text and write it to a text file. We just want
   </li>
 </ul>
 
-
+The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path. 
 <h4>Reference<h4>
 <ol type="1">
 <li>
