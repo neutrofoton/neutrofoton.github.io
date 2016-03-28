@@ -145,7 +145,8 @@ The snipped code above just print text and write it to a text file. We just want
   </li>
 </ul>
 
-The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path. 
+The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.
+ 
 <h4>Reference<h4>
 <ol type="1">
 <li>
