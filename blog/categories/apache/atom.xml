@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Apache | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/apache/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-04-18T16:23:25+08:00</updated>
+  <updated>2016-05-12T03:11:12+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-09-14T13:36:00+08:00</updated>
+    <updated>2012-09-14T12:36:00+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
 
@@ -90,7 +90,7 @@ or</p>
   <entry>
     <title type="html"><![CDATA[Configure Apache on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-08T10:47:05+08:00</updated>
+    <updated>2012-08-08T09:47:05+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>After installing Mountain Lion on my Macbook, I decided to prepare and set up software development tools in it. One of it is activate web sharing feature which can be found at System Preferences > Sharing on previous version. I was very suprise that apple seems remove it from the list.</p>
 

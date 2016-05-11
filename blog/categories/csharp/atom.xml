@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Csharp | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/csharp/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-04-18T16:23:25+08:00</updated>
+  <updated>2016-05-12T03:11:12+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Extract C# Exception]]></title>
     <link href="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/"/>
-    <updated>2014-09-08T16:49:39+08:00</updated>
+    <updated>2014-09-08T15:49:39+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception</id>
     <content type="html"><![CDATA[<p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
 
@@ -85,7 +85,7 @@
   <entry>
     <title type="html"><![CDATA[Get Excel Column Name by Index and Vice Versa]]></title>
     <link href="http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/"/>
-    <updated>2014-05-13T16:43:52+08:00</updated>
+    <updated>2014-05-13T15:43:52+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa</id>
     <content type="html"><![CDATA[<p>I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.</p>
 
@@ -189,7 +189,7 @@
   <entry>
     <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
-    <updated>2013-11-23T16:15:03+08:00</updated>
+    <updated>2013-11-23T15:15:03+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
     <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
 <code>
@@ -335,7 +335,7 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
   <entry>
     <title type="html"><![CDATA[Generic Singleton Pattern in C#]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/"/>
-    <updated>2013-08-29T15:27:41+08:00</updated>
+    <updated>2013-08-29T14:27:41+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number</id>
     <content type="html"><![CDATA[<p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
 
@@ -439,7 +439,7 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
   <entry>
     <title type="html"><![CDATA[ASP.NET Session State in Database]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/"/>
-    <updated>2013-07-22T15:12:34+08:00</updated>
+    <updated>2013-07-22T14:12:34+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database</id>
     <content type="html"><![CDATA[<p>At some point we need to store information when dealing with web application.
 Storing information in web application can be implemented in some ways such as session and cookies.</p>

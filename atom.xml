@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-04-18T16:23:25+08:00</updated>
+  <updated>2016-05-12T03:11:12+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -14,9 +14,427 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Lambda in C++]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/"/>
+    <updated>2016-05-11T23:15:18+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/lambda.png">
+C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
+For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
+
+<figure class='code'><figcaption><span>C++11 Lambda Syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>[capture_block](parameters) mutable exception_specification -&gt; return_type {body}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li> <strong><code>capture_block</code></strong> is a comma-separated list of zero or more captures, optionally beginning with a capture-default. Capture list can be passed as follows (see below for the detailed description):
+<ol>
+<li><code>[a,&b]</code> where a is captured by value and b is captured by reference.</li>
+<li><code>[this]</code> captures the this pointer by value</li>
+<li><code>[&]</code> captures all automatic variables odr-used in the body of the lambda by reference</li>
+<li><code>[=]</code> captures all automatic variables odr-used in the body of the lambda by value</li>
+<li><code>[x]</code> captures only x by value and nothing else.</li>
+<li><code>[]</code> captures nothing</li>
+</ol>
+</li>
+<li>
+<strong><code>parameters</code></strong> is (optional) list of parameters for the lambda expression.
+</li>
+<li>
+<strong><code>mutable</code></strong> is (optional) if variables from the enclosing scope are captured by value, a copy of those variables will become available in the body of the lambda expression. Those copies are marked as const by default, meaning the lambda body cannot change the value of those copies. If the lambda expression is marked as mutable, those copies are not const and the body can modify those local copies.
+</li>
+<li>
+<strong><code>exception_specification</code></strong> is (optional) and can be used to specify which exceptions the body of the lambda expression can throw.
+</li>
+<li>
+<strong><code>return_type</code></strong> is Return type. If not present it's implied by the function return statements (or void if it doesn't return any value)
+</li>
+</ol>
+
+
+
+
+<h3>Lambda and Direct Invoke</h3>
+
+
+<p>The following snipped code is an example of lambda expression.</p>
+
+<figure class='code'><figcaption><span>example lambda and directly invoked</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hi &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;}(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The lambda expression above shows that it has a <code>const string&amp;</code> parameter and return a <code>string</code> type. To execute the lambda is by placing round brackets <code>()</code> and put object that will be passed to inside it. The <code>&ldquo;neutro&rdquo;</code> literal string will substitute <code>str</code> parameter. The output of the above code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Hi neutro
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>Lambda as Variable</h3>
+
+
+<p>Pointer to a lambda expression can be stored and executed through the function pointer. C++ provides <code>std::function</code> which is a STL template class that provides a very convenient wrapper to a simple function, to a functor or to a lambda expression. We can also use the C++11 <code>auto</code> keyword to make it easier.</p>
+
+<p>To make it clear the following code contains couples of various lambda expressions and store them in variables of type <code>auto</code> or its equivalent in <code>std::function</code> STL template class.</p>
+
+<figure class='code'><figcaption><span>lambda as variable</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 1&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda1</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda2</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda3 = [](void) -&gt; void { cout &lt;&lt;&quot;Hello lambda without parameter 2&quot; &lt;&lt; endl; };</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda3</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda4 = [](const string&amp; str) -&gt; string {return &quot;Hello from &quot; + str;};</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="n">string</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hello from &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lambda4</span><span class="p">(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The snipped code above shows how lambda expressions stored in variable of auto type or theirs equivalent in <code>std::function</code> type and how to invoke the lambda. <a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">Here</a> is a good article about <code>std::function</code>.</p>
+
+<h3>Lambda Capture Block</h3>
+
+
+<p>Lambda Capture Block basically describes how we want to capture variables from the enclosing scope. Capturing a variable means that the variable becomes available inside the body of the lambda. The detail variant of capture block has been described on previous section. The following code shows various scenario how to play with capture block.</p>
+
+<figure class='code'><figcaption><span>lambda capture block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="n">variableA</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableB</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableC</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Init Values : &quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableA : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="c1">//--------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 1 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span><span class="o">-&gt;</span> <span class="kt">int</span>     <span class="c1">//==&gt; [=] lambda has default access to variable is by value</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda1 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda1</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda1, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 2 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>      <span class="c1">//==&gt; [&amp;] lambda has default access to variable is by reference</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda2</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//-------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 3 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="o">*</span><span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda3 : &quot;</span><span class="o">&lt;&lt;*</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda3 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="o">*</span><span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">result3</span> <span class="o">=</span> <span class="n">lambda3</span><span class="p">(</span><span class="o">&amp;</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, result3 : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">result3</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 4 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableB</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [=, &amp;variableB, &amp;variableC] captures by value by default,</span>
+</span><span class='line'>                                             <span class="c1">// except variables variableB and variableC, which are captured by reference.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda4</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 5 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda5</span> <span class="o">=</span> <span class="p">[</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="k">mutable</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [variableC] captures only variableC by value and nothing else.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//should mark as mutable lambda, since Cannot assign to a variable captured by copy in a non-mutable lambda</span>
+</span><span class='line'>    <span class="c1">//variableB = variableB * 2; //ERROR : variableB not captured, since only capture specific variable that&#39;s variableC</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">///</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda5</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output of the sample code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Init Values :
+</span><span class='line'>variableA : 1
+</span><span class='line'>variableB : 1
+</span><span class='line'>variableC : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 1 ##---
+</span><span class='line'>param inside lambda1 : 2
+</span><span class='line'>After lamda1, variableA : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 2 ##---
+</span><span class='line'>param inside lambda2 : 2
+</span><span class='line'>variableB inside lambda2 : 2
+</span><span class='line'>After lamda2, variableA : 1
+</span><span class='line'>After lamda2, variableB : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 3 ##---
+</span><span class='line'>param inside lambda3 : 2
+</span><span class='line'>variableB inside lambda3 : 4
+</span><span class='line'>After lamda3, result3 : 2
+</span><span class='line'>After lamda3, variableA : 2
+</span><span class='line'>After lamda3, variableB : 4
+</span><span class='line'>
+</span><span class='line'>---## lamda 4 ##---
+</span><span class='line'>param inside lambda4 : 4
+</span><span class='line'>variableB inside lambda4 : 8
+</span><span class='line'>variableC inside lambda4 : 2
+</span><span class='line'>After lamda4, variableA : 2
+</span><span class='line'>After lamda4, variableB : 8
+</span><span class='line'>After lamda4, variableC : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 5 ##---
+</span><span class='line'>param inside lambda5 : 4
+</span><span class='line'>variableC inside lambda5 : 4
+</span><span class='line'>After lamda5, variableA : 2
+</span><span class='line'>After lamda5, variableC : 2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">Wrox Professional C++</a></li>
+<li><a href="http://en.cppreference.com/w/cpp/language/lambda">http://en.cppreference.com/w/cpp/language/lambda</a></li>
+<li><a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/</a></li>
+<li><a href="http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1">http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1</a></li>
+</ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
-    <updated>2016-03-27T21:38:49+08:00</updated>
+    <updated>2016-03-27T20:38:49+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/post/2016-03-27-boost.png">
 <a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
@@ -228,7 +646,7 @@ As on OS X and Ubuntu, the last step quite take time.
   <entry>
     <title type="html"><![CDATA[GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/"/>
-    <updated>2016-03-12T16:08:34+08:00</updated>
+    <updated>2016-03-12T15:08:34+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts</id>
     <content type="html"><![CDATA[<p>Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
 
@@ -258,7 +676,7 @@ As on OS X and Ubuntu, the last step quite take time.
   <entry>
     <title type="html"><![CDATA[Math in Web]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/"/>
-    <updated>2016-03-09T22:41:47+08:00</updated>
+    <updated>2016-03-09T21:41:47+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/09/math-in-web</id>
     <content type="html"><![CDATA[<p>There are several frameworks that can be used to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
 
@@ -357,9 +775,9 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
   
   <entry>
     <title type="html"><![CDATA[Create iOS Ipa for In-House Distribution]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/"/>
-    <updated>2016-03-09T00:10:44+08:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution</id>
+    <link href="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/"/>
+    <updated>2016-03-08T23:10:44+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/ios.png"></p>
 
 <p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
@@ -433,7 +851,7 @@ Now we should get the similar picture as follow.</p>
   <entry>
     <title type="html"><![CDATA[Deploying iOS App to Real Device]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/"/>
-    <updated>2016-03-08T13:35:31+08:00</updated>
+    <updated>2016-03-08T12:35:31+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/ios.png">
 While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>
@@ -588,7 +1006,7 @@ We should get the similar picture as below.</p>
   <entry>
     <title type="html"><![CDATA[From WordPress to Octopress]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/"/>
-    <updated>2016-03-07T08:32:33+08:00</updated>
+    <updated>2016-03-07T07:32:33+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress</id>
     <content type="html"><![CDATA[<p>I have just migrated my blog engine from <a href="https://wordpress.com/">WordPress</a> to <a href="http://octopress.org/">Octopress</a>. After exploring (googling) for hours about it, how to install, customize, hosting etc, finally I got a decision :</p>
 
@@ -619,7 +1037,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
   <entry>
     <title type="html"><![CDATA[Extract C# Exception]]></title>
     <link href="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/"/>
-    <updated>2014-09-08T16:49:39+08:00</updated>
+    <updated>2014-09-08T15:49:39+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception</id>
     <content type="html"><![CDATA[<p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
 
@@ -745,7 +1163,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
   <entry>
     <title type="html"><![CDATA[Get Excel Column Name by Index and Vice Versa]]></title>
     <link href="http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/"/>
-    <updated>2014-05-13T16:43:52+08:00</updated>
+    <updated>2014-05-13T15:43:52+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa</id>
     <content type="html"><![CDATA[<p>I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.</p>
 
@@ -934,7 +1352,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
   <entry>
     <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
-    <updated>2013-11-23T16:15:03+08:00</updated>
+    <updated>2013-11-23T15:15:03+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
     <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
 <code>
@@ -1080,7 +1498,7 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
   <entry>
     <title type="html"><![CDATA[Xcode Failed to Download Use the Purchases Page to Try Again]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/"/>
-    <updated>2013-09-24T15:56:27+08:00</updated>
+    <updated>2013-09-24T14:56:27+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again</id>
     <content type="html"><![CDATA[<p>The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .</p>
 
@@ -1140,7 +1558,7 @@ If download/update disappear, close the appstore then reopen it.
   <entry>
     <title type="html"><![CDATA[Unsupported IClasspathEntry in Eclipse-STS]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/"/>
-    <updated>2013-08-30T15:48:31+08:00</updated>
+    <updated>2013-08-30T14:48:31+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts</id>
     <content type="html"><![CDATA[<p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
 
@@ -1168,7 +1586,7 @@ Right click on your Project and select <code>Configure > Convert into Maven Proj
   <entry>
     <title type="html"><![CDATA[Generic Singleton Pattern in Java]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/"/>
-    <updated>2013-08-29T15:38:32+08:00</updated>
+    <updated>2013-08-29T14:38:32+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java</id>
     <content type="html"><![CDATA[<p>In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.</p>
 
@@ -1365,7 +1783,7 @@ The main thing that I should do is I have to use <code>HashMap</code> collection
   <entry>
     <title type="html"><![CDATA[Generic Singleton Pattern in C#]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/"/>
-    <updated>2013-08-29T15:27:41+08:00</updated>
+    <updated>2013-08-29T14:27:41+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number</id>
     <content type="html"><![CDATA[<p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
 
@@ -1511,7 +1929,7 @@ The main thing that I should do is I have to use <code>HashMap</code> collection
   <entry>
     <title type="html"><![CDATA[ASP.NET Session State in Database]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/"/>
-    <updated>2013-07-22T15:12:34+08:00</updated>
+    <updated>2013-07-22T14:12:34+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database</id>
     <content type="html"><![CDATA[<p>At some point we need to store information when dealing with web application.
 Storing information in web application can be implemented in some ways such as session and cookies.</p>
@@ -1614,7 +2032,7 @@ In web.config, don’t forget to add session state configuration by pointing the
   <entry>
     <title type="html"><![CDATA[Mono on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-09-19T13:54:14+08:00</updated>
+    <updated>2012-09-19T12:54:14+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;)</p>
 
@@ -1757,7 +2175,7 @@ Add the following line at the end of <code>mod_mono.conf</code>
   <entry>
     <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-09-14T13:36:00+08:00</updated>
+    <updated>2012-09-14T12:36:00+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
 
@@ -1865,7 +2283,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <entry>
     <title type="html"><![CDATA[Install phpMyAdmin on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-10T11:39:53+08:00</updated>
+    <updated>2012-08-10T10:39:53+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
 
@@ -1893,7 +2311,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <entry>
     <title type="html"><![CDATA[Install MySQL on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-09T11:23:09+08:00</updated>
+    <updated>2012-08-09T10:23:09+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>To install mysql the first thing that we need to do is download mysql installer on the <a href="http://dev.mysql.com/downloads/mysql/">mysql website</a>. In that web site we can see several versions of mysql. We will use Mac OS X ver. 10.6 (x86, 64-bit), DMG Archive. When we open the <code>mysql-5.5.27-osx10.6-x86_64.dmg</code> file, we will find 3 package installers.</p>
 
@@ -1977,7 +2395,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <entry>
     <title type="html"><![CDATA[Install PHP on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-09T11:13:16+08:00</updated>
+    <updated>2012-08-09T10:13:16+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain Lion. PHP actually is shipped in OS X 10.8. The first step is edit <code>httpd.conf</code> in apache directory.</p>
 
@@ -2008,118 +2426,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
 
 <p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-09-php.png"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Configure Apache on OS X 10.8 Mountain Lion]]></title>
-    <link href="http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-08T10:47:05+08:00</updated>
-    <id>http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion</id>
-    <content type="html"><![CDATA[<p>After installing Mountain Lion on my Macbook, I decided to prepare and set up software development tools in it. One of it is activate web sharing feature which can be found at System Preferences > Sharing on previous version. I was very suprise that apple seems remove it from the list.</p>
-
-<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-07-pic01.png"></p>
-
-<p>By searching some references on internet, here are the things that I did. Apache actually is pre-installed on Mountain Lion and we just need to enable it via the command line.</p>
-
-<figure class='code'><figcaption><span>start apache server</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl start
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We will be asked to enter login password for starting it. Enter a password then open in browser localhost website. You should get the following display</p>
-
-<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-07-pic02.png"></p>
-
-<figure class='code'><figcaption><span>stop apache server</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl stop
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>get apache version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>httpd -v
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Historically, OSX has had 2 web roots. One at a system level and the other one at a user level. The user level one allows multiple acounts to have their own web root whilst the system one is global for all users. The location of system web document root is at</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>/Library/WebServer/Documents/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On the other hand, the user level web roots in the previous version of OSX (Lion) can be found under ~/Sites. But we can not find that directory anymore in Mountain Lion. So we need to create it manually.</p>
-
-<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-07-pic03.png"></p>
-
-<p>In terminal type:</p>
-
-<figure class='code'><figcaption><span>edit configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /etc/apache2/users
-</span><span class='line'>vi username.conf
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Edit username.conf in vi editor as is the following code:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>&lt;Directory &quot;/Users/username/Sites/&quot;&gt;
-</span><span class='line'>Options Indexes MultiViews
-</span><span class='line'>AllowOverride None
-</span><span class='line'>Order allow,deny
-</span><span class='line'>Allow from all
-</span><span class='line'>&lt;/Directory&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then create html page inside ~/Sites to test our user local website and save it as index.html</p>
-
-<figure class='code'><figcaption><span>sample page</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;</span>
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'><span class="nt">&lt;head&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Content-Type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/html; charset=utf-8&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Content-Style-Type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;title&gt;&lt;/title&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;Generator&quot;</span> <span class="na">content=</span><span class="s">&quot;Cocoa HTML Writer&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;CocoaVersion&quot;</span> <span class="na">content=</span><span class="s">&quot;1187&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/style&gt;</span>
-</span><span class='line'><span class="nt">&lt;/head&gt;</span>
-</span><span class='line'><span class="nt">&lt;body&gt;</span>
-</span><span class='line'><span class="nt">&lt;h1&gt;&lt;b&gt;</span>It works!<span class="nt">&lt;/h1&gt;</span>
-</span><span class='line'><span class="nt">&lt;h1&gt;&lt;b&gt;</span>I am on local user website<span class="nt">&lt;/b&gt;&lt;/h1&gt;</span>
-</span><span class='line'><span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-07-pic04.png"></p>
-
-<p>Congratulation your apache is running well now :)</p>
 ]]></content>
   </entry>
   

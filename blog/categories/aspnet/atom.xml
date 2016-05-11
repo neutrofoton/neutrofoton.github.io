@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Aspnet | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/aspnet/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-04-18T16:23:25+08:00</updated>
+  <updated>2016-05-12T03:11:12+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ASP.NET Session State in Database]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/"/>
-    <updated>2013-07-22T15:12:34+08:00</updated>
+    <updated>2013-07-22T14:12:34+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database</id>
     <content type="html"><![CDATA[<p>At some point we need to store information when dealing with web application.
 Storing information in web application can be implemented in some ways such as session and cookies.</p>

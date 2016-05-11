@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Windows | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/windows/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-04-18T16:23:25+08:00</updated>
+  <updated>2016-05-12T03:11:12+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
-    <updated>2016-03-27T21:38:49+08:00</updated>
+    <updated>2016-03-27T20:38:49+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
 <a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>

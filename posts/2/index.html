@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was Unsupported IClasspathEntry kind &hellip;">
+  <meta name="description" content="The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,89 @@ aside.sidebar img {
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/">Xcode Failed to Download Use the Purchases Page to Try Again</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-09-24T14:56:27+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:56 pm</span></time>
+        
+           | <a href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .</p>
+
+<p>The next thing is updating my Xcode, since I got a notification to update my xcode from version 4.6.3 to version 5.0 via app store of version 1.2.2. My OSX version is 10.8.5.
+While updatig process, several times I got error message <code>Xcode failed to download use the purchases page to try again</code>, and my download prosess suddenly stopped. Googling on internet and asking forum got many different suggestion and solution. Thankfully one of them success that is by clearing appstore download cache.</p>
+
+<p>The steps to get things to work are quite simple.</p>
+
+<ol>
+<li>
+Keep the AppStore App open. Open terminal and type
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /private/var/folders/
+</span></code></pre></td></tr></table></div></figure>
+
+Once there, search for com.apple.appstore
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . <span class="p">|</span> grep com.apple.appstore
+</span></code></pre></td></tr></table></div></figure>
+You will find folder structure like this <code>./40/lhn22jn901zdw2bpf82hkggw0000gn/C/com.apple.appstore</code>
+
+</li>
+
+<li>
+Once inside the folder, open it in finder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>open .
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+While keeping AppStore open, remove this folder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -rf *
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Now, go back to AppStore and click on Download again.
+</li>
+<li>
+If download/update disappear, close the appstore then reopen it.
+ </li>
+</ol>
+
+
+<p>That steps worked well to me. Good luck and have a nice day.</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://apple.stackexchange.com/questions/61646/xcode-failed-to-download-use-the-purchases-page-to-try-again/71202#71202</li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Unsupported IClasspathEntry in Eclipse-STS</a></h1>
     
     
@@ -89,7 +172,7 @@ aside.sidebar img {
 
 
 
-<time class='entry-date' datetime='2013-08-30T15:48:31+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>3:48 pm</span></time>
+<time class='entry-date' datetime='2013-08-30T14:48:31+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:48 pm</span></time>
         
            | <a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Comments</a>
@@ -140,7 +223,7 @@ Right click on your Project and select <code>Configure > Convert into Maven Proj
 
 
 
-<time class='entry-date' datetime='2013-08-29T15:38:32+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>3:38 pm</span></time>
+<time class='entry-date' datetime='2013-08-29T14:38:32+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:38 pm</span></time>
         
            | <a href="/blog/2013/08/29/generic-singleton-pattern-in-java/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/">Comments</a>
@@ -360,7 +443,7 @@ The main thing that I should do is I have to use <code>HashMap</code> collection
 
 
 
-<time class='entry-date' datetime='2013-08-29T15:27:41+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>3:27 pm</span></time>
+<time class='entry-date' datetime='2013-08-29T14:27:41+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:27 pm</span></time>
         
            | <a href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/">Comments</a>
@@ -529,7 +612,7 @@ The main thing that I should do is I have to use <code>HashMap</code> collection
 
 
 
-<time class='entry-date' datetime='2013-07-22T15:12:34+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>3:12 pm</span></time>
+<time class='entry-date' datetime='2013-07-22T14:12:34+07:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>2:12 pm</span></time>
         
            | <a href="/blog/2013/07/22/asp-dot-net-session-state-in-database/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/">Comments</a>
@@ -655,7 +738,7 @@ In web.config, don’t forget to add session state configuration by pointing the
 
 
 
-<time class='entry-date' datetime='2012-09-19T13:54:14+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>1:54 pm</span></time>
+<time class='entry-date' datetime='2012-09-19T12:54:14+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:54 pm</span></time>
         
            | <a href="/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -821,7 +904,7 @@ Add the following line at the end of <code>mod_mono.conf</code>
 
 
 
-<time class='entry-date' datetime='2012-09-14T13:36:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>1:36 pm</span></time>
+<time class='entry-date' datetime='2012-09-14T12:36:00+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:36 pm</span></time>
         
            | <a href="/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -952,7 +1035,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
 
 
-<time class='entry-date' datetime='2012-08-10T11:39:53+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>11:39 am</span></time>
+<time class='entry-date' datetime='2012-08-10T10:39:53+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:39 am</span></time>
         
            | <a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -1003,7 +1086,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
 
 
-<time class='entry-date' datetime='2012-08-09T11:23:09+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>11:23 am</span></time>
+<time class='entry-date' datetime='2012-08-09T10:23:09+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:23 am</span></time>
         
            | <a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -1110,7 +1193,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
 
 
-<time class='entry-date' datetime='2012-08-09T11:13:16+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>11:13 am</span></time>
+<time class='entry-date' datetime='2012-08-09T10:13:16+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:13 am</span></time>
         
            | <a href="/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -1156,141 +1239,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/">Configure Apache on OS X 10.8 Mountain Lion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-08-08T10:47:05+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:47 am</span></time>
-        
-           | <a href="/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>After installing Mountain Lion on my Macbook, I decided to prepare and set up software development tools in it. One of it is activate web sharing feature which can be found at System Preferences > Sharing on previous version. I was very suprise that apple seems remove it from the list.</p>
-
-<p><img class="center" src="/images/post/2012-08-07-pic01.png"></p>
-
-<p>By searching some references on internet, here are the things that I did. Apache actually is pre-installed on Mountain Lion and we just need to enable it via the command line.</p>
-
-<figure class='code'><figcaption><span>start apache server</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl start
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We will be asked to enter login password for starting it. Enter a password then open in browser localhost website. You should get the following display</p>
-
-<p><img class="center" src="/images/post/2012-08-07-pic02.png"></p>
-
-<figure class='code'><figcaption><span>stop apache server</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl stop
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>get apache version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>httpd -v
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Historically, OSX has had 2 web roots. One at a system level and the other one at a user level. The user level one allows multiple acounts to have their own web root whilst the system one is global for all users. The location of system web document root is at</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>/Library/WebServer/Documents/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On the other hand, the user level web roots in the previous version of OSX (Lion) can be found under ~/Sites. But we can not find that directory anymore in Mountain Lion. So we need to create it manually.</p>
-
-<p><img class="center" src="/images/post/2012-08-07-pic03.png"></p>
-
-<p>In terminal type:</p>
-
-<figure class='code'><figcaption><span>edit configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /etc/apache2/users
-</span><span class='line'>vi username.conf
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Edit username.conf in vi editor as is the following code:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>&lt;Directory &quot;/Users/username/Sites/&quot;&gt;
-</span><span class='line'>Options Indexes MultiViews
-</span><span class='line'>AllowOverride None
-</span><span class='line'>Order allow,deny
-</span><span class='line'>Allow from all
-</span><span class='line'>&lt;/Directory&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then create html page inside ~/Sites to test our user local website and save it as index.html</p>
-
-<figure class='code'><figcaption><span>sample page</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;</span>
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'><span class="nt">&lt;head&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Content-Type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/html; charset=utf-8&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Content-Style-Type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;title&gt;&lt;/title&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;Generator&quot;</span> <span class="na">content=</span><span class="s">&quot;Cocoa HTML Writer&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;CocoaVersion&quot;</span> <span class="na">content=</span><span class="s">&quot;1187&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/style&gt;</span>
-</span><span class='line'><span class="nt">&lt;/head&gt;</span>
-</span><span class='line'><span class="nt">&lt;body&gt;</span>
-</span><span class='line'><span class="nt">&lt;h1&gt;&lt;b&gt;</span>It works!<span class="nt">&lt;/h1&gt;</span>
-</span><span class='line'><span class="nt">&lt;h1&gt;&lt;b&gt;</span>I am on local user website<span class="nt">&lt;/b&gt;&lt;/h1&gt;</span>
-</span><span class='line'><span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="center" src="/images/post/2012-08-07-pic04.png"></p>
-
-<p>Congratulation your apache is running well now :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1315,6 +1263,10 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/">Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio</a>
       </li>
     
@@ -1327,7 +1279,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
+        <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
       </li>
     
       <li class="post">
@@ -1336,10 +1288,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     
       <li class="post">
         <a href="/blog/2016/03/07/from-wordpress-to-octopress/">From WordPress to Octopress</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/08/extract-c-number-exception/">Extract C# Exception</a>
       </li>
     
   </ul>
@@ -1409,7 +1357,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     <li><a href="/blog/categories/windows/index.html">windows ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/c++/index.html">c++ ( 1 )</a></li>
+    <li><a href="/blog/categories/c++/index.html">c++ ( 2 )</a></li>
     
   </ul>
 </section>
