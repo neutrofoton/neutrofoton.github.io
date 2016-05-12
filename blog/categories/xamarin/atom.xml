@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Xamarin | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/xamarin/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-05-12T08:02:18+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
+    <updated>2013-11-23T15:15:03+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
+    <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
+<code>
+Xamarin Studio
+Version 4.2.1 (build 1)
+Runtime:
+Mono 3.2.5 ((no/964e8f0)
+GTK+ 2.24.20 theme: Raleigh
+GTK# (2.12.0.0)
+Package version: 302050000
+</code></p>
+
+<p>Xamarin Studio includes with ASP.NET MVC 2 and 3 project template. While trying to create ASP.NET MVC 3 project, I got couples of errors such as authorization access etc. The good news is even though there is no project template for ASP.NET MVC 4, we still can convert our ASP.NET MVC 3 to run as ASP.NET MVC 4. The steps are :</p>
+
+<ol type="1">
+<li>
+Create an ASP.NET MVC 3 project either with aspx or razor view engine
+</li>
+<li>
+Run the project via Xamarin studio menu (Run > Run With > Mono Soft Debugger for ASP.NET. While running the project, we may got an error message :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.UnauthorizedAccessException
+</span><span class='line'>Access to the path &quot;/Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry&quot; is denied.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>......
+</span></code></pre></td></tr></table></div></figure>
+To solve the error, run the following command in terminal :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span><span class='line'>sudo chmod g+rwx /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Re-run again the ASP.NET MVC project. We may get another error message.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.IO.FileNotFoundException
+</span><span class='line'>Could not load file or assembly &#39;System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&#39; or one of its dependencies. The system cannot find the file specified.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+To solve the error message, just use NuGet package manager, search for “ASP.NET MVC 4″ and add reference to it and its dependencies.
+
+</li>
+<li>
+Re-run the ASP.NET MVC again. Now we may get another error message as following :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.InvalidOperationException
+</span><span class='line'>Conflicting versions of ASP.NET Web Pages detected: specified version is &quot;1.0.0.0&quot;, but the version in bin is &quot;2.0.0.0&quot;. To continue, remove files from the application&#39;s bin directory or remove the version specification in web.config.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): System.Web.WebPages.Deployment.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+As the error message, we need to make our ASP.NET Web Pages version to 2.0.0.0 in web.config. So just open web.config and change webpages:Version to 2.0.0.0. as follow :
+
+<figure class='code'><figcaption><span>web.config</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">&quot;webpages:Version&quot;</span> <span class="na">value=</span><span class="s">&quot;2.0.0.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/add&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Change assembly version declared in root <code>web.config</code> and <code>/View/web.config</code> of the following
+
+<table style="width:80%">
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td>assembly</td>
+    <td>from</td>
+    <td>to</td>
+  </tr>
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td><code>System.Web.WebPages.Razor</code></td>
+    <td>1.0.0.0</td>
+    <td>2.0.0.0</td>
+  </tr>
+  <tr>
+    <td><code>System.Web.Mvc</code></td>
+    <td>3.0.0.0</td>
+    <td>4.0.0.0</td>
+  </tr>
+</table>
+
+</li>
+</ol>
+
+
+<p>Now re-run the project again via Xamarin Studio and our project should run well as expected.</p>
+
+<h4>References</h4>
+
+
+<p><ol type="1">
+<li> <a href="http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html">http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html</a>
+</li>
+<ol></p>
+]]></content>
+  </entry>
+  
+</feed>

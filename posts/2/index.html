@@ -1,0 +1,1425 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>neutrofoton</title>
+  <meta name="author" content="neutro">
+
+  
+  <meta name="description" content="The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://neutrofoton.github.io/posts/2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+article img {
+  border: 0;
+}
+aside.sidebar img {
+  border-color: #e0e0e0;
+}
+</style>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">neutrofoton</a></h1>
+  
+    <h2>Science, Technology and Life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="neutrofoton.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!--<li><a href="/about">About</a></li>-->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/">Xcode Failed to Download Use the Purchases Page to Try Again</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-09-24T14:56:27+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:56 pm</span></time>
+        
+           | <a href="/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .</p>
+
+<p>The next thing is updating my Xcode, since I got a notification to update my xcode from version 4.6.3 to version 5.0 via app store of version 1.2.2. My OSX version is 10.8.5.
+While updatig process, several times I got error message <code>Xcode failed to download use the purchases page to try again</code>, and my download prosess suddenly stopped. Googling on internet and asking forum got many different suggestion and solution. Thankfully one of them success that is by clearing appstore download cache.</p>
+
+<p>The steps to get things to work are quite simple.</p>
+
+<ol>
+<li>
+Keep the AppStore App open. Open terminal and type
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /private/var/folders/
+</span></code></pre></td></tr></table></div></figure>
+
+Once there, search for com.apple.appstore
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . <span class="p">|</span> grep com.apple.appstore
+</span></code></pre></td></tr></table></div></figure>
+You will find folder structure like this <code>./40/lhn22jn901zdw2bpf82hkggw0000gn/C/com.apple.appstore</code>
+
+</li>
+
+<li>
+Once inside the folder, open it in finder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>open .
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+While keeping AppStore open, remove this folder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -rf *
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Now, go back to AppStore and click on Download again.
+</li>
+<li>
+If download/update disappear, close the appstore then reopen it.
+ </li>
+</ol>
+
+
+<p>That steps worked well to me. Good luck and have a nice day.</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://apple.stackexchange.com/questions/61646/xcode-failed-to-download-use-the-purchases-page-to-try-again/71202#71202</li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Unsupported IClasspathEntry in Eclipse-STS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-08-30T14:48:31+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:48 pm</span></time>
+        
+           | <a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
+
+<p>Googling for that problem finally got a trick how to resolve it.</p>
+
+<ol>
+<li>Right-click on your project, select <code>Maven > Disable Maven Nature</code></li>
+<li>
+Open your terminal, go to your project folder and do
+<figure class='code'><figcaption><span>clean eclipse cache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn eclipse:clean
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Right click on your Project and select <code>Configure > Convert into Maven Project</code>
+</li>
+
+</ol>
+
+
+<p>After converting into maven project, I can update my maven project and everything running well :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/29/generic-singleton-pattern-in-java/">Generic Singleton Pattern in Java</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-08-29T14:38:32+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:38 pm</span></time>
+        
+           | <a href="/blog/2013/08/29/generic-singleton-pattern-in-java/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.</p>
+
+<p>In this post I want to implement it in Java. As far as I know even though both C# and Java have generic feature, generic in C# quite different from the one in Java. While converting of what I did about generic singleton in C# to Java, I feel that the way I do in Java is not as elegant as in C#. The following code is the generic singleton code I write in Java.</p>
+
+<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span><span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Singleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Singleton</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span> <span class="s">&quot;rawtypes&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">mapHolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">Singleton</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;unchecked&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getInstance</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">classOf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">synchronized</span><span class="o">(</span><span class="n">instance</span><span class="o">){</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span><span class="o">(!</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">classOf</span><span class="o">)){</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">T</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">classOf</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">classOf</span><span class="o">,</span> <span class="n">obj</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="o">(</span><span class="n">T</span><span class="o">)</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">classOf</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">CloneNotSupportedException</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following code show how to use the generic singleton class. It’s quite similar to the C# version.</p>
+
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Starter</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * @param args</span>
+</span><span class='line'><span class="cm">     * @throws InvocationTargetException</span>
+</span><span class='line'><span class="cm">     * @throws IllegalArgumentException</span>
+</span><span class='line'><span class="cm">     * @throws SecurityException</span>
+</span><span class='line'><span class="cm">     * @throws NoSuchMethodException</span>
+</span><span class='line'><span class="cm">     * @throws IllegalAccessException</span>
+</span><span class='line'><span class="cm">     * @throws InstantiationException</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span>  <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Auto-generated method stub</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp1</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">emp1</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">emp2</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">boolean</span> <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test1 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">emp1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">emp2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test2 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp1 = &quot;</span><span class="o">+</span> <span class="n">emp1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp2 = &quot;</span><span class="o">+</span> <span class="n">emp2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Information Technology&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">dpt1</span><span class="o">==</span><span class="n">dpt2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test3 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt1 = &quot;</span><span class="o">+</span> <span class="n">dpt1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt2 = &quot;</span><span class="o">+</span> <span class="n">dpt2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, if we see from the sample code above it seems that generic singleton in C# is more elegant than in Java.
+The main thing that I should do is I have to use <code>HashMap</code> collection to hold any instance of what that want to be as singleton and reuse for the future need in the life cycle of my application.</p>
+
+<p>Anyway, if you have better and much more elegant solution how to implement generic singleton pattern in Java I am very appreciate for any suggestion. Finally I would like to thank you very much for visiting and reading my blog, and have a nice day.</p>
+
+<h3>Update March 11, 2016</h3>
+
+
+<blockquote><p>If you want to the java singleton above, please ensure you have remove / clean up method to clean up <code>HashMap</code> contents if the singleton objects are not needed anymore. At least at the end of application lifecycle, the <code>HashMap</code> and its contents should be removed completely from memory.</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/">Generic Singleton Pattern in C#</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-08-29T14:27:41+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:27 pm</span></time>
+        
+           | <a href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
+
+<p>Honestly in my daily coding activity, sometimes I need to implement singleton pattern. Jon wrote a good singleton article in C# <a href="http://www.yoda.arachsys.com/csharp/singleton.html">here</a>. Another case I want to implement singleton pattern in generic way. I convert what has been wrotten by Jon into generic.</p>
+
+<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Generic class which makes non singleton class to be singleton.</span>
+</span><span class='line'>    <span class="c1">/// Calling singleton instance of class should be Singleton&lt;T&gt;.Instance, otherwise the returned class is not singleton one.    ///</span>
+</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// &lt;typeparam name=&quot;T&quot;&gt;Genric class type to be singletonized&lt;/typeparam&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Singleton</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Private constuctor to avoid this class instantiated</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="n">Singleton</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Property to get access to singleton instance</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Instance</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">get</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Nested</span><span class="p">.</span><span class="n">instance</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Private nested class which acts as singleton class instantiator. This class should not be accessible outside &lt;see cref=&quot;Singleton&lt;T&gt;&quot;/&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="k">class</span> <span class="nc">Nested</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>            <span class="c1">/// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit</span>
+</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>            <span class="k">static</span> <span class="nf">Nested</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>            <span class="c1">/// Static instance variable</span>
+</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>            <span class="k">internal</span> <span class="k">static</span> <span class="k">readonly</span> <span class="n">T</span> <span class="n">instance</span> <span class="p">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following snipped code is a sample how to use the generic singleton class.</p>
+
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Processor</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">Execute</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">Processor</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From the sample above is shown that we can make a non singleton class to be singleton at runtime. But we can still create a non singleton instance as we need. That’s really nice flexible thing.</p>
+
+<h3>Reference</h3>
+
+
+<p>[1] <a href="http://en.wikipedia.org/wiki/Singleton_pattern">http://en.wikipedia.org/wiki/Singleton_pattern</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/22/asp-dot-net-session-state-in-database/">ASP.NET Session State in Database</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-07-22T14:12:34+07:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>2:12 pm</span></time>
+        
+           | <a href="/blog/2013/07/22/asp-dot-net-session-state-in-database/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At some point we need to store information when dealing with web application.
+Storing information in web application can be implemented in some ways such as session and cookies.</p>
+
+<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
+
+<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
+
+<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
+First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
+
+<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
+
+<figure class='code'><figcaption><span>aspnet_regsql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>generate session state database</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The command will create database, tables and store procedures.
+In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
+
+<figure class='code'><figcaption><span>session state configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;system.web&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;sessionstate</span> <span class="na">mode=</span><span class="s">&quot;SQLServer&quot;</span> <span class="na">allowcustomsqldatabase=</span><span class="s">&quot;true&quot;</span> <span class="na">sqlconnectionstring=</span><span class="s">&quot;Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}&quot;</span> <span class="na">cookieless=</span><span class="s">&quot;false&quot;</span> <span class="na">timeout=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;/sessionstate&gt;</span>
+</span><span class='line'><span class="nt">&lt;/system.web&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To test our session storage, just create simple aspx page.</p>
+
+<figure class='code'><figcaption><span>sample.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnAddSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Add Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnAddSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnRemoveSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Remove Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnRemoveSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;br&gt;</span>
+</span><span class='line'><span class="nt">&lt;asp:label</span> <span class="na">id=</span><span class="s">&quot;ctlLblSessionDisplay&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;/asp:label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>sample.aspx.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">Page_Load</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">]</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">&quot;NO Session&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnAddSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">,</span> <span class="s">&quot;Hello&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnRemoveSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/">Mono on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-09-19T12:54:14+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:54 pm</span></time>
+        
+           | <a href="/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;)</p>
+
+<p>First of all let’s download <a href="http://www.go-mono.com/mono-downloads/download.html">Mono SDK and MonoDevelop</a>. The order installation is Mono SDK first then MonoDevelop. The installation of Mono SDK and MonoDevelop should be easy by following the installation wizard.</p>
+
+<p>When the installation finish, open terminal :</p>
+
+<figure class='code'><figcaption><span>mono version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mono -V
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We should get info about the version of mono installed in our machine.</p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic0.png"></p>
+
+<p>Try to create an ASP.NET Web Application project by selecting menu :
+<code>File > New > Solution</code>. Select <code>C# > ASP.NET > Web Application</code></p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic1.png"></p>
+
+<p>Click <code>Run > Run With > Mono Soft Debugger for ASP.NET</code></p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic2.png"></p>
+
+<h2>ASP.NET on Apache Web Server</h2>
+
+
+<p>To run ASP.Net on Apache web server, we need <a href="http://www.mono-project.com/Mod_mono">Mod mono</a> module. It is an Apache 2.0/2.2 module that provides ASP.Net support for Apache web server. The steps installation are :</p>
+
+<ol type="1">
+<li>Install Apache web server. The steps for OS X Mountain Lion can be found in my previous post
+</li>
+
+<li>Install Xcode, OS X development tool. It’s free and can be downloaded via App Store. We need it to compile mod mono installation source
+</li>
+
+<li>Download Mod mono source installation here. At the time of write this article I use <code>mod_mono-2.10.tar.bz2</code>
+</li>
+
+<li>Install mod mono module. Open terminal
+
+<figure class='code'><figcaption><span>mod mono installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir ~/modmono
+</span><span class='line'>cp ~/Downloads/mod_mono-2.10.tar.bz2 ~/modmono
+</span><span class='line'><span class="nb">cd</span> ~/modmono
+</span><span class='line'>tar xzf mod_mono-2.10.tar.bz2
+</span><span class='line'><span class="nb">cd </span>mod_mono-2.10
+</span><span class='line'>./configure
+</span><span class='line'>make
+</span><span class='line'>sudo make install
+</span><span class='line'>sudo cp /etc/apache2/mod_mono.conf /etc/apache2/other
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Add <code>mod_mono.conf</code> reference in <code>httpd.conf</code>
+<figure class='code'><figcaption><span>edit httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following code at the end of <code>httpd.conf</code>
+<figure class='code'><figcaption><span>httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Include /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Create a web directory with the path<code> ~/Projects/Mono/TestMonoApache/TestMonoApache/ </code>
+
+In that directory create an <code>index.aspx</code> file
+<figure class='code'><figcaption><span>index.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;center&gt;</span>mod_mono is working:<span class="nt">&lt;%=</span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span><span class="nt">%&gt;&lt;/center&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>Add an Apache configuration file for mono.
+<figure class='code'><figcaption><span>edit mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following line at the end of <code>mod_mono.conf</code>
+<figure class='code'><figcaption><span>mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>Alias /testmono &quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Directory</span> <span class="err">&quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    Options Indexes FollowSymLinks MultiViews
+</span><span class='line'>    AllowOverride None
+</span><span class='line'>
+</span><span class='line'>    Order allow,deny
+</span><span class='line'>    Allow from all
+</span><span class='line'><span class="nt">&lt;/Directory&gt;</span>
+</span><span class='line'>AddMonoApplications default &quot;/testmonoapache:/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Location</span> <span class="err">/testmonoapache</span><span class="nt">&gt;</span>
+</span><span class='line'> SetHandler mono
+</span><span class='line'><span class="nt">&lt;/Location&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Restart apache server with command :
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/sbin/apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li> Open browser and hit <code>http://localhost/testmonoapache/index.aspx</code>
+<img class="center" src="/images/post/2012-09-19-pic3.png">
+</li>
+
+</ol>
+
+
+<p>Cool, now our apache web server can receive request for asp.net page. Thanks for reading and see you in the next post :)</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://www.mono-project.com/Mod_mono</li>
+  <li>http://blog.coultard.com/2012/04/developing-using-c-and-mono-on-mac.html</li>
+  <li>http://www.ienablemuch.com/2010/10/aspnet-on-mac-os-x-snow-leopard-at-one.html</li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/">Install Tomcat in OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-09-14T12:36:00+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:36 pm</span></time>
+        
+           | <a href="/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
+
+<p>Extract the downloaded binary distribution onto <code>~/Download/apache-tomcat-7.0.30</code>.
+Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Move <code>~/Download/apache-tomcat-7.0.30 </code> to <code>/usr/local</code></p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mv ~/Downloads/apache-tomcat-7.0.30 /usr/local
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat. Then we also will change owner and make script executable</p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo ln -s /usr/local/apache-tomcat-7.0.30/ /Library/Tomcat
+</span><span class='line'>sudo chown -R neutrocode /Library/Tomcat
+</span><span class='line'>sudo chmod +x /Library/Tomcat/bin/*.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The next step is creating user for tomcat admin by editing <code>tomcat-user.xml</code></p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vi /Library/Tomcat/conf/tomcat-users.xml
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>tomcat-users.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;admin-gui&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;admin-script&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-gui&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-script&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-jmx&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-status&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&quot;admin&quot;</span> <span class="na">password=</span><span class="s">&quot;password&quot;</span> <span class="na">roles=</span><span class="s">&quot;admin-gui,admin-script&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&quot;manager&quot;</span> <span class="na">password=</span><span class="s">&quot;password&quot;</span> <span class="na">roles=</span><span class="s">&quot;manager-gui,manager-script,manager-jmx,manager-status&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add the following text in current user profile .bash_profile</p>
+
+<figure class='code'><figcaption><span>.bash_profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">CATALINA_HOME</span><span class="o">=</span>/Library/Tomcat
+</span><span class='line'><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
+</span><span class='line'>
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>:<span class="nv">$PATH</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Start the server with the following command :</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/catalina.sh start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/startup.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="/images/post/2012-09-14-tomcat.png"></p>
+
+<p>Stop the server with the following command :</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/catalina.sh stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/shutdown.sh
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Install phpMyAdmin on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-10T10:39:53+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:39 am</span></time>
+        
+           | <a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
+
+<p>The first thing that we need to do is open terminal and type</p>
+
+<figure class='code'><figcaption><span>symbolic link for mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /var/mysql
+</span><span class='line'>
+</span><span class='line'>sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Extract the downloaded <code>phpMyAdmin-3.5.2.1-english.zip</code> into web folder and rename as <code>phpMyAdmin</code>. So now we should have <code>~/Sites/phpMyAdmin</code> directory.</p>
+
+<p>On browser, open : <a href="http://localhost/~username/phpmyadmin">http://localhost/~username/phpmyadmin</a></p>
+
+<p><img class="center" src="/images/post/2012-08-10-phpmyadmin.png"></p>
+
+<p>Now we can login and administer MySQL database.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Install MySQL on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-09T10:23:09+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:23 am</span></time>
+        
+           | <a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>To install mysql the first thing that we need to do is download mysql installer on the <a href="http://dev.mysql.com/downloads/mysql/">mysql website</a>. In that web site we can see several versions of mysql. We will use Mac OS X ver. 10.6 (x86, 64-bit), DMG Archive. When we open the <code>mysql-5.5.27-osx10.6-x86_64.dmg</code> file, we will find 3 package installers.</p>
+
+<p><img class="center" src="/images/post/2012-08-09-msqlpkg.png"></p>
+
+<p>Install all the three packages with the following order :</p>
+
+<ol>
+<li>mysql-5.5.27-osx10.6-x86_64.pkg</li>
+<li>MySQLStartupItem.pkg</li>
+<li>MySQL.prefPane</li>
+</ol>
+
+
+<p>To start/stop MySQL we can use GUI tool from <code>System Preferences > MySQL</code></p>
+
+<p><img class="center" src="/images/post/2012-08-09-mysql-service.png"></p>
+
+<p>We can also start/stop MySQL via terminal</p>
+
+<figure class='code'><figcaption><span>start mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server start
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>stop mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/bin/mysql -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order to use MySQL command without have to specify MySQL installation full path, we need to add MySQL installation directory to shell path.</p>
+
+<figure class='code'><figcaption><span>bash profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>vi .bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/mysql/bin:$PATH&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then reload the new PATH</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">source</span> ~/.bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>test get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>set mysql password</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>/usr/local/mysql/bin/mysqladmin -u root password <span class="s1">&#39;yourpassword&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/">Install PHP on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-09T10:13:16+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:13 am</span></time>
+        
+           | <a href="/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain Lion. PHP actually is shipped in OS X 10.8. The first step is edit <code>httpd.conf</code> in apache directory.</p>
+
+<figure class='code'><figcaption><span>httpd configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uncommect (remove #) php module declaration</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>LoadModule php5_module libexec/apache2/libphp5.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To see and test PHP create a file with the content, and save in /Users/username/Sites as “test.php”. Then open in browser <a href="http://localhost/~username/test.php">http://localhost/~username/test.php</a></p>
+
+<figure class='code'><figcaption><span>test.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nb">phpinfo</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="/images/post/2012-08-09-php.png"></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/3">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/index.html">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Me</h1>
+  <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
+  <p>
+    There are no many things to write about me here. Just the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/">Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/">GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/09/math-in-web/">Math in Web</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">Deploying iOS App to Real Device</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/07/from-wordpress-to-octopress/">From WordPress to Octopress</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list">
+    
+    
+    <li><a href="/blog/categories/csharp/index.html">csharp ( 8 )</a></li>
+    
+    
+    <li><a href="/blog/categories/php/index.html">php ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/osx/index.html">osx ( 10 )</a></li>
+    
+    
+    <li><a href="/blog/categories/apache/index.html">apache ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/java/index.html">java ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/aspnet/index.html">aspnet ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xcode/index.html">xcode ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xamarin/index.html">xamarin ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/octopress/index.html">octopress ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/spring/index.html">spring ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/code-block/index.html">code block ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/linux/index.html">linux ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/windows/index.html">windows ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/c++/index.html">c++ ( 2 )</a></li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - neutro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'neutrofoton';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

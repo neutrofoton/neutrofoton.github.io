@@ -1,0 +1,2432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-05-12T08:02:18+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Lambda in C++]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/"/>
+    <updated>2016-05-11T23:15:18+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/lambda.png">
+C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
+For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
+
+<figure class='code'><figcaption><span>C++11 Lambda Syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>[capture_block](parameters) mutable exception_specification -&gt; return_type {body}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li> <strong><code>capture_block</code></strong> is a comma-separated list of zero or more captures, optionally beginning with a capture-default. Capture list can be passed as follows (see below for the detailed description):
+<ol>
+<li><code>[a,&b]</code> where a is captured by value and b is captured by reference.</li>
+<li><code>[this]</code> captures the this pointer by value</li>
+<li><code>[&]</code> captures all automatic variables odr-used in the body of the lambda by reference</li>
+<li><code>[=]</code> captures all automatic variables odr-used in the body of the lambda by value</li>
+<li><code>[x]</code> captures only x by value and nothing else.</li>
+<li><code>[]</code> captures nothing</li>
+</ol>
+</li>
+<li>
+<strong><code>parameters</code></strong> is (optional) list of parameters for the lambda expression.
+</li>
+<li>
+<strong><code>mutable</code></strong> is (optional) if variables from the enclosing scope are captured by value, a copy of those variables will become available in the body of the lambda expression. Those copies are marked as const by default, meaning the lambda body cannot change the value of those copies. If the lambda expression is marked as mutable, those copies are not const and the body can modify those local copies.
+</li>
+<li>
+<strong><code>exception_specification</code></strong> is (optional) and can be used to specify which exceptions the body of the lambda expression can throw.
+</li>
+<li>
+<strong><code>return_type</code></strong> is Return type. If not present it's implied by the function return statements (or void if it doesn't return any value)
+</li>
+</ol>
+
+
+
+
+<h3>Lambda and Direct Invoke</h3>
+
+
+<p>The following snipped code is an example of lambda expression.</p>
+
+<figure class='code'><figcaption><span>example lambda and directly invoked</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hi &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;}(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The lambda expression above shows that it has a <code>const string&amp;</code> parameter and return a <code>string</code> type. To execute the lambda is by placing round brackets <code>()</code> and put object that will be passed to inside it. The <code>&ldquo;neutro&rdquo;</code> literal string will substitute <code>str</code> parameter. The output of the above code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Hi neutro
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>Lambda as Variable</h3>
+
+
+<p>Pointer to a lambda expression can be stored and executed through the function pointer. C++ provides <code>std::function</code> which is a STL template class that provides a very convenient wrapper to a simple function, to a functor or to a lambda expression. We can also use the C++11 <code>auto</code> keyword to make it easier.</p>
+
+<p>To make it clear the following code contains couples of various lambda expressions and store them in variables of type <code>auto</code> or its equivalent in <code>std::function</code> STL template class.</p>
+
+<figure class='code'><figcaption><span>lambda as variable</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 1&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda1</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda2</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda3 = [](void) -&gt; void { cout &lt;&lt;&quot;Hello lambda without parameter 2&quot; &lt;&lt; endl; };</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda3</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda4 = [](const string&amp; str) -&gt; string {return &quot;Hello from &quot; + str;};</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="n">string</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hello from &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lambda4</span><span class="p">(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The snipped code above shows how lambda expressions stored in variable of auto type or theirs equivalent in <code>std::function</code> type and how to invoke the lambda. <a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">Here</a> is a good article about <code>std::function</code>.</p>
+
+<h3>Lambda Capture Block</h3>
+
+
+<p>Lambda Capture Block basically describes how we want to capture variables from the enclosing scope. Capturing a variable means that the variable becomes available inside the body of the lambda. The detail variant of capture block has been described on previous section. The following code shows various scenario how to play with capture block.</p>
+
+<figure class='code'><figcaption><span>lambda capture block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="n">variableA</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableB</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableC</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Init Values : &quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableA : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="c1">//--------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 1 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span><span class="o">-&gt;</span> <span class="kt">int</span>     <span class="c1">//==&gt; [=] lambda has default access to variable is by value</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda1 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda1</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda1, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 2 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>      <span class="c1">//==&gt; [&amp;] lambda has default access to variable is by reference</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda2</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//-------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 3 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="o">*</span><span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda3 : &quot;</span><span class="o">&lt;&lt;*</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda3 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="o">*</span><span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">result3</span> <span class="o">=</span> <span class="n">lambda3</span><span class="p">(</span><span class="o">&amp;</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, result3 : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">result3</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 4 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableB</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [=, &amp;variableB, &amp;variableC] captures by value by default,</span>
+</span><span class='line'>                                             <span class="c1">// except variables variableB and variableC, which are captured by reference.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda4</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 5 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda5</span> <span class="o">=</span> <span class="p">[</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="k">mutable</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [variableC] captures only variableC by value and nothing else.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//should mark as mutable lambda, since Cannot assign to a variable captured by copy in a non-mutable lambda</span>
+</span><span class='line'>    <span class="c1">//variableB = variableB * 2; //ERROR : variableB not captured, since only capture specific variable that&#39;s variableC</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">///</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda5</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output of the sample code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Init Values :
+</span><span class='line'>variableA : 1
+</span><span class='line'>variableB : 1
+</span><span class='line'>variableC : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 1 ##---
+</span><span class='line'>param inside lambda1 : 2
+</span><span class='line'>After lamda1, variableA : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 2 ##---
+</span><span class='line'>param inside lambda2 : 2
+</span><span class='line'>variableB inside lambda2 : 2
+</span><span class='line'>After lamda2, variableA : 1
+</span><span class='line'>After lamda2, variableB : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 3 ##---
+</span><span class='line'>param inside lambda3 : 2
+</span><span class='line'>variableB inside lambda3 : 4
+</span><span class='line'>After lamda3, result3 : 2
+</span><span class='line'>After lamda3, variableA : 2
+</span><span class='line'>After lamda3, variableB : 4
+</span><span class='line'>
+</span><span class='line'>---## lamda 4 ##---
+</span><span class='line'>param inside lambda4 : 4
+</span><span class='line'>variableB inside lambda4 : 8
+</span><span class='line'>variableC inside lambda4 : 2
+</span><span class='line'>After lamda4, variableA : 2
+</span><span class='line'>After lamda4, variableB : 8
+</span><span class='line'>After lamda4, variableC : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 5 ##---
+</span><span class='line'>param inside lambda5 : 4
+</span><span class='line'>variableC inside lambda5 : 4
+</span><span class='line'>After lamda5, variableA : 2
+</span><span class='line'>After lamda5, variableC : 2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">Wrox Professional C++</a></li>
+<li><a href="http://en.cppreference.com/w/cpp/language/lambda">http://en.cppreference.com/w/cpp/language/lambda</a></li>
+<li><a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/</a></li>
+<li><a href="http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1">http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1</a></li>
+</ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
+    <updated>2016-03-27T20:38:49+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/post/2016-03-27-boost.png">
+<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
+
+<p>The other interesting points of <a href="http://www.boost.org/">Boost</a> are :</p>
+
+<ol>
+<li>Open source</li>
+<li>Cross platform</li>
+<li>Complement to STL rather than a replacement</li>
+<li>Many of <a href="http://www.boost.org/">Boost</a> developers are on the C++ standard committee</li>
+<li>Well documented</li>
+<li>Most of the Boost libraries are licensed under the <a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)#License">Boost Software License</a>, designed to allow <a href="http://www.boost.org/">Boost</a> to be used with both free and proprietary software projects</li>
+</ol>
+
+
+
+
+<h2>Installation Boost</h2>
+
+
+<p>Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</a> on various IDE, let&rsquo;s begin with <a href="http://www.boost.org/">Boost</a> installation. To be noted that on this post I run Xcode on OS X, <a href="http://www.codeblocks.org/">Code::Blocks</a>  on Linux (Ubuntu) and Visual Studio on Windows. The detail environments I use are :</p>
+
+<ol>
+<li>OS X 10.11.4 El Capitan</li>
+<li>Ubuntu 14.04.4 LTS</li>
+<li>Xcode Version 7.2</li>
+<li>Code::Blocks 13.12, gcc 4.8.4</li>
+<li>Visual Studio 2013</li>
+<li>Boost 1.60.0</li>
+</ol>
+
+
+
+
+<h4>OS X and Linux (Ubuntu)</h4>
+
+
+<p>There are several ways of <a href="http://www.boost.org/">Boost</a> installation. Instead of build from source code, we can use package manager such as <a href="https://www.macports.org/">MacPorts</a>, <a href="http://brew.sh/">Homebrew</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Packaging_Tool">Advance Package Tool</a>, etc. In this post we will build <a href="http://www.boost.org/">Boost</a> from source code. The installation steps (from source code) on OS X and Ubuntu are the similar. To make it consistent, I use the same installation path for OS X and Ubuntu that is <code>/usr/local/boost_1_60_0</code>. You can use different path if you want. The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it.</li>
+<li>Open terminal, navigate to the extracted directory</li>
+<li>Create directory on <code>/usr/local/boost_1_60_0</code>, and ensure IDE has access to the directory. On my case I don't need this step on OS X, but on ubuntu it does.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local/boost_1_60_0
+</span><span class='line'>sudo chmod <span class="m">777</span> -r boost_1_60_0
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Run command :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bootstrap.sh --prefix<span class="o">=</span>/usr/local/boost_1_60_0
+</span><span class='line'>./b2 install
+</span></code></pre></td></tr></table></div></figure>
+This last step quite take time. So you can have coffee while waiting for it :)
+</li>
+</ol>
+
+
+<p>Once the installation finish, we should have generated directory. They are <code>/usr/local/boost_1_60_0/include</code> contains header files and <code>/usr/local/boost_1_60_0/lib</code> contains libraries.</p>
+
+<h4>Windows</h4>
+
+
+<p>The <a href="http://www.boost.org/">Boost</a> installation step on Windows is also similar to the installation step on OS X and Ubuntu.
+The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it to C:\\boost_1_60_0 </li>
+<li>Open Visual Studio command prompt. I use Visual Studio 2013 x86 Native Tools Command Prompt native tool (I have not test using default Windows Command Prompt)
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>C:\<span class="p">&gt;</span> <span class="n">cd</span> C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span><span class="p">&gt;</span> <span class="n">bootstrap</span>.bat
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>&gt; .\b<span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+As on OS X and Ubuntu, the last step quite take time.
+</li>
+</ol>
+
+
+
+
+<h2>Configure <a href="http://www.boost.org/">Boost</a> on IDE(s)</h2>
+
+
+<p>Before create C++ projects on various IDE, let&rsquo;s create a simple C++ hello world code that use Boost libraries. To simplify the test, I grab sample code from <a href="http://stackoverflow.com/questions/999120/c-hello-world-boost-tee-example-program">here</a></p>
+
+<figure class='code'><figcaption><span>Hello World</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;fstream&gt;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#include &lt;boost/iostreams/tee.hpp&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;boost/iostreams/stream.hpp&gt;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">iostreams</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">typedef</span> <span class="n">tee_device</span><span class="o">&lt;</span><span class="n">ostream</span><span class="p">,</span> <span class="n">ofstream</span><span class="o">&gt;</span> <span class="n">TeeDevice</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">typedef</span> <span class="n">stream</span><span class="o">&lt;</span><span class="n">TeeDevice</span><span class="o">&gt;</span> <span class="n">TeeStream</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">ofstream</span> <span class="n">ofs</span><span class="p">(</span><span class="s">&quot;/Users/neutro/Workspace/cpp/sample.txt&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">TeeDevice</span> <span class="n">my_tee</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span> <span class="n">ofs</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">TeeStream</span> <span class="n">my_split</span><span class="p">(</span><span class="n">my_tee</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">my_split</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">my_split</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">my_split</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The snipped code above just print text and write it to a text file. We just want to ensure the IDE&rsquo;s compiler can compile and build the code that includes <a href="http://www.boost.org/">Boost</a> libraries.</p>
+
+<ul>
+  <li>
+    <h4>Xcode</h4>
+    To include Boost libraries on Xcode project :
+    <ol>
+    <li>Select Xcode project > Build Setting</li>
+    <li>Add <code>/usr/local/boost_1_60_0/include/</code> to the Header Search Paths</li>
+    <li>Add <code>/usr/local/boost_1_60_0/lib/</code> to the Library Search Paths</li>
+    </ol>
+
+    <img class="center" src="http://neutrofoton.github.io/images/post/2016-03-27-xcode.png">
+
+  </li>
+  <li>
+    <h4>Code::Blocks</h4>
+    To include Boost libraries on Code::Blocks project :
+    <ol>
+    <li>Right Click on Code::Blocks project > Build Option</li>
+    <li>
+    Select Compiler tab, add <code>/usr/local/boost_1_60_0/include/</code>
+    <img class="center" src="http://neutrofoton.github.io/images/post/2016-03-27-codeblocks1.png">
+    </li>
+    <li>
+    Select Linker tab, add <code>/usr/local/boost_1_60_0/lib/</code>
+    <img class="center" src="http://neutrofoton.github.io/images/post/2016-03-27-codeblocks2.png">
+    </li>
+    </ol>
+  </li>
+  <li>
+    <h4>Visual Studio</h4>
+    To include Boost libraries on Visual C++ project :
+    <ol>
+    <li>Right Click on VC++ project > Properties</li>
+    <li>Select VC++ Directories on the left pane</li>
+    <li>Add <code>C:\boost_1_60_0</code> on Include Directories item</li>
+    <li>Add <code>C:\boost_1_60_0\stage\lib</code> on Include Directories item</li>
+    <li>Click OK to close the dialog</li>
+    </ol>
+    <img class="center" src="http://neutrofoton.github.io/images/post/2016-03-27-vs.png">
+  </li>
+</ul>
+
+
+<p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li>
+<a href="http://www.boost.org/">http://www.boost.org/</a>
+</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">Wikipedia</a>
+</li>
+</ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/"/>
+    <updated>2016-03-12T15:08:34+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts</id>
+    <content type="html"><![CDATA[<p>Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
+
+<p><a href="https://spring.io/">Spring</a> is a popular framework in Java world. It&rsquo;s one of my favorite framework in Java. At the time of this blog post, I have just grabbed the source of it from <a href="https://github.com/spring-projects/spring-framework">github repository</a>. The source code is fantastic. Nice coding style, project structure, build tool and of course its documentations. While following the guidance to build and import to <a href="https://spring.io/tools">Spring Tool Suite</a>, I got an error on <code>spring-beans-groovy</code> project in <code>GroovyBeanDefinitionReader.java</code>. Navigating to the errors, STS seems try to find a class <code>GroovyDynamicElementReader</code> but not found.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-12-pic01.png"></p>
+
+<p> Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally get a clue <code>GroovyDynamicElementReader.groovy</code>.</p>
+
+<p>Installing <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> seems solve the problem.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-12-pic02.png"></p>
+
+<p>In case you have the same problem as what I got, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.</p>
+
+<h3>Reference</h3>
+
+
+<ol>
+<li>https://github.com/groovy/groovy-eclipse/wiki</li>
+<li>http://blog.csdn.net/zlx510tsde/article/details/46241675</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Math in Web]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/"/>
+    <updated>2016-03-09T21:41:47+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/09/math-in-web</id>
+    <content type="html"><![CDATA[<p>There are several frameworks that can be used to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
+
+<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript frameworks that can render LaTeX expression to beautiful math equation in browser.</p>
+
+<p>The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
+To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code></p>
+
+<figure class='code'><figcaption><span>KaTeX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;div&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq1&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq2&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq3&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq4&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq5&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq6&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq7&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>KaTeX sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;c = \\pm\\sqrt{a^2 + b^2}&quot;</span><span class="p">,</span> <span class="nx">eq1</span><span class="p">);</span>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(a,b,c) = (a^2+b^2+c^2)^3&quot;</span><span class="p">,</span> <span class="nx">eq2</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx&quot;</span><span class="p">,</span> <span class="nx">eq3</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}&quot;</span><span class="p">,</span> <span class="nx">eq4</span><span class="p">);</span>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\oint \\vec{F} \\cdot d\\vec{s}=0&quot;</span><span class="p">,</span> <span class="nx">eq5</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)&quot;</span><span class="p">,</span> <span class="nx">eq6</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"/></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+
+
+
+
+<div>
+<p><span class="katex" id="eq1"></span></p>
+<p><span class="katex" id="eq2"></span></p>
+<p><span class="katex" id="eq3"></span></p>
+<p><span class="katex" id="eq4"></span></p>
+<p><span class="katex" id="eq5"></span></p>
+<p><span class="katex" id="eq6"></span></p>
+<p><span class="katex" id="eq7"></span></p>
+</div>
+
+
+
+
+<script>
+
+    katex.render("c = \\pm\\sqrt{a^2 + b^2}", eq1);
+    katex.render("f(a,b,c) = (a^2+b^2+c^2)^3", eq2);
+
+    katex.render("\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx", eq3);
+
+    katex.render("f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}", eq4);
+    katex.render("\\oint \\vec{F} \\cdot d\\vec{s}=0", eq5);
+
+    katex.render("\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)", eq6);
+</script>
+
+
+<p>The comparison between <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> can be found <a href="http://www.intmath.com/cg5/katex-mathjax-comparison.php">here</a>. At the time of writing this blog post, I got <a href="https://khan.github.io/KaTeX/">KaTeX</a> is faster than <a href="https://www.mathjax.org/">MathJax</a>. But <a href="https://khan.github.io/KaTeX/">KaTeX</a> can not render a few expressions that <a href="https://www.mathjax.org/">MathJax</a> can.</p>
+
+<p>The comparison results could be changed in the next. Since both of them are actively developed.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Create iOS Ipa for In-House Distribution]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/"/>
+    <updated>2016-03-08T23:10:44+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/ios.png"></p>
+
+<p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
+
+<p>In this post, I will not write about how to build the app with Apache Cordova, I just want to focus on how to create ipa distribution package for in house enterprise distribution. The steps should be the same for app that is created with native. I also will not discuss about how to deploy to MDM.</p>
+
+<p>The first requirement is we have to be a member of <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a> which costs $299. The steps how to register is clearly explained in apple developer site.</p>
+
+<p>At the time of write this post, my development environment :</p>
+
+<ol type="1">
+<li> OS X El Capitan (10.11.3)</li>
+<li>Xcode (7.2)</li>
+<li>iphone 6 (iOS 9.2)</li>
+</ol>
+
+
+<p>Before we start create ipa package, ensure our code runs well as expected on iphone simulator.</p>
+
+<p>The steps of creating ipa package for distribution basically similar to deploying to real device for development as explained on <a href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>.
+In this post, I will only capture the things that are difference between them.</p>
+
+<h2>Certificate</h2>
+
+
+<p>While creating certificate preparation in <a href="https://developer.apple.com/account/ios/certificate/create">Apple Developer</a> portal, showed its slightly difference from <a href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic01.png"></p>
+
+<p>In this case, I choose <code>In-House and Ad Hoc </code> distribution option instead of <code>iOS App Development</code>, since we plan to create ipa package for In House distribution. If we notice upon the above screenshot, in the <code>Production</code> section has option for <code>In-House and Ad Hoc </code> distribution. Meanwhile on <a href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> has <code>App Store and Ad Hoc</code>. The difference because of the apple id I used on this post is enrolled as an <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a>, and on <a href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> uses Individual Apple Developer Program. The detail difference between them and other developer license schema can found <a href="https://developer.apple.com/support/compare-memberships/">here</a>.</p>
+
+<p>The rest of preparing certificate installation for production is the same as <a href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">certificate installation for development</a>.</p>
+
+<h2>App IDs</h2>
+
+
+<p>The step of registering app <code>Bundle ID</code> is the same as <a href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">the previous post</a>. If we already registered for development, we should not do it again.</p>
+
+<h2>Provisioning Profiles</h2>
+
+
+<p>Creating provisioning also similar to the creation Provisioning for Development. Except at the wizard option we need to choose one of in the <code>Distribution</code> group instead of <code>Development</code> group. In this sample I select <code>In House</code>, since the ipa package we created will be deployed via MDM.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic02.png"></p>
+
+<p>The next step is opening Xcode and add apple id via Xcode <code>Proferences > Accounts</code> as I did on <a href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">previous post</a>.
+Now we should get the similar picture as follow.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic03.png"></p>
+
+<p>Ensure <code>distribution profile</code> already downloaded. If not we can click download button on the list above of picture.</p>
+
+<p>The next thing is opening iOS project with Xcode and ensuring we select <code>Distribution Profile</code> we installed on <code>Code signing</code> section group both on <code>Project</code> and <code>Target</code>.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic04.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic05.png"></p>
+
+<p>The next step is select <code>Product</code> menu > <code>Archive</code>, then follow the wizard.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic06.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic07.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic08.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic09.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-09-pic10.png"></p>
+
+<p>When the wizard finish, by default Xcode will create ipa package for us on desktop.</p>
+
+<p>That&rsquo;s all my share and thanks for reading :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploying iOS App to Real Device]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/"/>
+    <updated>2016-03-08T12:35:31+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/ios.png">
+While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>
+
+<p><p/>
+The are couple of things that we need to prepare to make our app be able to run on real devices.</p>
+
+<p><h2>Certificate</h2>
+Development certificate basically tells us that we are apple developers. To be it, our apple id has to be enrolled as an apple developer. Information about apple developer enrollment can be found at <a href="https://developer.apple.com/programs/enroll/">Apple Developer site</a>.</p>
+
+<p>Once our apple id enrolled as an apple developer, there are couple of steps for preparing development certificate. App need to be signed to be able to deployed to real devices. To do that:</p>
+
+<p><ol type="1"></p>
+
+<p><li>Go to <code>Launchpad</code> or <code>Spotlight Search</code>, type <code>Keychain Access</code> then open the app.
+</li></p>
+
+<p><li>At top menu, click <code>Keychain Access</code> > <code>Certificate Assistance</code> > <code>Request a Certificate from a Certificate Authority</code></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic01.png"></p>
+
+<p>Fill the <code>Email</code> and <code>Common Name</code>. The email should be <code>apple id email</code> then select <code>save to disk</code> and checked <code>Let me specify key pair information</code>. When we click continue, we should get save dialog</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic02.png"></p>
+
+<p>Select Key Size <code>2048 bits</code> and <code>RSA</code> algorithm, click continue then done.
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic03.png"></p>
+
+<p>The certificate request that we create just saved to disk (desktop in my case).</p>
+
+<p></li></p>
+
+<p><li>
+Open <a href="https://developer.apple.com/membercenter/index.action">apple developer portal</a>, login using apple id that already enrolled as apple developer.
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic04.png"></p>
+
+<p>click <code>Certificates, Identifiers and Profiles</code></p>
+
+<p></li>
+<li>
+Select <code>Sertificates</code> group > <code>All</code>
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic05.png"></p>
+
+<p>On the right pane, select <code>add (+)</code> button, select type of certificate that we want to create. At this post we will create for development only. Not for production such as for deploy our app in app store nor internal store (in-house) like mobile device management.
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic06.png"></p>
+
+<p>If everything already done on this page, scroll down > click <code>continue</code></p>
+
+<p>We may notice a information message that we have to ensure on our OS X development machine keychain installed <code>
+Worldwide Developer Relations Certificate Authority</code></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic07.png"></p>
+
+<p></li>
+<li>
+Follow the wizard, till we&rsquo;re asked to upload our certificate request that we already created on previous step.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic08.png"></p>
+
+<p></li>
+<li>
+After completed the wizard, we should be able to download the generated certificate and ready to install on development machine.
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic09.png"></p>
+
+<p></li>
+<li>
+Download the <code>development certificate</code> > double click. The certificate should be installed on our <code>Keychain Access</code>
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic10.png"></p>
+
+<p><code>
+NOTE :
+Please ignore the distribution certificate on my screenshot. It just another certificate for distribution which is out of scope of this post.
+</code>
+</li>
+</ol></p>
+
+<p><h2>Devices</h2>
+This part informs to the xcode that the device is belongs to me. So let me run my app on it. To register our devices, select <code>Devices</code> on the apple developer portal as we did for certificate section above.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic11.png"></p>
+
+<p>Click <code>add (+)</code>
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic12.png"></p>
+
+<p>Enter <code>Name</code> and <code>UUID</code>. To get <code>UUID</code>, plug idevice to computer, itune will display it. If itune display <code>Serial Number</code> or <code>ECID</code> or <code>Product Type</code>,  click the label till <code>UUID</code> displayed. Just copy it and paste in the <code>UUID</code> text box above.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic13.png"></p>
+
+<p>Follow the wizard till finish. We should be able to get our idevices listed on the device list.
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic14.png"></p>
+
+<p><h2>App IDs</h2>
+On Apple developer portal mentioned that an <code>App ID</code> is a string that defines both a keychain identity and a set of apps you are developing. Its primary use is as part of a provisioning profile, it specifies which apps are authorized by the profile to be signed and launched.</p>
+
+<p>To register <code>App ID</code>, click <code>Add (+)</code>. Fill <code>Name</code> and <code>Bundle ID</code>.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic15.png"></p>
+
+<p>In this sample, my application <code>Name</code> is <code>HelloWorld</code> and <code>Bundle ID</code> is <code>com.neutrofoton.helloworld</code></p>
+
+<p>Click continue till the wizard dialog finished.
+We can get list all of <code>App IDs</code> that we registered by clicking  the <code>App IDs</code> on the left menu panel</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic16.png"></p>
+
+<p><h2>Provisioning Profiles</h2>
+On Apple Developer portal Provisioning Profiles defined that it allows us to install apps onto our iOS devices. A provisioning profile includes signing certificates, device identifiers, and an App ID. Development provisioning profiles are used to build and install versions of our app during the development cycle, while distribution provisioning profiles are used to submit our apps to the App Store and distribute them to beta testers.</p>
+
+<p>To start create provisioning, click <code>add (+)</code> select <code>iOS App Development</code>. In this case I will create provisioning for test. For distribution we select on distribution group option as our need.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic17.png"></p>
+
+<p>Follow the wizard by selecting <code>App ID</code>, <code>Devices</code>, and <code>Certificates</code> that will be applied to the <code>Provisioning Profile</code></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic18.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic19.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic20.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic21.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic22.png"></p>
+
+<p>Now open <code>Xcode > Preferences </code> select <code>Accounts</code> tab. Add apple id that we use for login to apple developer portal.</p>
+
+<p>Select the apple id on the left pane > click <code>View Details</code> button.
+We should get the similar picture as below.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic23.png"></p>
+
+<p>If the profiles are not downloaded yet, we can click <code>Download</code> button that make Xcode do for us.</p>
+
+<p>To test provisioning we created, let&rsquo;s create simple application. At the time of write this post, my development environment :
+<ol type="1">
+<li> OS X El Capitan (10.11.3)</li>
+<li>Xcode (7.2)</li>
+<li>iphone 4s iOS 9.1</li>
+</ol></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic24.png">
+<img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic25.png"></p>
+
+<p>Ensure we have the same <code>Bundle Identifier</code> as we registered on <code>Provisioning Profile</code>. At this sample app, I just create a simple lable <code>Hello World Application</code> on storyboard.</p>
+
+<p>Now run the application by selecting <code>Device</code> instead of <code>Simulator</code>. We may get the following message while running on real device, just click <code>Allow</code></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic26.png"></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2016-03-08-pic27.png"></p>
+
+<p>The above picture shows that the Hello World app can be run on real device.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[From WordPress to Octopress]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/"/>
+    <updated>2016-03-07T07:32:33+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress</id>
+    <content type="html"><![CDATA[<p>I have just migrated my blog engine from <a href="https://wordpress.com/">WordPress</a> to <a href="http://octopress.org/">Octopress</a>. After exploring (googling) for hours about it, how to install, customize, hosting etc, finally I got a decision :</p>
+
+<blockquote><p>Ok I will migrate my blog to <a href="http://octopress.org/">Octopress</a>.</p></blockquote>
+
+<p><a href="http://octopress.org/">Octopress</a> is a framework designed for Jekyll, the static blogging engine powering <a href="https://github.com/">Github</a> Pages.
+In this post, I will not write detail about <a href="http://octopress.org/">Octopress</a>. Many complete articles out there available to be as reference.</p>
+
+<p>The reasons that make me interest in <a href="http://octopress.org/">Octopress</a> are :</p>
+
+<ol>
+<li>No database needed</li>
+<li>Hosting does not have to have php support </li>
+<li>Using <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a></li>
+<li>Having nice project structure, very intuitive to customize it. Just need html, would be better if have ruby knowledge but not have to</li>
+<li>Supported by github, so can use terminal to post articles</li>
+<li>Many plugin support</li>
+<li>Can use any simple text editor like <a href="https://atom.io/">Atom</a>, <a href="https://www.sublimetext.com/">Sublime</a>, <a href="https://notepad-plus-plus.org/">Notepad++</a> or even <a href="http://www.vim.org/">Vim</a> etc</li>
+</ol>
+
+
+<p>I plan will not maintain <a href="http://www.neutrofoton.com">http://www.neutrofoton.com</a> anymore. Even though at the time of this blog post the site is still accessible and maybe some articles visible on google search. In case the links are broken, please kindly find the related articles on <a href="https://neutrofoton.github.io">https://neutrofoton.github.io</a></p>
+
+<p>The last, I would say thank you very much to <a href="https://wordpress.com/">WordPress</a> for had been my platform writing blog, and welcome <a href="http://octopress.org/">Octopress</a> for being the new one :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Extract C# Exception]]></title>
+    <link href="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/"/>
+    <updated>2014-09-08T15:49:39+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception</id>
+    <content type="html"><![CDATA[<p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
+
+<p>The following snipped code shows how to extract detail exception message, innner excepion and its detail strack trace to be recorded / written on log.</p>
+
+<figure class='code'><figcaption><span>exception extractor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Extracting &lt;seealso cref=&quot;System.Exception&quot;&gt; class include its inner exception</span>
+</span><span class='line'>    <span class="c1">/// &lt;/seealso&gt;&lt;/summary&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Extractor</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Parse the specified ex.</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;exception&quot;&gt;Ex.</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">Parse</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">exception</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">string</span> <span class="n">errMessage</span> <span class="p">=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">FormatErrorDescription</span><span class="p">(</span><span class="n">exception</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">while</span> <span class="p">(</span><span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">ExtractInnerException</span><span class="p">(</span><span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">exception</span> <span class="p">=</span> <span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">errMessage</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Extract exception message and its strack trace</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;innerException&quot;&gt;inner excepion object</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;extracted exception info including message and strack trace&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">static</span> <span class="kt">string</span> <span class="nf">ExtractInnerException</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">innerException</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">string</span> <span class="n">errMessage</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="s">&quot; InnerException &quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">FormatErrorDescription</span><span class="p">(</span><span class="n">innerException</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">errMessage</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Formating exception description format</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;exception&quot;&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Error description&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">static</span> <span class="kt">string</span> <span class="nf">FormatErrorDescription</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">exception</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">exception</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="n">exception</span><span class="p">.</span><span class="n">Message</span> <span class="p">+</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="n">exception</span><span class="p">.</span><span class="n">StackTrace</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Get Excel Column Name by Index and Vice Versa]]></title>
+    <link href="http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/"/>
+    <updated>2014-05-13T15:43:52+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa</id>
+    <content type="html"><![CDATA[<p>I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.</p>
+
+<figure class='code'><figcaption><span>excel helper</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">ExcelUtility</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Convert Excel column name into number/index. Column number start from 1. A equal to 1</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;columnName&quot;&gt;Column name</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Excel column in numeric&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="nf">GetExcelColumnNumber</span><span class="p">(</span><span class="kt">string</span> <span class="n">columnName</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="n">columnName</span><span class="p">))</span>
+</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span><span class="p">(</span><span class="s">&quot;Invalid column name parameter&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">columnName</span> <span class="p">=</span> <span class="n">columnName</span><span class="p">.</span><span class="n">ToUpperInvariant</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">sum</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">columnName</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">ch</span> <span class="p">=</span> <span class="n">columnName</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="kt">char</span><span class="p">.</span><span class="n">IsDigit</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span>
+</span><span class='line'>                    <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span><span class="p">(</span><span class="s">&quot;Invalid column name parameter on character &quot;</span> <span class="p">+</span> <span class="n">ch</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">sum</span> <span class="p">*=</span> <span class="m">26</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">sum</span> <span class="p">+=</span> <span class="p">(</span><span class="n">ch</span> <span class="p">-</span> <span class="sc">&#39;A&#39;</span> <span class="p">+</span> <span class="m">1</span><span class="p">);</span>
+</span><span class='line'>                <span class="c1">//sum += (columnName[i] - &#39;A&#39;);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Convert Excel column index into name. Column start from 1</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;columnNumber&quot;&gt;Column name/number</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Column name&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">GetExcelColumnName</span><span class="p">(</span><span class="kt">int</span> <span class="n">columnNumber</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">dividend</span> <span class="p">=</span> <span class="n">columnNumber</span><span class="p">;</span>
+</span><span class='line'>            <span class="kt">string</span> <span class="n">columnName</span> <span class="p">=</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">modulo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">while</span> <span class="p">(</span><span class="n">dividend</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">modulo</span> <span class="p">=</span> <span class="p">(</span><span class="n">dividend</span> <span class="p">-</span> <span class="m">1</span><span class="p">)</span> <span class="p">%</span> <span class="m">26</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">columnName</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToChar</span><span class="p">(</span><span class="m">65</span> <span class="p">+</span> <span class="n">modulo</span><span class="p">).</span><span class="n">ToString</span><span class="p">()</span> <span class="p">+</span> <span class="n">columnName</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">dividend</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)((</span><span class="n">dividend</span> <span class="p">-</span> <span class="n">modulo</span><span class="p">)</span> <span class="p">/</span> <span class="m">26</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">columnName</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>sample code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">class</span> <span class="nc">Program</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">try</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="kt">string</span> <span class="n">columnName</span> <span class="p">=</span> <span class="s">&quot;A&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="kt">int</span> <span class="n">columnIndex</span> <span class="p">=</span> <span class="n">ExcelUtility</span><span class="p">.</span><span class="n">GetExcelColumnNumber</span><span class="p">(</span><span class="n">columnName</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Index of {0} is {1} &quot;</span><span class="p">,</span> <span class="n">columnName</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="c1">//increment columnIndex</span>
+</span><span class='line'>                <span class="p">++</span><span class="n">columnIndex</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Increment index = &quot;</span> <span class="p">+</span> <span class="n">columnIndex</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">columnName</span> <span class="p">=</span> <span class="n">ExcelUtility</span><span class="p">.</span><span class="n">GetExcelColumnName</span><span class="p">(</span><span class="n">columnIndex</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Column name of index {0} is {1}&quot;</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">,</span> <span class="n">columnName</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">ex</span><span class="p">.</span><span class="n">Message</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">Console</span><span class="p">.</span><span class="n">Read</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I write the code in my blog just to remind me in the future in case I get the same need. And it would be great if it can help others who have the same need as me :)</p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li> <a href="http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa">http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa</a>
+</li> <li><a href="http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number">http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number</a></li>
+</ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
+    <updated>2013-11-23T15:15:03+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
+    <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
+<code>
+Xamarin Studio
+Version 4.2.1 (build 1)
+Runtime:
+Mono 3.2.5 ((no/964e8f0)
+GTK+ 2.24.20 theme: Raleigh
+GTK# (2.12.0.0)
+Package version: 302050000
+</code></p>
+
+<p>Xamarin Studio includes with ASP.NET MVC 2 and 3 project template. While trying to create ASP.NET MVC 3 project, I got couples of errors such as authorization access etc. The good news is even though there is no project template for ASP.NET MVC 4, we still can convert our ASP.NET MVC 3 to run as ASP.NET MVC 4. The steps are :</p>
+
+<ol type="1">
+<li>
+Create an ASP.NET MVC 3 project either with aspx or razor view engine
+</li>
+<li>
+Run the project via Xamarin studio menu (Run > Run With > Mono Soft Debugger for ASP.NET. While running the project, we may got an error message :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.UnauthorizedAccessException
+</span><span class='line'>Access to the path &quot;/Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry&quot; is denied.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>......
+</span></code></pre></td></tr></table></div></figure>
+To solve the error, run the following command in terminal :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span><span class='line'>sudo chmod g+rwx /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Re-run again the ASP.NET MVC project. We may get another error message.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.IO.FileNotFoundException
+</span><span class='line'>Could not load file or assembly &#39;System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&#39; or one of its dependencies. The system cannot find the file specified.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+To solve the error message, just use NuGet package manager, search for “ASP.NET MVC 4″ and add reference to it and its dependencies.
+
+</li>
+<li>
+Re-run the ASP.NET MVC again. Now we may get another error message as following :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.InvalidOperationException
+</span><span class='line'>Conflicting versions of ASP.NET Web Pages detected: specified version is &quot;1.0.0.0&quot;, but the version in bin is &quot;2.0.0.0&quot;. To continue, remove files from the application&#39;s bin directory or remove the version specification in web.config.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): System.Web.WebPages.Deployment.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+As the error message, we need to make our ASP.NET Web Pages version to 2.0.0.0 in web.config. So just open web.config and change webpages:Version to 2.0.0.0. as follow :
+
+<figure class='code'><figcaption><span>web.config</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">&quot;webpages:Version&quot;</span> <span class="na">value=</span><span class="s">&quot;2.0.0.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/add&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Change assembly version declared in root <code>web.config</code> and <code>/View/web.config</code> of the following
+
+<table style="width:80%">
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td>assembly</td>
+    <td>from</td>
+    <td>to</td>
+  </tr>
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td><code>System.Web.WebPages.Razor</code></td>
+    <td>1.0.0.0</td>
+    <td>2.0.0.0</td>
+  </tr>
+  <tr>
+    <td><code>System.Web.Mvc</code></td>
+    <td>3.0.0.0</td>
+    <td>4.0.0.0</td>
+  </tr>
+</table>
+
+</li>
+</ol>
+
+
+<p>Now re-run the project again via Xamarin Studio and our project should run well as expected.</p>
+
+<h4>References</h4>
+
+
+<p><ol type="1">
+<li> <a href="http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html">http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html</a>
+</li>
+<ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode Failed to Download Use the Purchases Page to Try Again]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/"/>
+    <updated>2013-09-24T14:56:27+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again</id>
+    <content type="html"><![CDATA[<p>The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .</p>
+
+<p>The next thing is updating my Xcode, since I got a notification to update my xcode from version 4.6.3 to version 5.0 via app store of version 1.2.2. My OSX version is 10.8.5.
+While updatig process, several times I got error message <code>Xcode failed to download use the purchases page to try again</code>, and my download prosess suddenly stopped. Googling on internet and asking forum got many different suggestion and solution. Thankfully one of them success that is by clearing appstore download cache.</p>
+
+<p>The steps to get things to work are quite simple.</p>
+
+<ol>
+<li>
+Keep the AppStore App open. Open terminal and type
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /private/var/folders/
+</span></code></pre></td></tr></table></div></figure>
+
+Once there, search for com.apple.appstore
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . <span class="p">|</span> grep com.apple.appstore
+</span></code></pre></td></tr></table></div></figure>
+You will find folder structure like this <code>./40/lhn22jn901zdw2bpf82hkggw0000gn/C/com.apple.appstore</code>
+
+</li>
+
+<li>
+Once inside the folder, open it in finder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>open .
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+While keeping AppStore open, remove this folder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -rf *
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Now, go back to AppStore and click on Download again.
+</li>
+<li>
+If download/update disappear, close the appstore then reopen it.
+ </li>
+</ol>
+
+
+<p>That steps worked well to me. Good luck and have a nice day.</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://apple.stackexchange.com/questions/61646/xcode-failed-to-download-use-the-purchases-page-to-try-again/71202#71202</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Unsupported IClasspathEntry in Eclipse-STS]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/"/>
+    <updated>2013-08-30T14:48:31+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts</id>
+    <content type="html"><![CDATA[<p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
+
+<p>Googling for that problem finally got a trick how to resolve it.</p>
+
+<ol>
+<li>Right-click on your project, select <code>Maven > Disable Maven Nature</code></li>
+<li>
+Open your terminal, go to your project folder and do
+<figure class='code'><figcaption><span>clean eclipse cache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn eclipse:clean
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Right click on your Project and select <code>Configure > Convert into Maven Project</code>
+</li>
+
+</ol>
+
+
+<p>After converting into maven project, I can update my maven project and everything running well :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Generic Singleton Pattern in Java]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/"/>
+    <updated>2013-08-29T14:38:32+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java</id>
+    <content type="html"><![CDATA[<p>In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.</p>
+
+<p>In this post I want to implement it in Java. As far as I know even though both C# and Java have generic feature, generic in C# quite different from the one in Java. While converting of what I did about generic singleton in C# to Java, I feel that the way I do in Java is not as elegant as in C#. The following code is the generic singleton code I write in Java.</p>
+
+<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span><span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Singleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Singleton</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span> <span class="s">&quot;rawtypes&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">mapHolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">Singleton</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;unchecked&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getInstance</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">classOf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">synchronized</span><span class="o">(</span><span class="n">instance</span><span class="o">){</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span><span class="o">(!</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">classOf</span><span class="o">)){</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">T</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">classOf</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">classOf</span><span class="o">,</span> <span class="n">obj</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="o">(</span><span class="n">T</span><span class="o">)</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">classOf</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">CloneNotSupportedException</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following code show how to use the generic singleton class. It’s quite similar to the C# version.</p>
+
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Starter</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * @param args</span>
+</span><span class='line'><span class="cm">     * @throws InvocationTargetException</span>
+</span><span class='line'><span class="cm">     * @throws IllegalArgumentException</span>
+</span><span class='line'><span class="cm">     * @throws SecurityException</span>
+</span><span class='line'><span class="cm">     * @throws NoSuchMethodException</span>
+</span><span class='line'><span class="cm">     * @throws IllegalAccessException</span>
+</span><span class='line'><span class="cm">     * @throws InstantiationException</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span>  <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Auto-generated method stub</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp1</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">emp1</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">emp2</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">boolean</span> <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test1 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">emp1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">emp2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test2 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp1 = &quot;</span><span class="o">+</span> <span class="n">emp1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp2 = &quot;</span><span class="o">+</span> <span class="n">emp2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Information Technology&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">dpt1</span><span class="o">==</span><span class="n">dpt2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test3 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt1 = &quot;</span><span class="o">+</span> <span class="n">dpt1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt2 = &quot;</span><span class="o">+</span> <span class="n">dpt2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, if we see from the sample code above it seems that generic singleton in C# is more elegant than in Java.
+The main thing that I should do is I have to use <code>HashMap</code> collection to hold any instance of what that want to be as singleton and reuse for the future need in the life cycle of my application.</p>
+
+<p>Anyway, if you have better and much more elegant solution how to implement generic singleton pattern in Java I am very appreciate for any suggestion. Finally I would like to thank you very much for visiting and reading my blog, and have a nice day.</p>
+
+<h3>Update March 11, 2016</h3>
+
+
+<blockquote><p>If you want to the java singleton above, please ensure you have remove / clean up method to clean up <code>HashMap</code> contents if the singleton objects are not needed anymore. At least at the end of application lifecycle, the <code>HashMap</code> and its contents should be removed completely from memory.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Generic Singleton Pattern in C#]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/"/>
+    <updated>2013-08-29T14:27:41+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number</id>
+    <content type="html"><![CDATA[<p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
+
+<p>Honestly in my daily coding activity, sometimes I need to implement singleton pattern. Jon wrote a good singleton article in C# <a href="http://www.yoda.arachsys.com/csharp/singleton.html">here</a>. Another case I want to implement singleton pattern in generic way. I convert what has been wrotten by Jon into generic.</p>
+
+<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Generic class which makes non singleton class to be singleton.</span>
+</span><span class='line'>    <span class="c1">/// Calling singleton instance of class should be Singleton&lt;T&gt;.Instance, otherwise the returned class is not singleton one.    ///</span>
+</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// &lt;typeparam name=&quot;T&quot;&gt;Genric class type to be singletonized&lt;/typeparam&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Singleton</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Private constuctor to avoid this class instantiated</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="n">Singleton</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Property to get access to singleton instance</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Instance</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">get</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Nested</span><span class="p">.</span><span class="n">instance</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Private nested class which acts as singleton class instantiator. This class should not be accessible outside &lt;see cref=&quot;Singleton&lt;T&gt;&quot;/&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="k">class</span> <span class="nc">Nested</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>            <span class="c1">/// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit</span>
+</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>            <span class="k">static</span> <span class="nf">Nested</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>            <span class="c1">/// Static instance variable</span>
+</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>            <span class="k">internal</span> <span class="k">static</span> <span class="k">readonly</span> <span class="n">T</span> <span class="n">instance</span> <span class="p">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following snipped code is a sample how to use the generic singleton class.</p>
+
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Processor</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">Execute</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">Processor</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From the sample above is shown that we can make a non singleton class to be singleton at runtime. But we can still create a non singleton instance as we need. That’s really nice flexible thing.</p>
+
+<h3>Reference</h3>
+
+
+<p>[1] <a href="http://en.wikipedia.org/wiki/Singleton_pattern">http://en.wikipedia.org/wiki/Singleton_pattern</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.NET Session State in Database]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/"/>
+    <updated>2013-07-22T14:12:34+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database</id>
+    <content type="html"><![CDATA[<p>At some point we need to store information when dealing with web application.
+Storing information in web application can be implemented in some ways such as session and cookies.</p>
+
+<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
+
+<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
+
+<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
+First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
+
+<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
+
+<figure class='code'><figcaption><span>aspnet_regsql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>generate session state database</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The command will create database, tables and store procedures.
+In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
+
+<figure class='code'><figcaption><span>session state configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;system.web&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;sessionstate</span> <span class="na">mode=</span><span class="s">&quot;SQLServer&quot;</span> <span class="na">allowcustomsqldatabase=</span><span class="s">&quot;true&quot;</span> <span class="na">sqlconnectionstring=</span><span class="s">&quot;Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}&quot;</span> <span class="na">cookieless=</span><span class="s">&quot;false&quot;</span> <span class="na">timeout=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;/sessionstate&gt;</span>
+</span><span class='line'><span class="nt">&lt;/system.web&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To test our session storage, just create simple aspx page.</p>
+
+<figure class='code'><figcaption><span>sample.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnAddSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Add Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnAddSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnRemoveSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Remove Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnRemoveSession_Click&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;br&gt;</span>
+</span><span class='line'><span class="nt">&lt;asp:label</span> <span class="na">id=</span><span class="s">&quot;ctlLblSessionDisplay&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;/asp:label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>sample.aspx.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">Page_Load</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">]</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">&quot;NO Session&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnAddSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">,</span> <span class="s">&quot;Hello&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnRemoveSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mono on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-09-19T12:54:14+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;)</p>
+
+<p>First of all let’s download <a href="http://www.go-mono.com/mono-downloads/download.html">Mono SDK and MonoDevelop</a>. The order installation is Mono SDK first then MonoDevelop. The installation of Mono SDK and MonoDevelop should be easy by following the installation wizard.</p>
+
+<p>When the installation finish, open terminal :</p>
+
+<figure class='code'><figcaption><span>mono version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mono -V
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We should get info about the version of mono installed in our machine.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-09-19-pic0.png"></p>
+
+<p>Try to create an ASP.NET Web Application project by selecting menu :
+<code>File > New > Solution</code>. Select <code>C# > ASP.NET > Web Application</code></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-09-19-pic1.png"></p>
+
+<p>Click <code>Run > Run With > Mono Soft Debugger for ASP.NET</code></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-09-19-pic2.png"></p>
+
+<h2>ASP.NET on Apache Web Server</h2>
+
+
+<p>To run ASP.Net on Apache web server, we need <a href="http://www.mono-project.com/Mod_mono">Mod mono</a> module. It is an Apache 2.0/2.2 module that provides ASP.Net support for Apache web server. The steps installation are :</p>
+
+<ol type="1">
+<li>Install Apache web server. The steps for OS X Mountain Lion can be found in my previous post
+</li>
+
+<li>Install Xcode, OS X development tool. It’s free and can be downloaded via App Store. We need it to compile mod mono installation source
+</li>
+
+<li>Download Mod mono source installation here. At the time of write this article I use <code>mod_mono-2.10.tar.bz2</code>
+</li>
+
+<li>Install mod mono module. Open terminal
+
+<figure class='code'><figcaption><span>mod mono installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir ~/modmono
+</span><span class='line'>cp ~/Downloads/mod_mono-2.10.tar.bz2 ~/modmono
+</span><span class='line'><span class="nb">cd</span> ~/modmono
+</span><span class='line'>tar xzf mod_mono-2.10.tar.bz2
+</span><span class='line'><span class="nb">cd </span>mod_mono-2.10
+</span><span class='line'>./configure
+</span><span class='line'>make
+</span><span class='line'>sudo make install
+</span><span class='line'>sudo cp /etc/apache2/mod_mono.conf /etc/apache2/other
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Add <code>mod_mono.conf</code> reference in <code>httpd.conf</code>
+<figure class='code'><figcaption><span>edit httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following code at the end of <code>httpd.conf</code>
+<figure class='code'><figcaption><span>httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Include /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Create a web directory with the path<code> ~/Projects/Mono/TestMonoApache/TestMonoApache/ </code>
+
+In that directory create an <code>index.aspx</code> file
+<figure class='code'><figcaption><span>index.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;center&gt;</span>mod_mono is working:<span class="nt">&lt;%=</span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span><span class="nt">%&gt;&lt;/center&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>Add an Apache configuration file for mono.
+<figure class='code'><figcaption><span>edit mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following line at the end of <code>mod_mono.conf</code>
+<figure class='code'><figcaption><span>mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>Alias /testmono &quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Directory</span> <span class="err">&quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    Options Indexes FollowSymLinks MultiViews
+</span><span class='line'>    AllowOverride None
+</span><span class='line'>
+</span><span class='line'>    Order allow,deny
+</span><span class='line'>    Allow from all
+</span><span class='line'><span class="nt">&lt;/Directory&gt;</span>
+</span><span class='line'>AddMonoApplications default &quot;/testmonoapache:/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Location</span> <span class="err">/testmonoapache</span><span class="nt">&gt;</span>
+</span><span class='line'> SetHandler mono
+</span><span class='line'><span class="nt">&lt;/Location&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Restart apache server with command :
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/sbin/apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li> Open browser and hit <code>http://localhost/testmonoapache/index.aspx</code>
+<img class="center" src="http://neutrofoton.github.io/images/post/2012-09-19-pic3.png">
+</li>
+
+</ol>
+
+
+<p>Cool, now our apache web server can receive request for asp.net page. Thanks for reading and see you in the next post :)</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://www.mono-project.com/Mod_mono</li>
+  <li>http://blog.coultard.com/2012/04/developing-using-c-and-mono-on-mac.html</li>
+  <li>http://www.ienablemuch.com/2010/10/aspnet-on-mac-os-x-snow-leopard-at-one.html</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-09-14T12:36:00+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
+
+<p>Extract the downloaded binary distribution onto <code>~/Download/apache-tomcat-7.0.30</code>.
+Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Move <code>~/Download/apache-tomcat-7.0.30 </code> to <code>/usr/local</code></p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mv ~/Downloads/apache-tomcat-7.0.30 /usr/local
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat. Then we also will change owner and make script executable</p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo ln -s /usr/local/apache-tomcat-7.0.30/ /Library/Tomcat
+</span><span class='line'>sudo chown -R neutrocode /Library/Tomcat
+</span><span class='line'>sudo chmod +x /Library/Tomcat/bin/*.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The next step is creating user for tomcat admin by editing <code>tomcat-user.xml</code></p>
+
+<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vi /Library/Tomcat/conf/tomcat-users.xml
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>tomcat-users.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;admin-gui&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;admin-script&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-gui&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-script&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-jmx&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-status&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&quot;admin&quot;</span> <span class="na">password=</span><span class="s">&quot;password&quot;</span> <span class="na">roles=</span><span class="s">&quot;admin-gui,admin-script&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&quot;manager&quot;</span> <span class="na">password=</span><span class="s">&quot;password&quot;</span> <span class="na">roles=</span><span class="s">&quot;manager-gui,manager-script,manager-jmx,manager-status&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add the following text in current user profile .bash_profile</p>
+
+<figure class='code'><figcaption><span>.bash_profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">CATALINA_HOME</span><span class="o">=</span>/Library/Tomcat
+</span><span class='line'><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
+</span><span class='line'>
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>:<span class="nv">$PATH</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Start the server with the following command :</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/catalina.sh start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/startup.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-09-14-tomcat.png"></p>
+
+<p>Stop the server with the following command :</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/catalina.sh stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/shutdown.sh
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install phpMyAdmin on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-08-10T10:39:53+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
+
+<p>The first thing that we need to do is open terminal and type</p>
+
+<figure class='code'><figcaption><span>symbolic link for mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /var/mysql
+</span><span class='line'>
+</span><span class='line'>sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Extract the downloaded <code>phpMyAdmin-3.5.2.1-english.zip</code> into web folder and rename as <code>phpMyAdmin</code>. So now we should have <code>~/Sites/phpMyAdmin</code> directory.</p>
+
+<p>On browser, open : <a href="http://localhost/~username/phpmyadmin">http://localhost/~username/phpmyadmin</a></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-10-phpmyadmin.png"></p>
+
+<p>Now we can login and administer MySQL database.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install MySQL on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-08-09T10:23:09+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>To install mysql the first thing that we need to do is download mysql installer on the <a href="http://dev.mysql.com/downloads/mysql/">mysql website</a>. In that web site we can see several versions of mysql. We will use Mac OS X ver. 10.6 (x86, 64-bit), DMG Archive. When we open the <code>mysql-5.5.27-osx10.6-x86_64.dmg</code> file, we will find 3 package installers.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-09-msqlpkg.png"></p>
+
+<p>Install all the three packages with the following order :</p>
+
+<ol>
+<li>mysql-5.5.27-osx10.6-x86_64.pkg</li>
+<li>MySQLStartupItem.pkg</li>
+<li>MySQL.prefPane</li>
+</ol>
+
+
+<p>To start/stop MySQL we can use GUI tool from <code>System Preferences > MySQL</code></p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-09-mysql-service.png"></p>
+
+<p>We can also start/stop MySQL via terminal</p>
+
+<figure class='code'><figcaption><span>start mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server start
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>stop mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/bin/mysql -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order to use MySQL command without have to specify MySQL installation full path, we need to add MySQL installation directory to shell path.</p>
+
+<figure class='code'><figcaption><span>bash profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>vi .bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/mysql/bin:$PATH&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then reload the new PATH</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">source</span> ~/.bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>test get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>set mysql password</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>/usr/local/mysql/bin/mysqladmin -u root password <span class="s1">&#39;yourpassword&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install PHP on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-08-09T10:13:16+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain Lion. PHP actually is shipped in OS X 10.8. The first step is edit <code>httpd.conf</code> in apache directory.</p>
+
+<figure class='code'><figcaption><span>httpd configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uncommect (remove #) php module declaration</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>LoadModule php5_module libexec/apache2/libphp5.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To see and test PHP create a file with the content, and save in /Users/username/Sites as “test.php”. Then open in browser <a href="http://localhost/~username/test.php">http://localhost/~username/test.php</a></p>
+
+<figure class='code'><figcaption><span>test.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nb">phpinfo</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-08-09-php.png"></p>
+]]></content>
+  </entry>
+  
+</feed>

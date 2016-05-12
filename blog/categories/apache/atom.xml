@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Apache | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/apache/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-05-12T08:02:18+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-09-14T12:36:00+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
+
+<p>Extract the downloaded binary distribution onto <code>~/Download/apache-tomcat-7.0.30</code>.
+Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
+
+<pre><code class="bash tomcat installation">sudo mkdir /usr/local
+</code></pre>
+
+<p>Move <code>~/Download/apache-tomcat-7.0.30 </code> to <code>/usr/local</code></p>
+
+<pre><code class="bash tomcat installation">sudo mv ~/Downloads/apache-tomcat-7.0.30 /usr/local
+</code></pre>
+
+<p>To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat. Then we also will change owner and make script executable</p>
+
+<pre><code class="bash tomcat installation">sudo ln -s /usr/local/apache-tomcat-7.0.30/ /Library/Tomcat
+sudo chown -R neutrocode /Library/Tomcat
+sudo chmod +x /Library/Tomcat/bin/*.sh
+</code></pre>
+
+<p>The next step is creating user for tomcat admin by editing <code>tomcat-user.xml</code>
+<code>bash tomcat installation
+vi /Library/Tomcat/conf/tomcat-users.xml
+</code></p>
+
+<pre><code class="xml tomcat-users.xml">&lt;role rolename="admin-gui"/&gt;
+&lt;role rolename="admin-script"/&gt;
+&lt;role rolename="manager-gui"/&gt;
+&lt;role rolename="manager-script"/&gt;
+&lt;role rolename="manager-jmx"/&gt;
+&lt;role rolename="manager-status"/&gt;
+
+&lt;user username="admin" password="password" roles="admin-gui,admin-script" /&gt;
+&lt;user username="manager" password="password" roles="manager-gui,manager-script,manager-jmx,manager-status" /&gt;
+</code></pre>
+
+<p>Add the following text in current user profile .bash_profile
+<figure class='code'><figcaption><span>.bash_profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">CATALINA_HOME</span><span class="o">=</span>/Library/Tomcat
+</span><span class='line'><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>:<span class="nv">$PATH</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Start the server with the following command :
+<code>bash start tomcat
+$CATALINA_HOME/bin/catalina.sh start
+</code>
+or</p>
+
+<pre><code class="bash start tomcat">$CATALINA_HOME/bin/startup.sh
+</code></pre>
+
+<p><img class="center" src="/images/post/2012-09-14-tomcat.png"></p>
+
+<p>Stop the server with the following command :
+<code>bash start tomcat
+$CATALINA_HOME/bin/catalina.sh stop
+</code>
+or</p>
+
+<pre><code class="bash start tomcat">$CATALINA_HOME/bin/shutdown.sh
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Configure Apache on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-08-08T09:47:05+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>After installing Mountain Lion on my Macbook, I decided to prepare and set up software development tools in it. One of it is activate web sharing feature which can be found at System Preferences > Sharing on previous version. I was very suprise that apple seems remove it from the list.</p>
+
+<p><img class="center" src="/images/post/2012-08-07-pic01.png"></p>
+
+<p>By searching some references on internet, here are the things that I did. Apache actually is pre-installed on Mountain Lion and we just need to enable it via the command line.</p>
+
+<pre><code class="bash start apache server">sudo apachectl start
+</code></pre>
+
+<p>We will be asked to enter login password for starting it. Enter a password then open in browser localhost website. You should get the following display</p>
+
+<p><img class="center" src="/images/post/2012-08-07-pic02.png"></p>
+
+<pre><code class="bash stop apache server">sudo apachectl stop
+</code></pre>
+
+<pre><code class="bash get apache version">httpd -v
+</code></pre>
+
+<p>Historically, OSX has had 2 web roots. One at a system level and the other one at a user level. The user level one allows multiple acounts to have their own web root whilst the system one is global for all users. The location of system web document root is at</p>
+
+<pre><code class="text">/Library/WebServer/Documents/
+</code></pre>
+
+<p>On the other hand, the user level web roots in the previous version of OSX (Lion) can be found under ~/Sites. But we can not find that directory anymore in Mountain Lion. So we need to create it manually.</p>
+
+<p><img class="center" src="/images/post/2012-08-07-pic03.png"></p>
+
+<p>In terminal type:
+<code>bash edit configuration
+cd /etc/apache2/users
+vi username.conf
+</code></p>
+
+<p>Edit username.conf in vi editor as is the following code:</p>
+
+<pre><code class="text">&lt;Directory "/Users/username/Sites/"&gt;
+Options Indexes MultiViews
+AllowOverride None
+Order allow,deny
+Allow from all
+&lt;/Directory&gt;
+</code></pre>
+
+<p>Then create html page inside ~/Sites to test our user local website and save it as index.html
+``` html sample page
+&lt;!DOCTYPE html PUBLIC &ldquo;-//W3C//DTD HTML 4.01//EN&rdquo; &ldquo;<a href="http://www.w3.org/TR/html4/strict.dtd">http://www.w3.org/TR/html4/strict.dtd</a>&rdquo;>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1187">
+  <style type="text/css">
+  </style>
+</head>
+<body></p>
+
+<h1><b>It works!</h1>
+
+
+<h1><b>I am on local user website</b></h1>
+
+
+<p></body>
+</html></p>
+
+<p>```
+<img class="center" src="/images/post/2012-08-07-pic04.png"></p>
+
+<p>Congratulation your apache is running well now :)</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-05-12T08:02:18+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
+    <updated>2016-03-27T20:38:49+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
+<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
+
+<p>The other interesting points of <a href="http://www.boost.org/">Boost</a> are :</p>
+
+<ol>
+<li>Open source</li>
+<li>Cross platform</li>
+<li>Complement to STL rather than a replacement</li>
+<li>Many of <a href="http://www.boost.org/">Boost</a> developers are on the C++ standard committee</li>
+<li>Well documented</li>
+<li>Most of the Boost libraries are licensed under the <a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)#License">Boost Software License</a>, designed to allow <a href="http://www.boost.org/">Boost</a> to be used with both free and proprietary software projects</li>
+</ol>
+
+
+
+
+<h2>Installation Boost</h2>
+
+
+<p>Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</a> on various IDE, let&rsquo;s begin with <a href="http://www.boost.org/">Boost</a> installation. To be noted that on this post I run Xcode on OS X, <a href="http://www.codeblocks.org/">Code::Blocks</a>  on Linux (Ubuntu) and Visual Studio on Windows. The detail environments I use are :</p>
+
+<ol>
+<li>OS X 10.11.4 El Capitan</li>
+<li>Ubuntu 14.04.4 LTS</li>
+<li>Xcode Version 7.2</li>
+<li>Code::Blocks 13.12, gcc 4.8.4</li>
+<li>Visual Studio 2013</li>
+<li>Boost 1.60.0</li>
+</ol>
+
+
+
+
+<h4>OS X and Linux (Ubuntu)</h4>
+
+
+<p>There are several ways of <a href="http://www.boost.org/">Boost</a> installation. Instead of build from source code, we can use package manager such as <a href="https://www.macports.org/">MacPorts</a>, <a href="http://brew.sh/">Homebrew</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Packaging_Tool">Advance Package Tool</a>, etc. In this post we will build <a href="http://www.boost.org/">Boost</a> from source code. The installation steps (from source code) on OS X and Ubuntu are the similar. To make it consistent, I use the same installation path for OS X and Ubuntu that is <code>/usr/local/boost_1_60_0</code>. You can use different path if you want. The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it.</li>
+<li>Open terminal, navigate to the extracted directory</li>
+<li>Create directory on <code>/usr/local/boost_1_60_0</code>, and ensure IDE has access to the directory. On my case I don't need this step on OS X, but on ubuntu it does.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local/boost_1_60_0
+</span><span class='line'>sudo chmod <span class="m">777</span> -r boost_1_60_0
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Run command :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bootstrap.sh --prefix<span class="o">=</span>/usr/local/boost_1_60_0
+</span><span class='line'>./b2 install
+</span></code></pre></td></tr></table></div></figure>
+This last step quite take time. So you can have coffee while waiting for it :)
+</li>
+</ol>
+
+
+<p>Once the installation finish, we should have generated directory. They are <code>/usr/local/boost_1_60_0/include</code> contains header files and <code>/usr/local/boost_1_60_0/lib</code> contains libraries.</p>
+
+<h4>Windows</h4>
+
+
+<p>The <a href="http://www.boost.org/">Boost</a> installation step on Windows is also similar to the installation step on OS X and Ubuntu.
+The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it to C:\\boost_1_60_0 </li>
+<li>Open Visual Studio command prompt. I use Visual Studio 2013 x86 Native Tools Command Prompt native tool (I have not test using default Windows Command Prompt)
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>C:\<span class="p">&gt;</span> <span class="n">cd</span> C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span><span class="p">&gt;</span> <span class="n">bootstrap</span>.bat
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>&gt; .\b<span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+As on OS X and Ubuntu, the last step quite take time.
+</li>
+</ol>
+
+
+
+
+<h2>Configure <a href="http://www.boost.org/">Boost</a> on IDE(s)</h2>
+
+
+<p>Before create C++ projects on various IDE, let&rsquo;s create a simple C++ hello world code that use Boost libraries. To simplify the test, I grab sample code from <a href="http://stackoverflow.com/questions/999120/c-hello-world-boost-tee-example-program">here</a> <br/>
+<figure class='code'><figcaption><span>Hello World</p></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">fstream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">boost</span><span class="o">/</span><span class="n">iostreams</span><span class="o">/</span><span class="n">tee</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">boost</span><span class="o">/</span><span class="n">iostreams</span><span class="o">/</span><span class="n">stream</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">iostreams</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">typedef</span> <span class="n">tee_device</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">ostream</span><span class="p">,</span> <span class="n">ofstream</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeDevice</span><span class="p">;</span>
+</span><span class='line'><span class="k">typedef</span> <span class="n">stream</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">TeeDevice</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeStream</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ofstream</span> <span class="nf">ofs</span><span class="p">(</span><span class="s">&quot;/Users/neutro/Workspace/cpp/sample.txt&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">TeeDevice</span> <span class="nf">my_tee</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span> <span class="n">ofs</span><span class="p">);</span>
+</span><span class='line'><span class="n">TeeStream</span> <span class="nf">my_split</span><span class="p">(</span><span class="n">my_tee</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_split</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_split</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
+</span><span class='line'><span class="n">my_split</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+The snipped code above just print text and write it to a text file. We just want to ensure the IDE&rsquo;s compiler can compile and build the code that includes <a href="http://www.boost.org/">Boost</a> libraries.</p>
+
+<ul>
+  <li>
+    <h4>Xcode</h4>
+    To include Boost libraries on Xcode project :
+    <ol>
+    <li>Select Xcode project > Build Setting</li>
+    <li>Add <code>/usr/local/boost_1_60_0/include/</code> to the Header Search Paths</li>
+    <li>Add <code>/usr/local/boost_1_60_0/lib/</code> to the Library Search Paths</li>
+    </ol>
+
+    <img class="center" src="/images/post/2016-03-27-xcode.png">
+
+  </li>
+  <li>
+    <h4>Code::Blocks</h4>
+    To include Boost libraries on Code::Blocks project :
+    <ol>
+    <li>Right Click on Code::Blocks project > Build Option</li>
+    <li>
+    Select Compiler tab, add <code>/usr/local/boost_1_60_0/include/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks1.png">
+    </li>
+    <li>
+    Select Linker tab, add <code>/usr/local/boost_1_60_0/lib/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks2.png">
+    </li>
+    </ol>
+  </li>
+  <li>
+    <h4>Visual Studio</h4>
+    To include Boost libraries on Visual C++ project :
+    <ol>
+    <li>Right Click on VC++ project > Properties</li>
+    <li>Select VC++ Directories on the left pane</li>
+    <li>Add <code>C:\boost_1_60_0</code> on Include Directories item</li>
+    <li>Add <code>C:\boost_1_60_0\stage\lib</code> on Include Directories item</li>
+    <li>Click OK to close the dialog</li>
+    </ol>
+    <img class="center" src="/images/post/2016-03-27-vs.png">
+  </li>
+</ul>
+
+
+<p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li>
+<a href="http://www.boost.org/">http://www.boost.org/</a>
+</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">Wikipedia</a>
+</li>
+</ol></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Spring | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/spring/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2016-05-12T08:02:18+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/"/>
+    <updated>2016-03-12T15:08:34+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts</id>
+    <content type="html"><![CDATA[<p>Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
+
+<p><a href="https://spring.io/">Spring</a> is a popular framework in Java world. It&rsquo;s one of my favorite framework in Java. At the time of this blog post, I have just grabbed the source of it from <a href="https://github.com/spring-projects/spring-framework">github repository</a>. The source code is fantastic. Nice coding style, project structure, build tool and of course its documentations. While following the guidance to build and import to <a href="https://spring.io/tools">Spring Tool Suite</a>, I got an error on <code>spring-beans-groovy</code> project in <code>GroovyBeanDefinitionReader.java</code>. Navigating to the errors, STS seems try to find a class <code>GroovyDynamicElementReader</code> but not found.</p>
+
+<p><img class="center" src="/images/post/2016-03-12-pic01.png"></p>
+
+<p> Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally get a clue <code>GroovyDynamicElementReader.groovy</code>.</p>
+
+<p>Installing <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> seems solve the problem.</p>
+
+<p><img class="center" src="/images/post/2016-03-12-pic02.png"></p>
+
+<p>In case you have the same problem as what I got, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.</p>
+
+<h3>Reference</h3>
+
+
+<ol>
+<li>https://github.com/groovy/groovy-eclipse/wiki</li>
+<li>http://blog.csdn.net/zlx510tsde/article/details/46241675</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
