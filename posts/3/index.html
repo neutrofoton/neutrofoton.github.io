@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="After installing Mountain Lion on my Macbook, I decided to prepare and set up software development tools in it. One of it is activate web sharing &hellip;">
+  <meta name="description" content="On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,66 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/">Install PHP on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-09T10:13:16+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:13 am</span></time>
+        
+           | <a href="/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain Lion. PHP actually is shipped in OS X 10.8. The first step is edit <code>httpd.conf</code> in apache directory.</p>
+
+<figure class='code'><figcaption><span>httpd configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uncommect (remove #) php module declaration</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>LoadModule php5_module libexec/apache2/libphp5.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To see and test PHP create a file with the content, and save in /Users/username/Sites as “test.php”. Then open in browser <a href="http://localhost/~username/test.php">http://localhost/~username/test.php</a></p>
+
+<figure class='code'><figcaption><span>test.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nb">phpinfo</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="/images/post/2012-08-09-php.png"></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -869,6 +929,10 @@ article img, article video, article .flash-video{
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a>
       </li>
     
@@ -890,10 +954,6 @@ article img, article video, article .flash-video{
     
       <li class="post">
         <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">Deploying iOS App to Real Device</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/07/from-wordpress-to-octopress/">From WordPress to Octopress</a>
       </li>
     
   </ul>
@@ -957,7 +1017,7 @@ article img, article video, article .flash-video{
     <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/linux/index.html">linux ( 1 )</a></li>
+    <li><a href="/blog/categories/linux/index.html">linux ( 2 )</a></li>
     
     
     <li><a href="/blog/categories/windows/index.html">windows ( 1 )</a></li>

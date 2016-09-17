@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>First Post - neutrofoton</title>
+  <title>VirtualBox Share Host Folder Ubuntu Guest - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="Alhamdulillah, It is friday and finally my blog is up and can be accessed on internet after for couple days just stay in localhost :) . One of the &hellip;">
+  <meta name="description" content="VM VirtualBox is one of free popular hypervisor for x86 computer from Oracle. I use it as part of my development environment, since occasionally I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/blog/2012/08/03/first-post/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -80,7 +80,7 @@ article img, article video, article .flash-video{
   
   <header>
     
-      <h1 class="entry-title">First Post</h1>
+      <h1 class="entry-title">VirtualBox Share Host Folder Ubuntu Guest</h1>
     
     
       <p class="meta">
@@ -89,7 +89,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-03T18:29:08+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>6:29 pm</span></time>
+<time class='entry-date' datetime='2016-09-17T10:41:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 am</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
@@ -99,13 +99,57 @@ article img, article video, article .flash-video{
   </header>
 
 
-<div class="entry-content"><p>Alhamdulillah, It is friday and finally my blog is up and can be accessed on internet after for couple days just stay in localhost :) . One of the reasons because I did upgrade (actually did fresh install) my OS to Mountain Lion</p>
+<div class="entry-content"><p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
 
-<p><img class="left" src="/images/post/MountainLionHero1.png" title="mountain lion" ></p>
+<p>Before sharing folder, ensure we have installed Guest Addition that shipped with VirtualBox. To do that :</p>
 
-<p>At the time of this first post, it is Ramadhan fasting day. So I would like to say happy fasting for all of moslem reader. Hopefully I can post more articles in this blog which can be useful for me and others :)</p>
+<ol>
+<li>Go to  Device menu > Insert Guest CD Addition Images.</li>
+<li>If it automatically mounting and has popup dialog, just hit run otherwise we may have to manually mounting it.</li>
+</ol>
 
-<p>Anyway thanks for visiting my blog and see you in the next post.</p>
+
+<p> I usually restart my OS guest after installing this VirtualBox Guest Addition.</p>
+
+<p>The steps are :</p>
+
+<ul>
+<li>Go to Devices menu > Shared Folders > Shared Folder Settings</li>
+<li>Select folder path of Host to be shared to Guest OS</li>
+<li><p>Checked Make Permanent option if we want to make it permanent</p>
+
+<blockquote><p>On my sample, I shared folder from OS X Host /Volumes/MacintoshHDData/share</p></blockquote>
+
+<p> Till this step is enough for Windows guest. On Ubuntu guest, it need additional steps to make the shared folder accessible in guest.</p></li>
+<li><p>When we shared a Host&rsquo;s folder on Ubuntu guest, VirtualBox should create a folder on <code>/Media</code> just like the shared folder name with <code>sf_</code> prefix. In my case <code>/Media/sf_share</code>. If the folder does not exist, open terminal, create directory <code>/Media/sf_share</code> and give folder name</p>
+
+<pre><code>mkdir /Media/sf_share
+</code></pre></li>
+<li><p>VirtualBox with Ubuntu operating system guest, it added a group called <code>vboxsf</code>. Before we can access the shared folder we have to be a member of the group.</p>
+
+<pre><code class="bash">sudo add user [username] vboxsf
+</code></pre>
+
+<p> To verify what groups are username belongs to,</p>
+
+<pre><code class="bash">id [username]
+</code></pre></li>
+<li><p>Mount the shared folder</p>
+
+<pre><code class="bash">sudo mount -t vboxsf share /media/sf_share
+</code></pre></li>
+</ul>
+
+
+<p>Now we should be able to the shared folder via Nautilus (File Manager). To make it automatic mounting, ensure we checked option automatic mounting on shared folder setting dialog.</p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine">http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine</a></li>
+<li><a href="http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/">http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/</a></li>
+</ol>
+
 </div>
 
 
@@ -123,15 +167,21 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-03T18:29:08+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>6:29 pm</span></time>
+<time class='entry-date' datetime='2016-09-17T10:41:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 am</span></time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2012/08/03/first-post/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2012/08/03/first-post/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/" >Tweet</a>
   
   
   
@@ -142,8 +192,8 @@ article img, article video, article .flash-video{
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2016/05/11/lambda-in-c-plus-plus/" title="Previous Post: Lambda in C++">&laquo; Lambda in C++</a>
       
-        <a class="basic-alignment right" href="/blog/2012/08/03/json-serializer/" title="Next Post: Json Serializer">Json Serializer &raquo;</a>
       
     </p>
   </footer>
@@ -293,8 +343,8 @@ article img, article video, article .flash-video{
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/blog/2012/08/03/first-post/';
-        var disqus_url = 'http://neutrofoton.github.io/blog/2012/08/03/first-post/';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/';
         var disqus_script = 'embed.js';
       
     (function () {
