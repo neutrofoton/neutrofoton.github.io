@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mono | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/mono/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-09-19T22:42:14+07:00</updated>
+  <updated>2016-09-19T23:10:33+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -134,7 +134,7 @@
 <span class='line-number'>61</span>
 <span class='line-number'>62</span>
 </pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
-</span><span class='line'>    ServerAdmin <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#x6c;&amp;#116;&amp;#x6f;&amp;#58;&amp;#x61;&amp;#x64;&amp;#109;&amp;#105;&amp;#110;&amp;#x40;&amp;#x74;&amp;#101;&amp;#x73;&amp;#x74;&amp;#46;&amp;#99;&amp;#x6f;&amp;#x6d;&quot;</span><span class="nt">&gt;</span><span class="ni">&amp;#x61;&amp;#x64;&amp;#x6d;&amp;#105;&amp;#x6e;&amp;#x40;&amp;#x74;&amp;#101;&amp;#x73;&amp;#116;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;</span><span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>    ServerAdmin <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&amp;#x6d;&amp;#97;&amp;#105;&amp;#x6c;&amp;#116;&amp;#111;&amp;#58;&amp;#97;&amp;#x64;&amp;#x6d;&amp;#x69;&amp;#110;&amp;#x40;&amp;#x74;&amp;#x65;&amp;#115;&amp;#x74;&amp;#46;&amp;#99;&amp;#111;&amp;#x6d;&quot;</span><span class="nt">&gt;</span><span class="ni">&amp;#97;&amp;#x64;&amp;#x6d;&amp;#105;&amp;#x6e;&amp;#64;&amp;#116;&amp;#x65;&amp;#x73;&amp;#x74;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#109;</span><span class="nt">&lt;/a&gt;</span>
 </span><span class='line'>    ServerName  neutro.local
 </span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com<span class="nt">&lt;/p&gt;</span>
 </span><span class='line'>
