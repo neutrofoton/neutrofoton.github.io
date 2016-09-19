@@ -139,6 +139,9 @@
 <loc>http://neutrofoton.github.io/blog/categories/java/</loc>
 </url>
 <url>
+<loc>http://neutrofoton.github.io/blog/categories/mono/</loc>
+</url>
+<url>
 <loc>http://neutrofoton.github.io/blog/categories/aspnet/</loc>
 </url>
 <url>
@@ -182,5 +185,11 @@
 </url>
 <url>
 <loc>http://neutrofoton.github.io/blog/categories/c-plus-plus/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/posts/2/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/posts/3/</loc>
 </url>
 </urlset>
