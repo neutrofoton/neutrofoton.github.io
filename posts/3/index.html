@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain &hellip;">
+  <meta name="description" content="In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,164 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Install phpMyAdmin on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-10T10:39:53+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:39 am</span></time>
+        
+           | <a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
+
+<p>The first thing that we need to do is open terminal and type</p>
+
+<figure class='code'><figcaption><span>symbolic link for mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /var/mysql
+</span><span class='line'>
+</span><span class='line'>sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Extract the downloaded <code>phpMyAdmin-3.5.2.1-english.zip</code> into web folder and rename as <code>phpMyAdmin</code>. So now we should have <code>~/Sites/phpMyAdmin</code> directory.</p>
+
+<p>On browser, open : <a href="http://localhost/~username/phpmyadmin">http://localhost/~username/phpmyadmin</a></p>
+
+<p><img class="center" src="/images/post/2012-08-10-phpmyadmin.png"></p>
+
+<p>Now we can login and administer MySQL database.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Install MySQL on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-09T10:23:09+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:23 am</span></time>
+        
+           | <a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>To install mysql the first thing that we need to do is download mysql installer on the <a href="http://dev.mysql.com/downloads/mysql/">mysql website</a>. In that web site we can see several versions of mysql. We will use Mac OS X ver. 10.6 (x86, 64-bit), DMG Archive. When we open the <code>mysql-5.5.27-osx10.6-x86_64.dmg</code> file, we will find 3 package installers.</p>
+
+<p><img class="center" src="/images/post/2012-08-09-msqlpkg.png"></p>
+
+<p>Install all the three packages with the following order :</p>
+
+<ol>
+<li>mysql-5.5.27-osx10.6-x86_64.pkg</li>
+<li>MySQLStartupItem.pkg</li>
+<li>MySQL.prefPane</li>
+</ol>
+
+
+<p>To start/stop MySQL we can use GUI tool from <code>System Preferences > MySQL</code></p>
+
+<p><img class="center" src="/images/post/2012-08-09-mysql-service.png"></p>
+
+<p>We can also start/stop MySQL via terminal</p>
+
+<figure class='code'><figcaption><span>start mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server start
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>stop mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/bin/mysql -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order to use MySQL command without have to specify MySQL installation full path, we need to add MySQL installation directory to shell path.</p>
+
+<figure class='code'><figcaption><span>bash profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>vi .bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/mysql/bin:$PATH&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then reload the new PATH</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">source</span> ~/.bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>test get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>set mysql password</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>/usr/local/mysql/bin/mysqladmin -u root password <span class="s1">&#39;yourpassword&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -929,6 +1087,14 @@ article img, article video, article .flash-video{
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Mono Multiple Application on a Virtual Host</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Mono Mod_mono Apache2 on Ubuntu</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a>
       </li>
     
@@ -946,14 +1112,6 @@ article img, article video, article .flash-video{
     
       <li class="post">
         <a href="/blog/2016/03/09/math-in-web/">Math in Web</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">Deploying iOS App to Real Device</a>
       </li>
     
   </ul>

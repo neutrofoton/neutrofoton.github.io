@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="Xamarin Studio is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin &hellip;">
+  <meta name="description" content="Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,367 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/08/extract-c-number-exception/">Extract C# Exception</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-08T15:49:39+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:49 pm</span></time>
+        
+           | <a href="/blog/2014/09/08/extract-c-number-exception/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
+
+<p>The following snipped code shows how to extract detail exception message, innner excepion and its detail strack trace to be recorded / written on log.</p>
+
+<figure class='code'><figcaption><span>exception extractor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Extracting &lt;seealso cref=&quot;System.Exception&quot;&gt; class include its inner exception</span>
+</span><span class='line'>    <span class="c1">/// &lt;/seealso&gt;&lt;/summary&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Extractor</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Parse the specified ex.</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;exception&quot;&gt;Ex.</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">Parse</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">exception</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">string</span> <span class="n">errMessage</span> <span class="p">=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">FormatErrorDescription</span><span class="p">(</span><span class="n">exception</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">while</span> <span class="p">(</span><span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">ExtractInnerException</span><span class="p">(</span><span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">exception</span> <span class="p">=</span> <span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">errMessage</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Extract exception message and its strack trace</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;innerException&quot;&gt;inner excepion object</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;extracted exception info including message and strack trace&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">static</span> <span class="kt">string</span> <span class="nf">ExtractInnerException</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">innerException</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">string</span> <span class="n">errMessage</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="s">&quot; InnerException &quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">FormatErrorDescription</span><span class="p">(</span><span class="n">innerException</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">errMessage</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Formating exception description format</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;exception&quot;&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Error description&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">static</span> <span class="kt">string</span> <span class="nf">FormatErrorDescription</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">exception</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">exception</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="n">exception</span><span class="p">.</span><span class="n">Message</span> <span class="p">+</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="n">exception</span><span class="p">.</span><span class="n">StackTrace</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/">Get Excel Column Name by Index and Vice Versa</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-13T15:43:52+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:43 pm</span></time>
+        
+           | <a href="/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.</p>
+
+<figure class='code'><figcaption><span>excel helper</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">ExcelUtility</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Convert Excel column name into number/index. Column number start from 1. A equal to 1</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;columnName&quot;&gt;Column name</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Excel column in numeric&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="nf">GetExcelColumnNumber</span><span class="p">(</span><span class="kt">string</span> <span class="n">columnName</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="n">columnName</span><span class="p">))</span>
+</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span><span class="p">(</span><span class="s">&quot;Invalid column name parameter&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">columnName</span> <span class="p">=</span> <span class="n">columnName</span><span class="p">.</span><span class="n">ToUpperInvariant</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">sum</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">columnName</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">ch</span> <span class="p">=</span> <span class="n">columnName</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="kt">char</span><span class="p">.</span><span class="n">IsDigit</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span>
+</span><span class='line'>                    <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span><span class="p">(</span><span class="s">&quot;Invalid column name parameter on character &quot;</span> <span class="p">+</span> <span class="n">ch</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">sum</span> <span class="p">*=</span> <span class="m">26</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">sum</span> <span class="p">+=</span> <span class="p">(</span><span class="n">ch</span> <span class="p">-</span> <span class="sc">&#39;A&#39;</span> <span class="p">+</span> <span class="m">1</span><span class="p">);</span>
+</span><span class='line'>                <span class="c1">//sum += (columnName[i] - &#39;A&#39;);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Convert Excel column index into name. Column start from 1</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;columnNumber&quot;&gt;Column name/number</span>
+</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Column name&lt;/returns&gt;</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">GetExcelColumnName</span><span class="p">(</span><span class="kt">int</span> <span class="n">columnNumber</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">dividend</span> <span class="p">=</span> <span class="n">columnNumber</span><span class="p">;</span>
+</span><span class='line'>            <span class="kt">string</span> <span class="n">columnName</span> <span class="p">=</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">modulo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">while</span> <span class="p">(</span><span class="n">dividend</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">modulo</span> <span class="p">=</span> <span class="p">(</span><span class="n">dividend</span> <span class="p">-</span> <span class="m">1</span><span class="p">)</span> <span class="p">%</span> <span class="m">26</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">columnName</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToChar</span><span class="p">(</span><span class="m">65</span> <span class="p">+</span> <span class="n">modulo</span><span class="p">).</span><span class="n">ToString</span><span class="p">()</span> <span class="p">+</span> <span class="n">columnName</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">dividend</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)((</span><span class="n">dividend</span> <span class="p">-</span> <span class="n">modulo</span><span class="p">)</span> <span class="p">/</span> <span class="m">26</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">columnName</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>sample code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">class</span> <span class="nc">Program</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">try</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="kt">string</span> <span class="n">columnName</span> <span class="p">=</span> <span class="s">&quot;A&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="kt">int</span> <span class="n">columnIndex</span> <span class="p">=</span> <span class="n">ExcelUtility</span><span class="p">.</span><span class="n">GetExcelColumnNumber</span><span class="p">(</span><span class="n">columnName</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Index of {0} is {1} &quot;</span><span class="p">,</span> <span class="n">columnName</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="c1">//increment columnIndex</span>
+</span><span class='line'>                <span class="p">++</span><span class="n">columnIndex</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Increment index = &quot;</span> <span class="p">+</span> <span class="n">columnIndex</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">columnName</span> <span class="p">=</span> <span class="n">ExcelUtility</span><span class="p">.</span><span class="n">GetExcelColumnName</span><span class="p">(</span><span class="n">columnIndex</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Column name of index {0} is {1}&quot;</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">,</span> <span class="n">columnName</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">ex</span><span class="p">.</span><span class="n">Message</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">Console</span><span class="p">.</span><span class="n">Read</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I write the code in my blog just to remind me in the future in case I get the same need. And it would be great if it can help others who have the same need as me :)</p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li> <a href="http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa">http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa</a>
+</li> <li><a href="http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number">http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number</a></li>
+</ol></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1193,164 +1554,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Install phpMyAdmin on OS X 10.8 Mountain Lion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-08-10T10:39:53+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:39 am</span></time>
-        
-           | <a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
-
-<p>The first thing that we need to do is open terminal and type</p>
-
-<figure class='code'><figcaption><span>symbolic link for mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /var/mysql
-</span><span class='line'>
-</span><span class='line'>sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Extract the downloaded <code>phpMyAdmin-3.5.2.1-english.zip</code> into web folder and rename as <code>phpMyAdmin</code>. So now we should have <code>~/Sites/phpMyAdmin</code> directory.</p>
-
-<p>On browser, open : <a href="http://localhost/~username/phpmyadmin">http://localhost/~username/phpmyadmin</a></p>
-
-<p><img class="center" src="/images/post/2012-08-10-phpmyadmin.png"></p>
-
-<p>Now we can login and administer MySQL database.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Install MySQL on OS X 10.8 Mountain Lion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-08-09T10:23:09+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:23 am</span></time>
-        
-           | <a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>To install mysql the first thing that we need to do is download mysql installer on the <a href="http://dev.mysql.com/downloads/mysql/">mysql website</a>. In that web site we can see several versions of mysql. We will use Mac OS X ver. 10.6 (x86, 64-bit), DMG Archive. When we open the <code>mysql-5.5.27-osx10.6-x86_64.dmg</code> file, we will find 3 package installers.</p>
-
-<p><img class="center" src="/images/post/2012-08-09-msqlpkg.png"></p>
-
-<p>Install all the three packages with the following order :</p>
-
-<ol>
-<li>mysql-5.5.27-osx10.6-x86_64.pkg</li>
-<li>MySQLStartupItem.pkg</li>
-<li>MySQL.prefPane</li>
-</ol>
-
-
-<p>To start/stop MySQL we can use GUI tool from <code>System Preferences > MySQL</code></p>
-
-<p><img class="center" src="/images/post/2012-08-09-mysql-service.png"></p>
-
-<p>We can also start/stop MySQL via terminal</p>
-
-<figure class='code'><figcaption><span>start mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server start
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>stop mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/support-files/mysql.server stop
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/local/mysql/bin/mysql -v
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In order to use MySQL command without have to specify MySQL installation full path, we need to add MySQL installation directory to shell path.</p>
-
-<figure class='code'><figcaption><span>bash profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
-</span><span class='line'>vi .bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/mysql/bin:$PATH&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then reload the new PATH</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">source</span> ~/.bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>test get mysql version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -v
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>set mysql password</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
-</span><span class='line'>/usr/local/mysql/bin/mysqladmin -u root password <span class="s1">&#39;yourpassword&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1375,6 +1578,14 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Mono Multiple Application on a Virtual Host</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Mono Mod_mono Apache2 on Ubuntu</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a>
       </li>
     
@@ -1392,14 +1603,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     
       <li class="post">
         <a href="/blog/2016/03/09/math-in-web/">Math in Web</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">Deploying iOS App to Real Device</a>
       </li>
     
   </ul>
