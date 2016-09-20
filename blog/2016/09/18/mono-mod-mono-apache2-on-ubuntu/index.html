@@ -99,7 +99,10 @@ article img, article video, article .flash-video{
   </header>
 
 
-<div class="entry-content"><p>Previously I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did on Ubuntu. The details environment I use :</p>
+<div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
+Previously I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did on Ubuntu.</p>
+
+<p>The details environment I use :</p>
 
 <ol>
 <li>Ubuntu 14.04 LTS</li>
@@ -260,7 +263,7 @@ We should have the page displayed current date time.</li>
 
 <pre><code class="` bash"> $ sudo mkdir /etc/mono/registry
 </code></pre></li>
-<li><p>If getting System.UnauthorizedAccessException Access to the path <code>/etc/mono/registry</code>, give access to it.</p>
+<li><p>If getting <code>System.UnauthorizedAccessException</code> access to the path <code>/etc/mono/registry</code>, give access to it as its need, for example</p>
 
 <pre><code class="`` bash">  $ chmod uog+rw /etc/mono/registry
 </code></pre></li>
