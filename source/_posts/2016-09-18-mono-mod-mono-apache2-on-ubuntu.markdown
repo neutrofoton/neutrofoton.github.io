@@ -5,7 +5,11 @@ date: 2016-09-18 08:34:23 +0700
 comments: true
 categories: [linux,csharp,mono]
 ---
-Previously I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did on Ubuntu. The details environment I use :
+{% img left /images/logo/mono.png %}
+Previously I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did on Ubuntu.
+
+
+The details environment I use :
 
 1. Ubuntu 14.04 LTS
 2. Mono JIT compiler version 4.4.2
@@ -167,7 +171,7 @@ To configure virtual host application, the steps are
     $ sudo mkdir /etc/mono/registry
     ```
 
-4. If getting System.UnauthorizedAccessException Access to the path <code>/etc/mono/registry</code>, give access to it.
+4. If getting <code>System.UnauthorizedAccessException</code> access to the path <code>/etc/mono/registry</code>, give access to it as its need, for example
 
      ``` bash
      $ chmod uog+rw /etc/mono/registry
