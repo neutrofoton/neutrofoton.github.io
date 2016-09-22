@@ -6,12 +6,11 @@ comments: true
 categories: [linux,csharp,mono]
 ---
 {% img left /images/logo/mono.png %}
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let's say I have the following virtual host config
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let's say we have a scenario Application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code> with virtual host config as follow
 
-1. Application port 99
-2. Default document root <code>/var/www/vhosts/defaultsite/root</code>
 
 ``` xml
+
 <VirtualHost *:99>
     ServerAdmin admin@test.com
     ServerName  neutro.local
@@ -29,12 +28,12 @@ On my previous post I wrote how to configure application virtual host. We can ha
     DirectoryIndex  Default.aspx index.aspx index.html
 
     <Location "/">
-    	Allow from all
-    	Order allow,deny
-   	MonoSetServerAlias neutro.local
-    	SetHandler mono
-    	SetOutputFilter DEFLATE
-    	SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
     </Location>
 
     <IfModule mod_deflate.c>
@@ -46,15 +45,13 @@ On my previous post I wrote how to configure application virtual host. We can ha
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+
 ```
 
-We are going to add 2 more applications to this virtual host
+To configure virtual host have multiple applications, we have to modify the site config file as follow. We are going to add 2 applications to this virtual host
 
-1. <code>/project1</code>, with physical application's files in <code>/home/neutro/Workspace/dotnet/project1</code>
-2. <code>/project2</code>, with physical application's files in <code>/home/neutro/Workspace/dotnet/project2</code>
-
-To do that we have to modify the site config file as follow
 ``` xml
+
 <VirtualHost *:99>
     ServerAdmin admin@test.com
     ServerName  neutro.local
@@ -72,12 +69,12 @@ To do that we have to modify the site config file as follow
     DirectoryIndex  Default.aspx index.aspx index.html
 
     <Location "/">
-    	Allow from all
-    	Order allow,deny
-   	MonoSetServerAlias neutro.local
-    	SetHandler mono
-    	SetOutputFilter DEFLATE
-    	SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
     </Location>
 
     Alias   /project1  "/home/neutro/Workspace/dotnet/project1"
@@ -115,9 +112,28 @@ To do that we have to modify the site config file as follow
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+
 ```
 
-After modifying the config file, we need to register the application in <code>/etc/mono-server4/debian.webapp</code>
+In the new virtual host configuration :
+
+1. <code>/project1</code>, with physical application's files in <code>/home/neutro/Workspace/dotnet/project1</code>
+2. <code>/project2</code>, with physical application's files in <code>/home/neutro/Workspace/dotnet/project2</code>
+
+Let's assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code>
+
+We need to give access to both folders and theirs file contents
+
+``` bash
+$ find project1 -type d -exec chmod 755 {} \;
+$ find project1 -type f -exec chmod 644 {} \;
+
+$ find project2 -type d -exec chmod 755 {} \;
+$ find project2 -type f -exec chmod 644 {} \;
+
+```
+
+After modifying the config file and give access to application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code>
 
 ``` xml
 <apps>
@@ -135,6 +151,8 @@ After modifying the config file, we need to register the application in <code>/e
     </web-application>
 </apps>
 ```
+
+The final step is restart apache, and now we should be able to open in browser http://localhost:99/project1 or http://localhost:99/project2.
 
 ## References
 1. http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono
