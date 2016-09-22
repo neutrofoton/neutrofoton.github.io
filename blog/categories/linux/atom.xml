@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-09-20T08:09:54+07:00</updated>
+  <updated>2016-09-22T18:19:05+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -19,15 +19,10 @@
     <updated>2016-09-19T22:06:13+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let&rsquo;s say I have the following virtual host config</p>
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario Application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code> with virtual host config as follow</p>
 
-<ol>
-<li>Application port 99</li>
-<li>Default document root <code>/var/www/vhosts/defaultsite/root</code></li>
-</ol>
-
-
-<pre><code class="xml">&lt;VirtualHost *:99&gt;
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
     ServerAdmin admin@test.com
     ServerName  neutro.local
     ServerAlias neutrofoton.com *.neutrofoton.com
@@ -44,12 +39,12 @@ On my previous post I wrote how to configure application virtual host. We can ha
     DirectoryIndex  Default.aspx index.aspx index.html
 
     &lt;Location "/"&gt;
-        Allow from all
-        Order allow,deny
+      Allow from all
+      Order allow,deny
     MonoSetServerAlias neutro.local
-        SetHandler mono
-        SetOutputFilter DEFLATE
-        SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
     &lt;/Location&gt;
 
     &lt;IfModule mod_deflate.c&gt;
@@ -63,7 +58,72 @@ On my previous post I wrote how to configure application virtual host. We can ha
 &lt;/VirtualHost&gt;
 </code></pre>
 
-<p>We are going to add 2 more applications to this virtual host</p>
+<p>To configure virtual host have multiple applications, we have to modify the site config file as follow. We are going to add 2 applications to this virtual host</p>
+
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
+    ServerAdmin admin@test.com
+    ServerName  neutro.local
+    ServerAlias neutrofoton.com *.neutrofoton.com
+
+    MonoServerPath neutro.local "/usr/bin/mod-mono-server4"
+    MonoDebug neutro.local true
+    MonoSetEnv neutro.local MONO_IOMAP=all
+    MonoApplications neutro.local "/:/var/www/vhosts/defaultsite/root"
+
+    MonoAutoApplication disabled
+    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+
+    DocumentRoot    /var/www/vhosts/defaultsite/root
+    DirectoryIndex  Default.aspx index.aspx index.html
+
+    &lt;Location "/"&gt;
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+    &lt;/Location&gt;
+
+    Alias   /project1  "/home/neutro/Workspace/dotnet/project1"
+    MonoApplications project1 "/project1:/home/neutro/Workspace/dotnet/project1"
+    MonoServerPath project1 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project1"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project1
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    Alias   /project2  "/home/neutro/Workspace/dotnet/project2"
+    MonoApplications project2 "/project2:/home/neutro/Workspace/dotnet/project2"
+    MonoServerPath project2 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project2"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project2
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    &lt;IfModule mod_deflate.c&gt;
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+    &lt;/IfModule&gt;
+
+    LogLevel    debug
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In the new virtual host configuration :</p>
 
 <ol>
 <li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
@@ -71,134 +131,18 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </ol>
 
 
-<p>To do that we have to modify the site config file as follow
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
-</span><span class='line'>    ServerAdmin <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&amp;#x6d;&amp;#x61;&amp;#x69;&amp;#108;&amp;#116;&amp;#111;&amp;#x3a;&amp;#97;&amp;#x64;&amp;#x6d;&amp;#105;&amp;#x6e;&amp;#64;&amp;#x74;&amp;#x65;&amp;#x73;&amp;#116;&amp;#46;&amp;#x63;&amp;#x6f;&amp;#109;&quot;</span><span class="nt">&gt;</span><span class="ni">&amp;#97;&amp;#100;&amp;#109;&amp;#105;&amp;#x6e;&amp;#x40;&amp;#116;&amp;#101;&amp;#x73;&amp;#116;&amp;#x2e;&amp;#99;&amp;#x6f;&amp;#109;</span><span class="nt">&lt;/a&gt;</span>
-</span><span class='line'>    ServerName  neutro.local
-</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com<span class="nt">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
-</span><span class='line'>MonoDebug neutro.local true
-</span><span class='line'>MonoSetEnv neutro.local MONO_IOMAP=all
-</span><span class='line'>MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
-</span><span class='line'>
-</span><span class='line'>MonoAutoApplication disabled
-</span><span class='line'>AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
-</span><span class='line'>
-</span><span class='line'>DocumentRoot    /var/www/vhosts/defaultsite/root
-</span><span class='line'>DirectoryIndex  Default.aspx index.aspx index.html
-</span><span class='line'>
-</span><span class='line'><span class="ni">&amp;lt;</span>Location &quot;/&quot;<span class="ni">&amp;gt;</span>
-</span><span class='line'>    Allow from all
-</span><span class='line'>    Order allow,deny
-</span><span class='line'>MonoSetServerAlias neutro.local
-</span><span class='line'>    SetHandler mono
-</span><span class='line'>    SetOutputFilter DEFLATE
-</span><span class='line'>    SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
-</span><span class='line'><span class="ni">&amp;lt;</span>/Location<span class="ni">&amp;gt;</span>
-</span><span class='line'>
-</span><span class='line'>Alias   /project1  &quot;/home/neutro/Workspace/dotnet/project1&quot;
-</span><span class='line'>MonoApplications project1 &quot;/project1:/home/neutro/Workspace/dotnet/project1&quot;
-</span><span class='line'>MonoServerPath project1 &quot;/usr/bin/mod-mono-server4&quot;
-</span><span class='line'><span class="ni">&amp;lt;</span>Location &quot;/project1&quot;<span class="ni">&amp;gt;</span>
-</span><span class='line'>  Allow from all
-</span><span class='line'>  Order allow,deny
-</span><span class='line'>  MonoSetServerAlias project1
-</span><span class='line'>  SetHandler mono
-</span><span class='line'>  SetOutputFilter DEFLATE
-</span><span class='line'>  SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
-</span><span class='line'>  Require all granted
-</span><span class='line'><span class="ni">&amp;lt;</span>/Location<span class="ni">&amp;gt;</span>
-</span><span class='line'>
-</span><span class='line'>Alias   /project2  &quot;/home/neutro/Workspace/dotnet/project2&quot;
-</span><span class='line'>MonoApplications project2 &quot;/project2:/home/neutro/Workspace/dotnet/project2&quot;
-</span><span class='line'>MonoServerPath project2 &quot;/usr/bin/mod-mono-server4&quot;
-</span><span class='line'><span class="ni">&amp;lt;</span>Location &quot;/project2&quot;<span class="ni">&amp;gt;</span>
-</span><span class='line'>  Allow from all
-</span><span class='line'>  Order allow,deny
-</span><span class='line'>  MonoSetServerAlias project2
-</span><span class='line'>  SetHandler mono
-</span><span class='line'>  SetOutputFilter DEFLATE
-</span><span class='line'>  SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
-</span><span class='line'>  Require all granted
-</span><span class='line'><span class="ni">&amp;lt;</span>/Location<span class="ni">&amp;gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="ni">&amp;lt;</span>IfModule mod_deflate.c<span class="ni">&amp;gt;</span>
-</span><span class='line'>  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
-</span><span class='line'><span class="ni">&amp;lt;</span>/IfModule<span class="ni">&amp;gt;</span>
-</span><span class='line'>
-</span><span class='line'>LogLevel    debug
-</span><span class='line'>
-</span><span class='line'>ErrorLog ${APACHE_LOG_DIR}/error.log
-</span><span class='line'>CustomLog ${APACHE_LOG_DIR}/access.log combined
-</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;/VirtualHost&gt;</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
 
-<p>After modifying the config file, we need to register the application in <code>/etc/mono-server4/debian.webapp</code></p>
+<p>We need to give access to both folders and theirs file contents</p>
+
+<pre><code class="bash">$ find project1 -type d -exec chmod 755 {} \;
+$ find project1 -type f -exec chmod 644 {} \;
+
+$ find project2 -type d -exec chmod 755 {} \;
+$ find project2 -type f -exec chmod 644 {} \;
+</code></pre>
+
+<p>After modifying the config file and give access to application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
 
 <pre><code class="xml">&lt;apps&gt;
    &lt;web-application&gt;
@@ -215,6 +159,8 @@ On my previous post I wrote how to configure application virtual host. We can ha
     &lt;/web-application&gt;
 &lt;/apps&gt;
 </code></pre>
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
 
 <h2>References</h2>
 

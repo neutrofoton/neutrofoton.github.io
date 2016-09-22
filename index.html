@@ -103,13 +103,7 @@ article img, article video, article .flash-video{
 
 
   <div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let&rsquo;s say I have the following virtual host config</p>
-
-<ol>
-<li>Application port 99</li>
-<li>Default document root <code>/var/www/vhosts/defaultsite/root</code></li>
-</ol>
-
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario Application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code> with virtual host config as follow</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -164,7 +158,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>      Allow from all
 </span><span class='line'>      Order allow,deny
-</span><span class='line'>      MonoSetServerAlias neutro.local
+</span><span class='line'>    MonoSetServerAlias neutro.local
 </span><span class='line'>      SetHandler mono
 </span><span class='line'>      SetOutputFilter DEFLATE
 </span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
@@ -182,15 +176,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>We are going to add 2 more applications to this virtual host</p>
-
-<ol>
-<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
-<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
-</ol>
-
-
-<p>To do that we have to modify the site config file as follow</p>
+<p>To configure virtual host have multiple applications, we have to modify the site config file as follow. We are going to add 2 applications to this virtual host</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -271,7 +257,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>      Allow from all
 </span><span class='line'>      Order allow,deny
-</span><span class='line'>      MonoSetServerAlias neutro.local
+</span><span class='line'>    MonoSetServerAlias neutro.local
 </span><span class='line'>      SetHandler mono
 </span><span class='line'>      SetOutputFilter DEFLATE
 </span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
@@ -315,7 +301,32 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>After modifying the config file, we need to register the application in <code>/etc/mono-server4/debian.webapp</code></p>
+<p>In the new virtual host configuration :</p>
+
+<ol>
+<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
+<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
+</ol>
+
+
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
+
+<p>We need to give access to both folders and theirs file contents</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>find project1 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project1 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>find project2 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project2 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After modifying the config file and give access to application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -347,6 +358,8 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span><span class='line'><span class="nt">&lt;/apps&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
 
 <h2>References</h2>
 
@@ -1852,7 +1865,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
   <h1>Me</h1>
   <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
   <p>
-    There are no many things to write about me here. Just the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+    No many things to write about me here, except the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
   </p>
 </section>
 <section>
