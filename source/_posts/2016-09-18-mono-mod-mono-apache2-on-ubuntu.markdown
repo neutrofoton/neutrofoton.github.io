@@ -6,8 +6,7 @@ comments: true
 categories: [linux,csharp,mono]
 ---
 {% img left /images/logo/mono.png %}
-Previously I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did on Ubuntu.
-
+I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.
 
 The details environment I use :
 
@@ -17,7 +16,7 @@ The details environment I use :
 
 
 ## Install Mono, Apache 2, Mod Mono
-To install Mono, the first step in add package repository to our system.
+To install Mono, the first step is add package repository to our system.
 
 ``` bash
 $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
@@ -28,7 +27,7 @@ $ sudo apt-get update
 
 ```
 
-To enable mod_mono installation on Ubuntu 13.10 and later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):
+To enable mod_mono installation on Ubuntu 13.10 or later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):
 
 ``` bash
 
@@ -44,19 +43,19 @@ $ sudo apt-get upgrade
 
 ```
 
-To install mono run the following command
+To install mono, run the following command
 
 ``` bash install mono
 $ sudo apt-get install mono-complete
 ```
 
-If we have not Apache 2 on our system, we need to install it first. Or we can check exist version <code>apache2 -v</code>
+If we do not have Apache 2 on our system, we need to install it first. Or we can check the existing version <code>apache2 -v</code>
 
 ``` bash install apache2
 $ sudo apt-get install apache2
 ```
 
-To be able to host ASP.NET application on apache, we need to install mod_mono. mod_mono is a module for the Apache HTTP Server that allows for hosting of ASP.NET pages and other assemblies on multiple platforms by use of Mono.
+To be able to host ASP.NET application on apache, we need to install <code>mod_mono</code>. <code>mod_mono</code> is a module for the Apache HTTP Server that allows us to host ASP.NET pages and other assemblies on multiple platforms by using Mono.
 
 To install Mod Mono and its dependencies run the following command
 
@@ -99,7 +98,7 @@ To configure virtual host application, the steps are
    We needed to grant permissions to the login user so that the user could copy or create files to the <code>hellodotnet</code> directory.  For our purposes we made the current user the owner of the directory
 
     ``` bash application directory
-    $ chown -R -v ubuntu /var/www/
+    $ chown -R -v your_user_name /var/www/
     ```
 
 2. Lets create a simple <code>/var/www/hellodotnet/index.aspx</code> file.
@@ -109,7 +108,7 @@ To configure virtual host application, the steps are
 
     ```
 
-3. Create sites configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code>
+3. Create a site configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code>
 
     ``` xml site configuration
        <VirtualHost *:81>
@@ -158,7 +157,7 @@ To configure virtual host application, the steps are
 ## Tips
 1. If we get the page not displayed, we can see the message on the page displayed, HTML error code, or any clue on apache logs located in <code>/var/log/apache2</code>
 
-2. If we get message access denied cannot access bin, simple change permission of the application site.
+2. If we get message access denied cannot access bin, simply change permission of the application site.
 
     ``` bash
     $ find hellodotnet -type d -exec chmod 755 {} \;

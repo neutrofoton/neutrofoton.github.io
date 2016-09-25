@@ -6,7 +6,7 @@ comments: true
 categories: [linux,csharp,mono]
 ---
 {% img left /images/logo/mono.png %}
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let's say we have a scenario Application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code> with virtual host config as follow
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let's say we have a scenario, having site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow
 
 
 ``` xml
@@ -48,7 +48,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 
 ```
 
-To configure virtual host have multiple applications, we have to modify the site config file as follow. We are going to add 2 applications to this virtual host
+The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, We are going to add 2 applications to this virtual host
 
 ``` xml
 
@@ -115,7 +115,7 @@ To configure virtual host have multiple applications, we have to modify the site
 
 ```
 
-In the new virtual host configuration :
+In the new virtual host configuration we have:
 
 1. <code>/project1</code>, with physical application's files in <code>/home/neutro/Workspace/dotnet/project1</code>
 2. <code>/project2</code>, with physical application's files in <code>/home/neutro/Workspace/dotnet/project2</code>
@@ -133,7 +133,7 @@ $ find project2 -type f -exec chmod 644 {} \;
 
 ```
 
-After modifying the config file and give access to application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code>
+After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code>
 
 ``` xml
 <apps>
