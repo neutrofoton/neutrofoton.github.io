@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-09-22T18:19:05+07:00</updated>
+  <updated>2016-09-25T09:27:26+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -19,7 +19,7 @@
     <updated>2016-09-19T22:06:13+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario Application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code> with virtual host config as follow</p>
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
 
 <pre><code class="xml">
 &lt;VirtualHost *:99&gt;
@@ -58,7 +58,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 &lt;/VirtualHost&gt;
 </code></pre>
 
-<p>To configure virtual host have multiple applications, we have to modify the site config file as follow. We are going to add 2 applications to this virtual host</p>
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, We are going to add 2 applications to this virtual host</p>
 
 <pre><code class="xml">
 &lt;VirtualHost *:99&gt;
@@ -123,7 +123,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 &lt;/VirtualHost&gt;
 </code></pre>
 
-<p>In the new virtual host configuration :</p>
+<p>In the new virtual host configuration we have:</p>
 
 <ol>
 <li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
@@ -142,7 +142,7 @@ $ find project2 -type d -exec chmod 755 {} \;
 $ find project2 -type f -exec chmod 644 {} \;
 </code></pre>
 
-<p>After modifying the config file and give access to application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
 
 <pre><code class="xml">&lt;apps&gt;
    &lt;web-application&gt;
@@ -177,7 +177,7 @@ $ find project2 -type f -exec chmod 644 {} \;
     <updated>2016-09-18T08:34:23+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
-Previously I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did on Ubuntu.</p>
+I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
 
 <p>The details environment I use :</p>
 
@@ -190,7 +190,7 @@ Previously I used to write a post about install and configure Mono on OS X Mount
 
 <h2>Install Mono, Apache 2, Mod Mono</h2>
 
-<p>To install Mono, the first step in add package repository to our system.</p>
+<p>To install Mono, the first step is add package repository to our system.</p>
 
 <pre><code class="bash">$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 
@@ -199,7 +199,7 @@ $ echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee
 $ sudo apt-get update
 </code></pre>
 
-<p>To enable mod_mono installation on Ubuntu 13.10 and later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):</p>
+<p>To enable mod_mono installation on Ubuntu 13.10 or later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):</p>
 
 <pre><code class="bash">
 $ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
@@ -211,17 +211,17 @@ $ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat 
 $ sudo apt-get upgrade
 </code></pre>
 
-<p>To install mono run the following command</p>
+<p>To install mono, run the following command</p>
 
 <pre><code class="bash install mono">$ sudo apt-get install mono-complete
 </code></pre>
 
-<p>If we have not Apache 2 on our system, we need to install it first. Or we can check exist version <code>apache2 -v</code></p>
+<p>If we do not have Apache 2 on our system, we need to install it first. Or we can check the existing version <code>apache2 -v</code></p>
 
 <pre><code class="bash install apache2">$ sudo apt-get install apache2
 </code></pre>
 
-<p>To be able to host ASP.NET application on apache, we need to install mod_mono. mod_mono is a module for the Apache HTTP Server that allows for hosting of ASP.NET pages and other assemblies on multiple platforms by use of Mono.</p>
+<p>To be able to host ASP.NET application on apache, we need to install <code>mod_mono</code>. <code>mod_mono</code> is a module for the Apache HTTP Server that allows us to host ASP.NET pages and other assemblies on multiple platforms by using Mono.</p>
 
 <p>To install Mod Mono and its dependencies run the following command</p>
 
@@ -260,13 +260,13 @@ In this sample I put my  application files in <code>/var/www/hellodotnet</code><
 
 <p>We needed to grant permissions to the login user so that the user could copy or create files to the <code>hellodotnet</code> directory.  For our purposes we made the current user the owner of the directory</p>
 
-<pre><code class="` bash application directory"> $ chown -R -v ubuntu /var/www/
+<pre><code class="` bash application directory"> $ chown -R -v your_user_name /var/www/
 </code></pre></li>
 <li><p>Lets create a simple <code>/var/www/hellodotnet/index.aspx</code> file.</p>
 
 <pre><code class="` html index.aspx"> &lt;center&gt;mod_mono is working:&lt;%=System.DateTime.Now.ToString()%&gt;&lt;/center&gt;
 </code></pre></li>
-<li><p>Create sites configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code></p>
+<li><p>Create a site configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code></p>
 
 <pre><code class="` xml site configuration">    &lt;VirtualHost *:81&gt;
        ServerName hellodotnet
@@ -314,7 +314,7 @@ We should have the page displayed current date time.</li>
 
 <ol>
 <li><p>If we get the page not displayed, we can see the message on the page displayed, HTML error code, or any clue on apache logs located in <code>/var/log/apache2</code></p></li>
-<li><p>If we get message access denied cannot access bin, simple change permission of the application site.</p>
+<li><p>If we get message access denied cannot access bin, simply change permission of the application site.</p>
 
 <pre><code class="` bash"> $ find hellodotnet -type d -exec chmod 755 {} \;
  $ find hellodotnet -type f -exec chmod 644 {} \;

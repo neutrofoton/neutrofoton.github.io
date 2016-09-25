@@ -100,7 +100,7 @@ article img, article video, article .flash-video{
 
 
 <div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario Application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code> with virtual host config as follow</p>
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -173,7 +173,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>To configure virtual host have multiple applications, we have to modify the site config file as follow. We are going to add 2 applications to this virtual host</p>
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, We are going to add 2 applications to this virtual host</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -298,7 +298,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In the new virtual host configuration :</p>
+<p>In the new virtual host configuration we have:</p>
 
 <ol>
 <li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
@@ -323,7 +323,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>After modifying the config file and give access to application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
