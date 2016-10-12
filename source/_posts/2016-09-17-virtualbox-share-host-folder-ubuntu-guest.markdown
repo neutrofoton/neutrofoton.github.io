@@ -3,7 +3,7 @@ layout: post
 title: "VirtualBox Share Host Folder Ubuntu Guest"
 date: 2016-09-17 10:41:13 +0700
 comments: true
-categories: [linux]
+categories: [linux,virtualbox]
 ---
 <a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.
 
