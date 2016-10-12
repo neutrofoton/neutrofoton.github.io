@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-09-25T09:27:26+07:00</updated>
+  <updated>2016-10-12T22:11:50+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -14,12 +14,60 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Ubuntu Server Does Not Recognize VirtualBox Adapter]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/"/>
+    <updated>2016-10-12T21:25:24+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter</id>
+    <content type="html"><![CDATA[<p>As we know, VirtualBox provides several adapters that we can add and be used by OS guest.
+At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.1 LTS (guest). The needs are, I want to be able to remote my Ubuntu from OS X terminal. I also want my Ubuntu guest can connect to internet. I have configured two network adapters for the guest (NAT and host-only).</p>
+
+<p>When I run</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ifconfig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first/default adapter (NAT) <code>enp0s3</code> is recognized without any problems by the guest. But not the second one (host-only). To make the second adapter visible, I have to run  a command</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo dhclient
+</span><span class='line'><span class="nv">$ </span>ifconfig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now I got both adapters <code>enp0s3</code> (NAT) and <code>enp0s8</code> (host-only) visible on terminal. And now I can ping and run ssh from host (OS X) to guest (Ubuntu server).</p>
+
+<p>In order to make it permanent, we need to edit <code>/etc/network/interfaces</code> with the following lines</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># The second network interface</span>
+</span><span class='line'>auto enp0s8
+</span><span class='line'>iface enp0s8 inet dhcp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then restart the network service by running</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo /etc/init.d/networking restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s my note for now and thanks for reading.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
     <updated>2016-09-19T22:06:13+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/mono.png">
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -92,7 +140,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, We are going to add 2 applications to this virtual host</p>
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2690,114 +2738,6 @@ Add the following line at the end of <code>mod_mono.conf</code>
   <li>http://blog.coultard.com/2012/04/developing-using-c-and-mono-on-mac.html</li>
   <li>http://www.ienablemuch.com/2010/10/aspnet-on-mac-os-x-snow-leopard-at-one.html</li>
 </ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
-    <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-09-14T12:36:00+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
-    <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
-
-<p>Extract the downloaded binary distribution onto <code>~/Download/apache-tomcat-7.0.30</code>.
-Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
-
-<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Move <code>~/Download/apache-tomcat-7.0.30 </code> to <code>/usr/local</code></p>
-
-<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mv ~/Downloads/apache-tomcat-7.0.30 /usr/local
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat. Then we also will change owner and make script executable</p>
-
-<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo ln -s /usr/local/apache-tomcat-7.0.30/ /Library/Tomcat
-</span><span class='line'>sudo chown -R neutrocode /Library/Tomcat
-</span><span class='line'>sudo chmod +x /Library/Tomcat/bin/*.sh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The next step is creating user for tomcat admin by editing <code>tomcat-user.xml</code></p>
-
-<figure class='code'><figcaption><span>tomcat installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>vi /Library/Tomcat/conf/tomcat-users.xml
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>tomcat-users.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;admin-gui&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;admin-script&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-gui&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-script&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-jmx&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&quot;manager-status&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&quot;admin&quot;</span> <span class="na">password=</span><span class="s">&quot;password&quot;</span> <span class="na">roles=</span><span class="s">&quot;admin-gui,admin-script&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&quot;manager&quot;</span> <span class="na">password=</span><span class="s">&quot;password&quot;</span> <span class="na">roles=</span><span class="s">&quot;manager-gui,manager-script,manager-jmx,manager-status&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Add the following text in current user profile .bash_profile</p>
-
-<figure class='code'><figcaption><span>.bash_profile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">CATALINA_HOME</span><span class="o">=</span>/Library/Tomcat
-</span><span class='line'><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>:<span class="nv">$PATH</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Start the server with the following command :</p>
-
-<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/catalina.sh start
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>or</p>
-
-<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/startup.sh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="center" src="http://neutrofoton.github.io/images/post/2012-09-14-tomcat.png"></p>
-
-<p>Stop the server with the following command :</p>
-
-<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/catalina.sh stop
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>or</p>
-
-<figure class='code'><figcaption><span>start tomcat</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$CATALINA_HOME</span>/bin/shutdown.sh
-</span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
   </entry>

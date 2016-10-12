@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mono | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/mono/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-09-25T09:27:26+07:00</updated>
+  <updated>2016-10-12T22:11:50+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -19,7 +19,7 @@
     <updated>2016-09-19T22:06:13+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
 
 <pre><code class="xml">
 &lt;VirtualHost *:99&gt;
@@ -58,7 +58,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 &lt;/VirtualHost&gt;
 </code></pre>
 
-<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, We are going to add 2 applications to this virtual host</p>
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
 
 <pre><code class="xml">
 &lt;VirtualHost *:99&gt;
