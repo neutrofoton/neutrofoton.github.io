@@ -3,7 +3,7 @@ layout: post
 title: "Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio"
 date: 2016-03-27 21:38:49 +0800
 comments: true
-categories: [xcode, code block, visual studio, osx, linux, windows, c++]
+categories: [xcode, code block, visual studio, osx, linux, windows, cpp]
 ---
 
 {% img left /images/post/2016-03-27-boost.png %}

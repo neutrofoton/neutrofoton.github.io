@@ -3,7 +3,7 @@ layout: post
 title: "Lambda in C++"
 date: 2016-05-11 23:15:18 +0700
 comments: true
-categories: [c++]
+categories: [cpp]
 ---
 
 {% img left /images/logo/lambda.png %}
