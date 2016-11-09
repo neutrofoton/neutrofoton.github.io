@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/</loc>
+<lastmod>2016-11-09T12:40:34+07:00</lastmod>
+</url>
+<url>
 <loc>http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/</loc>
 <lastmod>2016-10-12T21:25:24+07:00</lastmod>
 </url>
@@ -192,5 +196,14 @@
 </url>
 <url>
 <loc>http://neutrofoton.github.io/blog/categories/virtualbox/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/git/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/posts/2/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/posts/3/</loc>
 </url>
 </urlset>
