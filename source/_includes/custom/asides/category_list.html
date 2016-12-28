@@ -1,3 +1,4 @@
+<!--
 <section>
   <h1>Categories</h1>
   <ul id="category-list">
@@ -5,5 +6,12 @@
     {% capture category_url %}/{{ site.category_dir }}/{{ category | first | slugize | downcase | replace:' ','-' | append:'/index.html'}}{% endcapture %}
     <li><a href="{{ root_url | append:category_url }}">{{ category | first }} ( {{ category | last | size }} )</a></li>
     {% endfor %}
+  </ul>
+</section>
+-->
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    {% category_list %}
   </ul>
 </section>
