@@ -3,7 +3,7 @@ layout: post
 title: "Mono Multiple Application on a Virtual Host"
 date: 2016-09-19 22:06:13 +0700
 comments: true
-categories: [linux,csharp,mono]
+categories: [linux,csharp,mono,apache]
 ---
 {% img left /images/logo/mono.png %}
 On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let's say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow

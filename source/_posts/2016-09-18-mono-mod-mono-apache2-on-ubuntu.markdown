@@ -3,7 +3,7 @@ layout: post
 title: "Mono mod_mono Apache2 on Ubuntu"
 date: 2016-09-18 08:34:23 +0700
 comments: true
-categories: [linux,csharp,mono]
+categories: [linux,csharp,mono,apache]
 ---
 {% img left /images/logo/mono.png %}
 I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.
