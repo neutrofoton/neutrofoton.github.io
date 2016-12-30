@@ -7,7 +7,7 @@ categories: [cpp]
 ---
 {% img left /images/logo/cpp-logo.png %}
 
-A <code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.
+<code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.
 
 The template class definition of <code>priority_queue</code> is as follow
 
