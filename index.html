@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="A priority_queue is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO &hellip;">
+  <meta name="description" content="std::set is a C++ STL container that store unique elements following a specific order. It is defined in the set header file. Benefits and Features &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +83,144 @@ article img, article video, article .flash-video{
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">C++ Set With Custom Comparator</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-12-30T09:42:04+07:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:42 am</span></time>
+        
+           | <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/cpp-logo.png"></p>
+
+<p><code>std::set</code> is a C++ STL container that store unique elements following a specific order. It is defined in the <code>set</code> header file.
+<br/></p>
+
+<p>Benefits and Features of <code>std::set</code>[3]:</p>
+
+<p><ol>
+<li>It’s doesn’t allow duplicate elements i.e. it only contains unique elements</li>
+<li>
+<code>std::set</code> can contain element of any specified type in template argument
+</li>
+<li>
+<code>std::set</code> internally store elements in balanced binary tree
+</li>
+<li>
+ By default <code>std::set</code> uses the operator <code> &lt; </code> for comparing two elements and but if user passes the external sorting criteria i.e. comparator then it uses it instead of default operator <code> &lt; </code>.
+</li>
+<li>
+<code>std::set</code> will keep the inserted elements in sorted order based on the assigned sorting criteria i.e. either by default criteria operator <code> &lt; </code> or by passed comparator (if passed).
+</li></p>
+
+<p>In this post the samples only limited to <code>std::set</code> that use custom comparator and store complex object instead of basic data type. The complex object that we will use is reusing class <code>Person</code> on previous post.</p>
+
+<p>Let&rsquo;s create custom class that handles comparation process</p>
+
+<p><figure class='code'><figcaption><span>CustomCompare</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#ifndef CustomCompare_h</span>
+</span><span class='line'><span class="cp">#define CustomCompare_h</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#include &quot;Person.hpp&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">CustomCompare</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/<em> CustomCompare_h </em>/</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>The following code is an example how to use the comparator class in <code>std:set</code>
+<figure class='code'><figcaption><span>sample how to use</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SampleSetWithCustomCompare</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">set</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span><span class="n">CustomCompare</span><span class="o">&gt;</span> <span class="n">setOfPersons</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 1&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 2&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 3&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 4&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="n">set</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span><span class="n">CustomCompare</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">setOfPersons</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">setOfPersons</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , age : &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">getAge</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.cplusplus.com/reference/set/set/">http://www.cplusplus.com/reference/set/set/</a></li>
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html</a></li>
+<li><a href="http://thispointer.com/stdset-tutorial-part-1-set-usage-details-with-default-sorting-criteria/">http://thispointer.com/stdset-tutorial-part-1-set-usage-details-with-default-sorting-criteria/</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a></h1>
     
     
@@ -102,7 +240,9 @@ article img, article video, article .flash-video{
   </header>
 
 
-  <div class="entry-content"><p>A <code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
+  <div class="entry-content"><p><img class="left" src="/images/logo/cpp-logo.png"></p>
+
+<p>A <code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
 
 <p>The template class definition of <code>priority_queue</code> is as follow</p>
 
@@ -516,8 +656,9 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
 <h2>References</h2>
 
 <ol>
-<li><a href="https://support.microsoft.com/en-us/kb/837697">https://support.microsoft.com/en-us/kb/837697</a></li>
 <li><a href="http://en.cppreference.com/w/cpp/container/priority_queue">http://en.cppreference.com/w/cpp/container/priority_queue</a></li>
+<li><a href="https://support.microsoft.com/en-us/kb/837697">https://support.microsoft.com/en-us/kb/837697</a></li>
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html</a></li>
 </ol>
 
 </div>
@@ -1973,129 +2114,6 @@ As on OS X and Ubuntu, the last step quite take time.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/09/math-in-web/">Math in Web</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-09T21:41:47+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:41 pm</span></time>
-        
-           | <a href="/blog/2016/03/09/math-in-web/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>There are several frameworks that can be used to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
-
-<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript frameworks that can render LaTeX expression to beautiful math equation in browser.</p>
-
-<p>The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
-To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code></p>
-
-<figure class='code'><figcaption><span>KaTeX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;div&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq1&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq2&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq3&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq4&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq5&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq6&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq7&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>KaTeX sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;c = \\pm\\sqrt{a^2 + b^2}&quot;</span><span class="p">,</span> <span class="nx">eq1</span><span class="p">);</span>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(a,b,c) = (a^2+b^2+c^2)^3&quot;</span><span class="p">,</span> <span class="nx">eq2</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx&quot;</span><span class="p">,</span> <span class="nx">eq3</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}&quot;</span><span class="p">,</span> <span class="nx">eq4</span><span class="p">);</span>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\oint \\vec{F} \\cdot d\\vec{s}=0&quot;</span><span class="p">,</span> <span class="nx">eq5</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)&quot;</span><span class="p">,</span> <span class="nx">eq6</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"/></p>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
-
-
-
-
-<div>
-<p><span class="katex" id="eq1"></span></p>
-<p><span class="katex" id="eq2"></span></p>
-<p><span class="katex" id="eq3"></span></p>
-<p><span class="katex" id="eq4"></span></p>
-<p><span class="katex" id="eq5"></span></p>
-<p><span class="katex" id="eq6"></span></p>
-<p><span class="katex" id="eq7"></span></p>
-</div>
-
-
-
-
-<script>
-
-    katex.render("c = \\pm\\sqrt{a^2 + b^2}", eq1);
-    katex.render("f(a,b,c) = (a^2+b^2+c^2)^3", eq2);
-
-    katex.render("\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx", eq3);
-
-    katex.render("f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}", eq4);
-    katex.render("\\oint \\vec{F} \\cdot d\\vec{s}=0", eq5);
-
-    katex.render("\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)", eq6);
-</script>
-
-
-<p>The comparison between <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> can be found <a href="http://www.intmath.com/cg5/katex-mathjax-comparison.php">here</a>. At the time of writing this blog post, I got <a href="https://khan.github.io/KaTeX/">KaTeX</a> is faster than <a href="https://www.mathjax.org/">MathJax</a>. But <a href="https://khan.github.io/KaTeX/">KaTeX</a> can not render a few expressions that <a href="https://www.mathjax.org/">MathJax</a> can.</p>
-
-<p>The comparison results could be changed in the next. Since both of them are actively developed.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2116,6 +2134,10 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">C++ Set With Custom Comparator</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a>
@@ -2139,10 +2161,6 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
     
       <li class="post">
         <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a>
       </li>
     
   </ul>
@@ -2216,7 +2234,7 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
     <li><a href="/blog/categories/windows/index.html">windows ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/cpp/index.html">cpp ( 3 )</a></li>
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 4 )</a></li>
     
     
     <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
@@ -2233,7 +2251,7 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
     <li class='category'><a href='/blog/categories/apache/'>apache (4)</a></li>
 <li class='category'><a href='/blog/categories/aspnet/'>aspnet (1)</a></li>
 <li class='category'><a href='/blog/categories/code-block/'>code block (1)</a></li>
-<li class='category'><a href='/blog/categories/cpp/'>cpp (3)</a></li>
+<li class='category'><a href='/blog/categories/cpp/'>cpp (4)</a></li>
 <li class='category'><a href='/blog/categories/csharp/'>csharp (10)</a></li>
 <li class='category'><a href='/blog/categories/eclipse/'>eclipse (2)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (1)</a></li>

@@ -9,8 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="At some point we need to store information when dealing with web application.
-Storing information in web application can be implemented in some ways &hellip;">
+  <meta name="description" content="In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +77,175 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/">Generic Singleton Pattern in C#</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-08-29T14:27:41+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:27 pm</span></time>
+        
+           | <a href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
+
+<p>Honestly in my daily coding activity, sometimes I need to implement singleton pattern. Jon wrote a good singleton article in C# <a href="http://www.yoda.arachsys.com/csharp/singleton.html">here</a>. Another case I want to implement singleton pattern in generic way. I convert what has been wrotten by Jon into generic.</p>
+
+<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Generic class which makes non singleton class to be singleton.</span>
+</span><span class='line'>    <span class="c1">/// Calling singleton instance of class should be Singleton&lt;T&gt;.Instance, otherwise the returned class is not singleton one.    ///</span>
+</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// &lt;typeparam name=&quot;T&quot;&gt;Genric class type to be singletonized&lt;/typeparam&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Singleton</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Private constuctor to avoid this class instantiated</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="n">Singleton</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Property to get access to singleton instance</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Instance</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">get</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Nested</span><span class="p">.</span><span class="n">instance</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>        <span class="c1">/// Private nested class which acts as singleton class instantiator. This class should not be accessible outside &lt;see cref=&quot;Singleton&lt;T&gt;&quot;/&gt;</span>
+</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>        <span class="k">class</span> <span class="nc">Nested</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>            <span class="c1">/// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit</span>
+</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>            <span class="k">static</span> <span class="nf">Nested</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>            <span class="c1">/// Static instance variable</span>
+</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>            <span class="k">internal</span> <span class="k">static</span> <span class="k">readonly</span> <span class="n">T</span> <span class="n">instance</span> <span class="p">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following snipped code is a sample how to use the generic singleton class.</p>
+
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Processor</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">Execute</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">Processor</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From the sample above is shown that we can make a non singleton class to be singleton at runtime. But we can still create a non singleton instance as we need. That’s really nice flexible thing.</p>
+
+<h3>Reference</h3>
+
+
+<p>[1] <a href="http://en.wikipedia.org/wiki/Singleton_pattern">http://en.wikipedia.org/wiki/Singleton_pattern</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1451,45 +1619,9 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/03/first-post/">First Post</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-08-03T18:29:08+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>6:29 pm</span></time>
-        
-           | <a href="/blog/2012/08/03/first-post/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/03/first-post/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Alhamdulillah, It is friday and finally my blog is up and can be accessed on internet after for couple days just stay in localhost :) . One of the reasons because I did upgrade (actually did fresh install) my OS to Mountain Lion</p>
-
-<p><img class="left" src="/images/post/MountainLionHero1.png" title="mountain lion" ></p>
-
-<p>At the time of this first post, it is Ramadhan fasting day. So I would like to say happy fasting for all of moslem reader. Hopefully I can post more articles in this blog which can be useful for me and others :)</p>
-
-<p>Anyway thanks for visiting my blog and see you in the next post.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/4">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1509,6 +1641,10 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">C++ Set With Custom Comparator</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a>
@@ -1532,10 +1668,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     
       <li class="post">
         <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a>
       </li>
     
   </ul>
@@ -1609,7 +1741,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     <li><a href="/blog/categories/windows/index.html">windows ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/cpp/index.html">cpp ( 3 )</a></li>
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 4 )</a></li>
     
     
     <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
@@ -1626,7 +1758,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     <li class='category'><a href='/blog/categories/apache/'>apache (4)</a></li>
 <li class='category'><a href='/blog/categories/aspnet/'>aspnet (1)</a></li>
 <li class='category'><a href='/blog/categories/code-block/'>code block (1)</a></li>
-<li class='category'><a href='/blog/categories/cpp/'>cpp (3)</a></li>
+<li class='category'><a href='/blog/categories/cpp/'>cpp (4)</a></li>
 <li class='category'><a href='/blog/categories/csharp/'>csharp (10)</a></li>
 <li class='category'><a href='/blog/categories/eclipse/'>eclipse (2)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (1)</a></li>

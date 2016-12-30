@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ASP.NET Session State in Database - neutrofoton</title>
+  <title>C++ Set With Custom Comparator - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="At some point we need to store information when dealing with web application.
-Storing information in web application can be implemented in some ways &hellip;">
+  <meta name="description" content="std::set is a C++ STL container that store unique elements following a specific order. It is defined in the set header file. Benefits and Features &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ Storing information in web application can be implemented in some ways &hellip;"
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -81,7 +80,7 @@ article img, article video, article .flash-video{
   
   <header>
     
-      <h1 class="entry-title">ASP.NET Session State in Database</h1>
+      <h1 class="entry-title">C++ Set With Custom Comparator</h1>
     
     
       <p class="meta">
@@ -90,7 +89,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2013-07-22T14:12:34+07:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>2:12 pm</span></time>
+<time class='entry-date' datetime='2016-12-30T09:42:04+07:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:42 am</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
@@ -100,66 +99,33 @@ article img, article video, article .flash-video{
   </header>
 
 
-<div class="entry-content"><p>At some point we need to store information when dealing with web application.
-Storing information in web application can be implemented in some ways such as session and cookies.</p>
+<div class="entry-content"><p><img class="left" src="/images/logo/cpp-logo.png"></p>
 
-<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
+<p><code>std::set</code> is a C++ STL container that store unique elements following a specific order. It is defined in the <code>set</code> header file.
+<br/></p>
 
-<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
+<p>Benefits and Features of <code>std::set</code>[3]:</p>
 
-<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
-First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
+<p><ol>
+<li>It’s doesn’t allow duplicate elements i.e. it only contains unique elements</li>
+<li>
+<code>std::set</code> can contain element of any specified type in template argument
+</li>
+<li>
+<code>std::set</code> internally store elements in balanced binary tree
+</li>
+<li>
+ By default <code>std::set</code> uses the operator <code> &lt; </code> for comparing two elements and but if user passes the external sorting criteria i.e. comparator then it uses it instead of default operator <code> &lt; </code>.
+</li>
+<li>
+<code>std::set</code> will keep the inserted elements in sorted order based on the assigned sorting criteria i.e. either by default criteria operator <code> &lt; </code> or by passed comparator (if passed).
+</li></p>
 
-<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
+<p>In this post the samples only limited to <code>std::set</code> that use custom comparator and store complex object instead of basic data type. The complex object that we will use is reusing class <code>Person</code> on previous post.</p>
 
-<figure class='code'><figcaption><span>aspnet_regsql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
-</span></code></pre></td></tr></table></div></figure>
+<p>Let&rsquo;s create custom class that handles comparation process</p>
 
-
-
-
-<figure class='code'><figcaption><span>generate session state database</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The command will create database, tables and store procedures.
-In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
-
-<figure class='code'><figcaption><span>session state configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;system.web&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;sessionstate</span> <span class="na">mode=</span><span class="s">&quot;SQLServer&quot;</span> <span class="na">allowcustomsqldatabase=</span><span class="s">&quot;true&quot;</span> <span class="na">sqlconnectionstring=</span><span class="s">&quot;Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}&quot;</span> <span class="na">cookieless=</span><span class="s">&quot;false&quot;</span> <span class="na">timeout=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">&lt;/sessionstate&gt;</span>
-</span><span class='line'><span class="nt">&lt;/system.web&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To test our session storage, just create simple aspx page.</p>
-
-<figure class='code'><figcaption><span>sample.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnAddSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Add Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnAddSession_Click&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnRemoveSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Remove Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnRemoveSession_Click&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;br&gt;</span>
-</span><span class='line'><span class="nt">&lt;asp:label</span> <span class="na">id=</span><span class="s">&quot;ctlLblSessionDisplay&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;/asp:label&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>sample.aspx.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><figcaption><span>CustomCompare</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -176,24 +142,69 @@ In web.config, don’t forget to add session state configuration by pointing the
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">Page_Load</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">]</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">&quot;NO Session&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#ifndef CustomCompare_h</span>
+</span><span class='line'><span class="cp">#define CustomCompare_h</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnAddSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">,</span> <span class="s">&quot;Hello&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cp">#include &quot;Person.hpp&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnRemoveSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="k">struct</span> <span class="n">CustomCompare</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/<em> CustomCompare_h </em>/</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>The following code is an example how to use the comparator class in <code>std:set</code>
+<figure class='code'><figcaption><span>sample how to use</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SampleSetWithCustomCompare</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">set</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span><span class="n">CustomCompare</span><span class="o">&gt;</span> <span class="n">setOfPersons</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 1&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 2&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 3&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 4&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="n">set</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span><span class="n">CustomCompare</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">setOfPersons</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">setOfPersons</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , age : &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">getAge</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
 </span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.cplusplus.com/reference/set/set/">http://www.cplusplus.com/reference/set/set/</a></li>
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html</a></li>
+<li><a href="http://thispointer.com/stdset-tutorial-part-1-set-usage-details-with-default-sorting-criteria/">http://thispointer.com/stdset-tutorial-part-1-set-usage-details-with-default-sorting-criteria/</a></li>
+</ol>
 
 </div>
 
@@ -212,12 +223,12 @@ In web.config, don’t forget to add session state configuration by pointing the
 
 
 
-<time class='entry-date' datetime='2013-07-22T14:12:34+07:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>2:12 pm</span></time>
+<time class='entry-date' datetime='2016-12-30T09:42:04+07:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:42 am</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/aspnet/'>aspnet</a>, <a class='category' href='/blog/categories/csharp/'>csharp</a>
+    <a class='category' href='/blog/categories/cpp/'>cpp</a>
   
 </span>
 
@@ -226,7 +237,7 @@ In web.config, don’t forget to add session state configuration by pointing the
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/" >Tweet</a>
   
   
   
@@ -237,10 +248,8 @@ In web.config, don’t forget to add session state configuration by pointing the
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/" title="Previous Post: Mono on OS X 10.8 Mountain Lion">&laquo; Mono on OS X 10.8 Mountain Lion</a>
+        <a class="basic-alignment left" href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/" title="Previous Post: C++ Priority Queue with Comparator">&laquo; C++ Priority Queue with Comparator</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/" title="Next Post: Generic Singleton Pattern in C#">Generic Singleton Pattern in C# &raquo;</a>
       
     </p>
   </footer>
@@ -441,8 +450,8 @@ In web.config, don’t forget to add session state configuration by pointing the
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/';
-        var disqus_url = 'http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/';
         var disqus_script = 'embed.js';
       
     (function () {

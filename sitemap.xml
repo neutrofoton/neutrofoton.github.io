@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/</loc>
+<lastmod>2016-12-30T09:42:04+07:00</lastmod>
+</url>
+<url>
 <loc>http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/</loc>
 <lastmod>2016-12-29T14:52:23+07:00</lastmod>
 </url>
@@ -203,11 +207,5 @@
 </url>
 <url>
 <loc>http://neutrofoton.github.io/blog/categories/git/</loc>
-</url>
-<url>
-<loc>http://neutrofoton.github.io/posts/2/</loc>
-</url>
-<url>
-<loc>http://neutrofoton.github.io/posts/3/</loc>
 </url>
 </urlset>

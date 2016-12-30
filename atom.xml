@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-12-30T09:24:47+07:00</updated>
+  <updated>2016-12-30T11:07:16+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -14,11 +14,128 @@
 
   
   <entry>
+    <title type="html"><![CDATA[C++ Set With Custom Comparator]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/"/>
+    <updated>2016-12-30T09:42:04+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/cpp-logo.png"></p>
+
+<p><code>std::set</code> is a C++ STL container that store unique elements following a specific order. It is defined in the <code>set</code> header file.
+<br/></p>
+
+<p>Benefits and Features of <code>std::set</code>[3]:</p>
+
+<p><ol>
+<li>It’s doesn’t allow duplicate elements i.e. it only contains unique elements</li>
+<li>
+<code>std::set</code> can contain element of any specified type in template argument
+</li>
+<li>
+<code>std::set</code> internally store elements in balanced binary tree
+</li>
+<li>
+ By default <code>std::set</code> uses the operator <code> &lt; </code> for comparing two elements and but if user passes the external sorting criteria i.e. comparator then it uses it instead of default operator <code> &lt; </code>.
+</li>
+<li>
+<code>std::set</code> will keep the inserted elements in sorted order based on the assigned sorting criteria i.e. either by default criteria operator <code> &lt; </code> or by passed comparator (if passed).
+</li></p>
+
+<p>In this post the samples only limited to <code>std::set</code> that use custom comparator and store complex object instead of basic data type. The complex object that we will use is reusing class <code>Person</code> on previous post.</p>
+
+<p>Let&rsquo;s create custom class that handles comparation process</p>
+
+<p><figure class='code'><figcaption><span>CustomCompare</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#ifndef CustomCompare_h</span>
+</span><span class='line'><span class="cp">#define CustomCompare_h</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#include &quot;Person.hpp&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">CustomCompare</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/<em> CustomCompare_h </em>/</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>The following code is an example how to use the comparator class in <code>std:set</code>
+<figure class='code'><figcaption><span>sample how to use</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SampleSetWithCustomCompare</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">set</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span><span class="n">CustomCompare</span><span class="o">&gt;</span> <span class="n">setOfPersons</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 1&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 2&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 3&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">setOfPersons</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 4&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="n">set</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span><span class="n">CustomCompare</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">setOfPersons</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">setOfPersons</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , age : &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">getAge</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.cplusplus.com/reference/set/set/">http://www.cplusplus.com/reference/set/set/</a></li>
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html</a></li>
+<li><a href="http://thispointer.com/stdset-tutorial-part-1-set-usage-details-with-default-sorting-criteria/">http://thispointer.com/stdset-tutorial-part-1-set-usage-details-with-default-sorting-criteria/</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[C++ Priority Queue With Comparator]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/"/>
     <updated>2016-12-29T14:52:23+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator</id>
-    <content type="html"><![CDATA[<p>A <code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/cpp-logo.png"></p>
+
+<p>A <code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
 
 <p>The template class definition of <code>priority_queue</code> is as follow</p>
 
@@ -432,8 +549,9 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
 <h2>References</h2>
 
 <ol>
-<li><a href="https://support.microsoft.com/en-us/kb/837697">https://support.microsoft.com/en-us/kb/837697</a></li>
 <li><a href="http://en.cppreference.com/w/cpp/container/priority_queue">http://en.cppreference.com/w/cpp/container/priority_queue</a></li>
+<li><a href="https://support.microsoft.com/en-us/kb/837697">https://support.microsoft.com/en-us/kb/837697</a></li>
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html</a></li>
 </ol>
 
 ]]></content>
@@ -2805,152 +2923,6 @@ The main thing that I should do is I have to use <code>HashMap</code> collection
 
 
 <blockquote><p>If you want to the java singleton above, please ensure you have remove / clean up method to clean up <code>HashMap</code> contents if the singleton objects are not needed anymore. At least at the end of application lifecycle, the <code>HashMap</code> and its contents should be removed completely from memory.</p></blockquote>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Generic Singleton Pattern in C#]]></title>
-    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/"/>
-    <updated>2013-08-29T14:27:41+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number</id>
-    <content type="html"><![CDATA[<p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
-
-<p>Honestly in my daily coding activity, sometimes I need to implement singleton pattern. Jon wrote a good singleton article in C# <a href="http://www.yoda.arachsys.com/csharp/singleton.html">here</a>. Another case I want to implement singleton pattern in generic way. I convert what has been wrotten by Jon into generic.</p>
-
-<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>    <span class="c1">/// Generic class which makes non singleton class to be singleton.</span>
-</span><span class='line'>    <span class="c1">/// Calling singleton instance of class should be Singleton&lt;T&gt;.Instance, otherwise the returned class is not singleton one.    ///</span>
-</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>    <span class="c1">/// &lt;typeparam name=&quot;T&quot;&gt;Genric class type to be singletonized&lt;/typeparam&gt;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Singleton</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Private constuctor to avoid this class instantiated</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="n">Singleton</span><span class="p">()</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Property to get access to singleton instance</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Instance</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="k">get</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="k">return</span> <span class="n">Nested</span><span class="p">.</span><span class="n">instance</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Private nested class which acts as singleton class instantiator. This class should not be accessible outside &lt;see cref=&quot;Singleton&lt;T&gt;&quot;/&gt;</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="k">class</span> <span class="nc">Nested</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>            <span class="c1">/// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit</span>
-</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>            <span class="k">static</span> <span class="nf">Nested</span><span class="p">()</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>            <span class="c1">/// Static instance variable</span>
-</span><span class='line'>            <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>            <span class="k">internal</span> <span class="k">static</span> <span class="k">readonly</span> <span class="n">T</span> <span class="n">instance</span> <span class="p">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">()</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The following snipped code is a sample how to use the generic singleton class.</p>
-
-<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Processor</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">Execute</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">Processor</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>From the sample above is shown that we can make a non singleton class to be singleton at runtime. But we can still create a non singleton instance as we need. That’s really nice flexible thing.</p>
-
-<h3>Reference</h3>
-
-
-<p>[1] <a href="http://en.wikipedia.org/wiki/Singleton_pattern">http://en.wikipedia.org/wiki/Singleton_pattern</a></p>
 ]]></content>
   </entry>
   
