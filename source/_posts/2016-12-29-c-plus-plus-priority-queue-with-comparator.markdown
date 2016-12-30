@@ -5,6 +5,7 @@ date: 2016-12-29 14:52:23 +0700
 comments: true
 categories: [cpp]
 ---
+{% img left /images/logo/cpp-logo.png %}
 
 A <code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.
 
@@ -246,5 +247,6 @@ void SamplePriorityQueueStoreObject()
 ```
 
 ## References
-1. https://support.microsoft.com/en-us/kb/837697
-2. http://en.cppreference.com/w/cpp/container/priority_queue
+1. http://en.cppreference.com/w/cpp/container/priority_queue
+2. https://support.microsoft.com/en-us/kb/837697
+3. http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html
