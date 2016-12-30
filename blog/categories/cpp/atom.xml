@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cpp | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/cpp/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-12-28T11:03:55+07:00</updated>
+  <updated>2016-12-30T09:17:35+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,244 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C++ Priority Queue With Comparator]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/"/>
+    <updated>2016-12-29T14:52:23+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator</id>
+    <content type="html"><![CDATA[<p>A <code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
+
+<p>The template class definition of <code>priority_queue</code> is as follow</p>
+
+<pre><code class="c++ template definition">template &lt;
+   class Type,
+   class Container=vector&lt;Type&gt;,
+   class Compare=less&lt;typename Container::value_type&gt; &gt;
+class priority_queue
+</code></pre>
+
+<p>A user-provided compare can be supplied to change the ordering, e.g. using <code>std::greater<T></code> would cause the smallest element to appear as the top(). We also can create custom comparator for our need.</p>
+
+<p>Many samples available on net about <code>priority_queue</code> with default compare parameter. In this article let&rsquo;s create samples by specifying the compare parameter template.</p>
+
+<pre><code class="c++ priority_queue with std::greater">
+//helper function displays sorted data
+template&lt;class T&gt;
+void printQueue(T&amp; q)
+{
+    while (!q.empty())
+    {
+        cout &lt;&lt; q.top() &lt;&lt; endl;
+        q.pop();
+    }
+}
+
+void SamplePriorityQueue()
+{
+    std::priority_queue&lt;int, std::vector&lt;int&gt;, std::greater&lt;int&gt; &gt; q;
+
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q.push(n);
+
+    printQueue(q);
+}
+</code></pre>
+
+<p>The code above uses <code>std::greater</code> as a compare parameter template.</p>
+
+<pre><code class="bash output">0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+
+<p>Beside the <code>std::less</code> or <code>std::greater</code>, we can create our custom comparator with lamda or custom class or struct.</p>
+
+<pre><code class="c++ lamda as compare parameter">
+void SamplePriorityQueueWithLamda()
+{
+    // using lambda to compare elements.
+    auto compare = [](int lhs, int rhs)
+                {
+                    return lhs &lt; rhs;
+                };
+
+    std::priority_queue&lt;int, std::vector&lt;int&gt;, decltype(compare)&gt; q(compare);
+
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q.push(n);
+
+
+    printQueue(q);
+}
+</code></pre>
+
+<p>To use the custom comparator, we just need to pass it as the third parameter of <code>priority_queue</code> template</p>
+
+<pre><code class="c++ custom comparator">
+struct CustomCompare
+{
+    bool operator()(const int&amp; lhs, const int&amp; rhs)
+    {
+        return lhs &lt; rhs;
+    }
+};
+</code></pre>
+
+<pre><code class="c++ sample with custom comparator">void SamplePriorityQueueWithCustomComparator()
+{
+    priority_queue&lt;int,vector&lt;int&gt;, CustomCompare &gt; pq;
+
+    pq.push(3);
+    pq.push(5);
+    pq.push(1);
+    pq.push(8);
+
+    printQueue(pq);
+}
+</code></pre>
+
+<p>The data stored in <code>priority_queue</code> is not limited to basic data type.
+We can store object in it. Let&rsquo;s create a sample of it.
+Let&rsquo;s say we have a <code>Person</code> class.</p>
+
+<pre><code class="c++ Person.hpp">
+#ifndef Person_hpp
+#define Person_hpp
+
+#include &lt;stdio.h&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+class Person
+{
+public:
+    Person();
+    Person(string name, int age);
+    virtual ~Person();
+
+    string getName() const;
+    int getAge() const;
+
+    friend bool operator &lt; (const Person&amp; lhs, const Person&amp; rhs);
+    friend bool operator &gt; (const Person&amp; lhs, const Person&amp; rhs);
+
+private:
+    string name;
+    int age;
+};
+
+#endif /* Person_hpp */
+</code></pre>
+
+<pre><code class="c++ Person.cpp">#include "Person.hpp"
+
+bool operator &lt; (const Person&amp; lhs, const Person&amp; rhs)
+{
+    return lhs.getAge() &lt; rhs.getAge();
+}
+
+bool operator &gt; (const Person&amp; lhs, const Person&amp; rhs)
+{
+    return lhs.getAge() &gt; rhs.getAge();
+}
+
+Person::Person()
+{
+}
+
+Person::Person(string name, int age):name(name), age(age)
+{
+}
+
+Person::~Person()
+{   
+}
+
+string Person::getName() const
+{
+    return name;
+}
+
+int Person::getAge() const
+{
+    return age;
+}
+</code></pre>
+
+<p>On the <code>Person</code> class, we have friend overloading methods, right angle bracket and left angle bracket. The methods act as comparation operator. The operator overloading is needed if we want to use <code>std::less</code> or <code>std::greater</code>.</p>
+
+<pre><code class="c++ sample priority_queue stores object">
+void SamplePriorityQueueStoreObject()
+{
+    vector&lt;Person&gt; personVector =
+    {
+        Person("Person 1", 25),
+        Person("Person 2", 17),
+        Person("Person 3", 35),
+        Person("Person 4", 7),
+        Person("Person 5", 50)
+    };
+
+    cout &lt;&lt; "======== Less Priority Queue ======= " &lt;&lt; endl;
+
+    priority_queue&lt;Person, vector&lt;Person&gt;, less&lt;vector&lt;Person&gt;::value_type&gt;&gt; pqueue_less;
+
+    //fill pqueue_less
+    for (auto it = personVector.cbegin(); it!=personVector.cend(); it++)
+    {
+        pqueue_less.push(*it);
+    }
+
+    //iterate,display and pop
+    while (!pqueue_less.empty())
+    {
+        Person value = pqueue_less.top();
+        cout &lt;&lt; value.getName() &lt;&lt; " : " &lt;&lt; value.getAge() &lt;&lt; endl;
+
+        pqueue_less.pop();
+    }
+
+
+    cout &lt;&lt; endl &lt;&lt; endl;
+
+    cout &lt;&lt; "======== Greater Priority Queue ======= " &lt;&lt; endl;
+
+    priority_queue&lt;Person, vector&lt;Person&gt;, greater&lt;vector&lt;Person&gt;::value_type&gt;&gt; pqueue_greater;
+    //fill pqueue_greater
+    for (auto it = personVector.cbegin(); it!=personVector.cend(); it++)
+    {
+        pqueue_greater.push(*it);
+    }
+
+    //iterate,display and pop
+    while (!pqueue_greater.empty())
+    {
+        Person value = pqueue_greater.top();
+        cout &lt;&lt; value.getName() &lt;&lt; " : " &lt;&lt; value.getAge() &lt;&lt; endl;
+
+        pqueue_greater.pop();
+    }
+}
+</code></pre>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="https://support.microsoft.com/en-us/kb/837697">https://support.microsoft.com/en-us/kb/837697</a></li>
+<li><a href="http://en.cppreference.com/w/cpp/container/priority_queue">http://en.cppreference.com/w/cpp/container/priority_queue</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lambda in C++]]></title>
