@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-12-30T11:24:34+07:00</updated>
+  <updated>2017-03-27T00:32:31+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Working With Multiple Github Account on a Computer]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/"/>
+    <updated>2017-03-26T23:47:22+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer</id>
+    <content type="html"><![CDATA[<p>Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
+
+<h2>Change Remote URL to HTTPS</h2>
+
+<p>This way is by changing the remote URL to HTTPS with the following format.</p>
+
+<pre><code class="bash">$ git remote set-url origin https://USERNAME@github.com/USERNAME/PROJECTNAME.git
+</code></pre>
+
+<p>Then do normal git operation such as <code>commit</code>, <code>push</code> etc.
+To ensure that the commits appear as performed by USERNAME, we can configure the username and email on our working directory.</p>
+
+<pre><code class="bash">$ git config user.name USERNAME
+$ git config user.email USERNAME@example.com
+</code></pre>
+
+<h2>Multiple SSH Key</h2>
+
+<p>The other way is by using multiple SSH key. <a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">Here</a> is the complete tutorial by <a href="https://twitter.com/jeffrey_way">Jeffrey Way</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer">http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer</a></li>
+<li><a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Reset Git Credential on OS X Keychain]]></title>

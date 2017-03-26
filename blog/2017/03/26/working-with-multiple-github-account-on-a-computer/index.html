@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mono on OS X 10.8 Mountain Lion - neutrofoton</title>
+  <title>Working With Multiple Github Account on a Computer - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;) First &hellip;">
+  <meta name="description" content="Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -80,7 +80,7 @@ article img, article video, article .flash-video{
   
   <header>
     
-      <h1 class="entry-title">Mono on OS X 10.8 Mountain Lion</h1>
+      <h1 class="entry-title">Working With Multiple Github Account on a Computer</h1>
     
     
       <p class="meta">
@@ -89,7 +89,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-09-19T12:54:14+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:54 pm</span></time>
+<time class='entry-date' datetime='2017-03-26T23:47:22+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>11:47 pm</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
@@ -99,139 +99,36 @@ article img, article video, article .flash-video{
   </header>
 
 
-<div class="entry-content"><p>In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;)</p>
+<div class="entry-content"><p>Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
 
-<p>First of all let’s download <a href="http://www.go-mono.com/mono-downloads/download.html">Mono SDK and MonoDevelop</a>. The order installation is Mono SDK first then MonoDevelop. The installation of Mono SDK and MonoDevelop should be easy by following the installation wizard.</p>
+<h2>Change Remote URL to HTTPS</h2>
 
-<p>When the installation finish, open terminal :</p>
+<p>This way is by changing the remote URL to HTTPS with the following format.</p>
 
-<figure class='code'><figcaption><span>mono version</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mono -V
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote <span class="nb">set</span>-url origin https://USERNAME@github.com/USERNAME/PROJECTNAME.git
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>We should get info about the version of mono installed in our machine.</p>
+<p>Then do normal git operation such as <code>commit</code>, <code>push</code> etc.
+To ensure that the commits appear as performed by USERNAME, we can configure the username and email on our working directory.</p>
 
-<p><img class="center" src="/images/post/2012-09-19-pic0.png"></p>
-
-<p>Try to create an ASP.NET Web Application project by selecting menu :
-<code>File > New > Solution</code>. Select <code>C# > ASP.NET > Web Application</code></p>
-
-<p><img class="center" src="/images/post/2012-09-19-pic1.png"></p>
-
-<p>Click <code>Run > Run With > Mono Soft Debugger for ASP.NET</code></p>
-
-<p><img class="center" src="/images/post/2012-09-19-pic2.png"></p>
-
-<h2>ASP.NET on Apache Web Server</h2>
-
-
-<p>To run ASP.Net on Apache web server, we need <a href="http://www.mono-project.com/Mod_mono">Mod mono</a> module. It is an Apache 2.0/2.2 module that provides ASP.Net support for Apache web server. The steps installation are :</p>
-
-<ol type="1">
-<li>Install Apache web server. The steps for OS X Mountain Lion can be found in my previous post
-</li>
-
-<li>Install Xcode, OS X development tool. It’s free and can be downloaded via App Store. We need it to compile mod mono installation source
-</li>
-
-<li>Download Mod mono source installation here. At the time of write this article I use <code>mod_mono-2.10.tar.bz2</code>
-</li>
-
-<li>Install mod mono module. Open terminal
-
-<figure class='code'><figcaption><span>mod mono installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir ~/modmono
-</span><span class='line'>cp ~/Downloads/mod_mono-2.10.tar.bz2 ~/modmono
-</span><span class='line'><span class="nb">cd</span> ~/modmono
-</span><span class='line'>tar xzf mod_mono-2.10.tar.bz2
-</span><span class='line'><span class="nb">cd </span>mod_mono-2.10
-</span><span class='line'>./configure
-</span><span class='line'>make
-</span><span class='line'>sudo make install
-</span><span class='line'>sudo cp /etc/apache2/mod_mono.conf /etc/apache2/other
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config user.name USERNAME
+</span><span class='line'><span class="nv">$ </span>git config user.email USERNAME@example.com
 </span></code></pre></td></tr></table></div></figure>
-</li>
-
-<li>Add <code>mod_mono.conf</code> reference in <code>httpd.conf</code>
-<figure class='code'><figcaption><span>edit httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
-</span></code></pre></td></tr></table></div></figure>
-Add the following code at the end of <code>httpd.conf</code>
-<figure class='code'><figcaption><span>httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Include /etc/apache2/mod_mono.conf
-</span></code></pre></td></tr></table></div></figure>
-</li>
-
-<li>Create a web directory with the path<code> ~/Projects/Mono/TestMonoApache/TestMonoApache/ </code>
-
-In that directory create an <code>index.aspx</code> file
-<figure class='code'><figcaption><span>index.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;center&gt;</span>mod_mono is working:<span class="nt">&lt;%=</span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span><span class="nt">%&gt;&lt;/center&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-</li>
-<li>Add an Apache configuration file for mono.
-<figure class='code'><figcaption><span>edit mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/mod_mono.conf
-</span></code></pre></td></tr></table></div></figure>
-Add the following line at the end of <code>mod_mono.conf</code>
-<figure class='code'><figcaption><span>mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'>Alias /testmono &quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
-</span><span class='line'><span class="nt">&lt;Directory</span> <span class="err">&quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    Options Indexes FollowSymLinks MultiViews
-</span><span class='line'>    AllowOverride None
-</span><span class='line'>
-</span><span class='line'>    Order allow,deny
-</span><span class='line'>    Allow from all
-</span><span class='line'><span class="nt">&lt;/Directory&gt;</span>
-</span><span class='line'>AddMonoApplications default &quot;/testmonoapache:/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
-</span><span class='line'><span class="nt">&lt;Location</span> <span class="err">/testmonoapache</span><span class="nt">&gt;</span>
-</span><span class='line'> SetHandler mono
-</span><span class='line'><span class="nt">&lt;/Location&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-</li>
-
-<li>Restart apache server with command :
-<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/sbin/apachectl restart
-</span></code></pre></td></tr></table></div></figure>
-</li>
-
-<li> Open browser and hit <code>http://localhost/testmonoapache/index.aspx</code>
-<img class="center" src="/images/post/2012-09-19-pic3.png">
-</li>
-
-</ol>
 
 
-<p>Cool, now our apache web server can receive request for asp.net page. Thanks for reading and see you in the next post :)</p>
+<h2>Multiple SSH Key</h2>
 
-<h4>References</h4>
+<p>The other way is by using multiple SSH key. <a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">Here</a> is the complete tutorial by <a href="https://twitter.com/jeffrey_way">Jeffrey Way</a></p>
 
+<h2>References</h2>
 
-<ol type="1">
-  <li>http://www.mono-project.com/Mod_mono</li>
-  <li>http://blog.coultard.com/2012/04/developing-using-c-and-mono-on-mac.html</li>
-  <li>http://www.ienablemuch.com/2010/10/aspnet-on-mac-os-x-snow-leopard-at-one.html</li>
+<ol>
+<li><a href="http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer">http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer</a></li>
+<li><a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574</a></li>
 </ol>
 
 </div>
@@ -251,12 +148,12 @@ Add the following line at the end of <code>mod_mono.conf</code>
 
 
 
-<time class='entry-date' datetime='2012-09-19T12:54:14+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:54 pm</span></time>
+<time class='entry-date' datetime='2017-03-26T23:47:22+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>11:47 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/csharp/'>csharp</a>, <a class='category' href='/blog/categories/mono/'>mono</a>, <a class='category' href='/blog/categories/osx/'>osx</a>
+    <a class='category' href='/blog/categories/git/'>git</a>
   
 </span>
 
@@ -265,7 +162,7 @@ Add the following line at the end of <code>mod_mono.conf</code>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/" >Tweet</a>
   
   
   
@@ -276,10 +173,8 @@ Add the following line at the end of <code>mod_mono.conf</code>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/" title="Previous Post: Install Tomcat in OS X 10.8 Mountain Lion">&laquo; Install Tomcat in OS X 10.8 Mountain Lion</a>
+        <a class="basic-alignment left" href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/" title="Previous Post: C++ Set with Custom Comparator">&laquo; C++ Set with Custom Comparator</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/07/22/asp-dot-net-session-state-in-database/" title="Next Post: ASP.NET Session State in Database">ASP.NET Session State in Database &raquo;</a>
       
     </p>
   </footer>
@@ -480,8 +375,8 @@ Add the following line at the end of <code>mod_mono.conf</code>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/';
-        var disqus_url = 'http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/';
         var disqus_script = 'embed.js';
       
     (function () {

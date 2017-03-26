@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when &hellip;">
+  <meta name="description" content="In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,226 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/29/generic-singleton-pattern-in-java/">Generic Singleton Pattern in Java</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-08-29T14:38:32+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:38 pm</span></time>
+        
+           | <a href="/blog/2013/08/29/generic-singleton-pattern-in-java/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.</p>
+
+<p>In this post I want to implement it in Java. As far as I know even though both C# and Java have generic feature, generic in C# quite different from the one in Java. While converting of what I did about generic singleton in C# to Java, I feel that the way I do in Java is not as elegant as in C#. The following code is the generic singleton code I write in Java.</p>
+
+<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span><span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Singleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Singleton</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span> <span class="s">&quot;rawtypes&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">mapHolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">Singleton</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;unchecked&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getInstance</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">classOf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">synchronized</span><span class="o">(</span><span class="n">instance</span><span class="o">){</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span><span class="o">(!</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">classOf</span><span class="o">)){</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">T</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">classOf</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">classOf</span><span class="o">,</span> <span class="n">obj</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="o">(</span><span class="n">T</span><span class="o">)</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">classOf</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">CloneNotSupportedException</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following code show how to use the generic singleton class. It’s quite similar to the C# version.</p>
+
+<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Starter</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * @param args</span>
+</span><span class='line'><span class="cm">     * @throws InvocationTargetException</span>
+</span><span class='line'><span class="cm">     * @throws IllegalArgumentException</span>
+</span><span class='line'><span class="cm">     * @throws SecurityException</span>
+</span><span class='line'><span class="cm">     * @throws NoSuchMethodException</span>
+</span><span class='line'><span class="cm">     * @throws IllegalAccessException</span>
+</span><span class='line'><span class="cm">     * @throws InstantiationException</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span>  <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Auto-generated method stub</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp1</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">emp1</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">emp2</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">boolean</span> <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test1 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">emp1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">emp2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test2 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp1 = &quot;</span><span class="o">+</span> <span class="n">emp1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp2 = &quot;</span><span class="o">+</span> <span class="n">emp2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Information Technology&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">dpt1</span><span class="o">==</span><span class="n">dpt2</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test3 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt1 = &quot;</span><span class="o">+</span> <span class="n">dpt1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt2 = &quot;</span><span class="o">+</span> <span class="n">dpt2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, if we see from the sample code above it seems that generic singleton in C# is more elegant than in Java.
+The main thing that I should do is I have to use <code>HashMap</code> collection to hold any instance of what that want to be as singleton and reuse for the future need in the life cycle of my application.</p>
+
+<p>Anyway, if you have better and much more elegant solution how to implement generic singleton pattern in Java I am very appreciate for any suggestion. Finally I would like to thank you very much for visiting and reading my blog, and have a nice day.</p>
+
+<h3>Update March 11, 2016</h3>
+
+
+<blockquote><p>If you want to the java singleton above, please ensure you have remove / clean up method to clean up <code>HashMap</code> contents if the singleton objects are not needed anymore. At least at the end of application lifecycle, the <code>HashMap</code> and its contents should be removed completely from memory.</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1199,426 +1419,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/03/json-serializer/">Json Serializer</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-08-03T19:10:27+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>7:10 pm</span></time>
-        
-           | <a href="/blog/2012/08/03/json-serializer/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/03/json-serializer/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><code>Json or JavaScript Object Notation, is a text-based open standard designed for human-readable data interchange. It is derived from the JavaScript scripting language for representing simple data structures and associative arrays, called objects. Despite its relationship to JavaScript, it is language-independent, with parsers available for many languages [wikipedia]</code></p>
-
-<p>In this post will talk about Json serialize/deserialize with Data Contract Serializer and <a href="http://json.codeplex.com/">Json.Net</a> library.</p>
-
-<h2>Data Contract Serializer</h2>
-
-
-<p><code>DataContractSerializer</code> is a C# class that serializes and deserializes an instance of a type into an XML stream or document using a supplied data contract. It is used by WCF framework as default serializer. The class of instance that will be serialized should have <code>DataContract</code> attribute and its members should have <code>DataMember</code> attribute.</p>
-
-<p><code>DataContractSerializer</code> can also serialize object into Json instead of Xml.The following code is a sample class which an instance of it will be serialized into Json via <code>DataContractSerializer</code>.</p>
-
-<figure class='code'><figcaption><span>sample contract model</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="na">[DataContract]</span>
-</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Product</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="na">    [DataMember(Order = 0)]</span>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="na">    [DataMember(Order = 1)]</span>
-</span><span class='line'>    <span class="k">public</span> <span class="n">DateTime</span> <span class="n">Created</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="na">    [DataMember(Order = 2)]</span>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">decimal</span> <span class="n">Price</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="na">    [DataMember(Order = 3)]</span>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">Sizes</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In this case I create a class that wraps serialize and deserialize process using Data Contract Serializer</p>
-
-<figure class='code'><figcaption><span>generic json serializer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">JsonDataContractSerializer</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="n">Serialize</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="n">T</span> <span class="n">obj</span><span class="p">)</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">System</span><span class="p">.</span><span class="n">Runtime</span><span class="p">.</span><span class="n">Serialization</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">DataContractJsonSerializer</span> <span class="n">serializer</span> <span class="p">=</span>
-</span><span class='line'>            <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Runtime</span><span class="p">.</span><span class="n">Serialization</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">DataContractJsonSerializer</span><span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">GetType</span><span class="p">());</span>
-</span><span class='line'>        <span class="k">using</span> <span class="p">(</span><span class="n">MemoryStream</span> <span class="n">ms</span> <span class="p">=</span> <span class="k">new</span> <span class="n">MemoryStream</span><span class="p">())</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">serializer</span><span class="p">.</span><span class="n">WriteObject</span><span class="p">(</span><span class="n">ms</span><span class="p">,</span> <span class="n">obj</span><span class="p">);</span>
-</span><span class='line'>            <span class="kt">string</span> <span class="n">retVal</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">Default</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">ms</span><span class="p">.</span><span class="n">ToArray</span><span class="p">());</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">return</span> <span class="n">retVal</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Deserialize</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kt">string</span> <span class="n">json</span><span class="p">)</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">using</span> <span class="p">(</span><span class="n">MemoryStream</span> <span class="n">ms</span> <span class="p">=</span> <span class="k">new</span> <span class="n">MemoryStream</span><span class="p">(</span><span class="n">Encoding</span><span class="p">.</span><span class="n">Unicode</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">json</span><span class="p">)))</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">System</span><span class="p">.</span><span class="n">Runtime</span><span class="p">.</span><span class="n">Serialization</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">DataContractJsonSerializer</span> <span class="n">serializer</span> <span class="p">=</span>
-</span><span class='line'>                <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Runtime</span><span class="p">.</span><span class="n">Serialization</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">DataContractJsonSerializer</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">T</span><span class="p">));</span>
-</span><span class='line'>            <span class="k">return</span> <span class="n">serializer</span><span class="p">.</span><span class="n">ReadObject</span><span class="p">(</span><span class="n">ms</span><span class="p">)</span> <span class="k">as</span> <span class="n">T</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>sample using it the JsonDataContractSerializer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">var</span> <span class="n">product</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Product</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Geeks T-shirt&quot;</span><span class="p">,</span>
-</span><span class='line'>        <span class="n">Created</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">,</span>
-</span><span class='line'>        <span class="n">Price</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span>
-</span><span class='line'>        <span class="n">Sizes</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">&quot;Small&quot;</span><span class="p">,</span> <span class="s">&quot;Medium&quot;</span><span class="p">,</span> <span class="s">&quot;Large&quot;</span> <span class="p">}</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">string</span> <span class="n">output</span> <span class="p">=</span> <span class="n">JsonDataContractSerializer</span><span class="p">.</span><span class="n">Serialize</span><span class="p">&lt;</span><span class="n">Product</span><span class="p">&gt;(</span><span class="n">product</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>output result</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>{
-</span><span class='line'>  &quot;Name&quot;: &quot;Geeks T-shirt&quot;,
-</span><span class='line'>  &quot;Created&quot;: &quot;\/Date(1344061690773+0800)\/&quot;,
-</span><span class='line'>  &quot;Price&quot;: 100,
-</span><span class='line'>  &quot;Sizes&quot;: [
-</span><span class='line'>    &quot;Small&quot;,
-</span><span class='line'>    &quot;Medium&quot;,
-</span><span class='line'>    &quot;Large&quot;
-</span><span class='line'>  ]
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<h2>Json.NET Serializer</h2>
-
-
-<p>Json.NET is a JSON framework for .NET which is written in C# language. The features mentioned on the project site host are :</p>
-
-<ol>
-<li>Flexible JSON serializer for converting between .NET objects and JSON</li>
-<li>LINQ to JSON for manually reading and writing JSON</li>
-<li>High performance, faster than .NET’s built-in JSON serializers</li>
-<li>Write indented, easy to read JSON</li>
-<li>Convert JSON to and from XML</li>
-<li>Supports .NET 2, .NET 3.5, .NET 4, Silverlight, Windows Phone and Windows 8.</li>
-</ol>
-
-
-<p>At the time writing this post, I have not tested/used all those features. In this part of article I will try to serialize our previous Product class. Meanwhile we don’t need any <code>DataContract</code> or <code>DataMember</code> attribute in class and properties.</p>
-
-<figure class='code'><figcaption><span>poco</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Product</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="n">DateTime</span> <span class="n">Created</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">decimal</span> <span class="n">Price</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">Sizes</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>sample use json.net</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">class</span> <span class="nc">Program</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="kt">var</span> <span class="n">product</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Product</span><span class="p">()</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Geeks T-shirt&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="n">Created</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">,</span>
-</span><span class='line'>            <span class="n">Price</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span>
-</span><span class='line'>            <span class="n">Sizes</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">&quot;Small&quot;</span><span class="p">,</span> <span class="s">&quot;Medium&quot;</span><span class="p">,</span> <span class="s">&quot;Large&quot;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">string</span> <span class="n">output</span> <span class="p">=</span> <span class="n">JsonConvert</span><span class="p">.</span><span class="n">SerializeObject</span><span class="p">(</span><span class="n">product</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>{
-</span><span class='line'>  &quot;Name&quot;: &quot;Geeks T-shirt&quot;,
-</span><span class='line'>  &quot;Created&quot;: &quot;2012-08-04T16:51:26.1700499+08:00&quot;,
-</span><span class='line'>  &quot;Price&quot;: 100,
-</span><span class='line'>  &quot;Sizes&quot;: [
-</span><span class='line'>    &quot;Small&quot;,
-</span><span class='line'>    &quot;Medium&quot;,
-</span><span class='line'>    &quot;Large&quot;
-</span><span class='line'>  ]
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To get the microsoft date time format in Json result we can set the DateFormatHandling on <code>JsonSerializerSettings</code> to <code>MicrosoftDateFormat</code> :</p>
-
-<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">class</span> <span class="nc">Program</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="kt">var</span> <span class="n">product</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Product</span><span class="p">()</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Geeks T-shirt&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="n">Created</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">,</span>
-</span><span class='line'>            <span class="n">Price</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span>
-</span><span class='line'>            <span class="n">Sizes</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">&quot;Small&quot;</span><span class="p">,</span> <span class="s">&quot;Medium&quot;</span><span class="p">,</span> <span class="s">&quot;Large&quot;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">JsonSerializerSettings</span> <span class="n">microsoftDateFormatSettings</span> <span class="p">=</span> <span class="k">new</span> <span class="n">JsonSerializerSettings</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">DateFormatHandling</span> <span class="p">=</span> <span class="n">DateFormatHandling</span><span class="p">.</span><span class="n">MicrosoftDateFormat</span>
-</span><span class='line'>        <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">string</span> <span class="n">output</span> <span class="p">=</span> <span class="n">JsonConvert</span><span class="p">.</span><span class="n">SerializeObject</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">microsoftDateFormatSettings</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>From the two serialize way above, Json.NET provide cleaner way, since it does not need any attributes in the target class. We just need to provide POCO (Plain CLR Object).</p>
-
-<p>Anyway the json result of the sample actually only one line of json text. To make it readable we can use online <a href="http://jsonprettyprint.com/">Json formatter</a> which may help us to check/analyse the json text before deploying/using in production.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -1643,6 +1443,10 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">C++ Set With Custom Comparator</a>
       </li>
     
@@ -1664,10 +1468,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     
       <li class="post">
         <a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Mono Mod_mono Apache2 on Ubuntu</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a>
       </li>
     
   </ul>
@@ -1747,7 +1547,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/git/index.html">git ( 1 )</a></li>
+    <li><a href="/blog/categories/git/index.html">git ( 2 )</a></li>
     
   </ul>
 </section>
@@ -1761,7 +1561,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 <li class='category'><a href='/blog/categories/cpp/'>cpp (4)</a></li>
 <li class='category'><a href='/blog/categories/csharp/'>csharp (10)</a></li>
 <li class='category'><a href='/blog/categories/eclipse/'>eclipse (2)</a></li>
-<li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
 <li class='category'><a href='/blog/categories/ios/'>ios (2)</a></li>
 <li class='category'><a href='/blog/categories/java/'>java (4)</a></li>
 <li class='category'><a href='/blog/categories/javascript/'>javascript (1)</a></li>
@@ -1803,7 +1603,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - neutro -
+  Copyright &copy; 2017 - neutro -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

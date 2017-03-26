@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-12-30T11:24:34+07:00</updated>
+  <updated>2017-03-27T00:32:31+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Working With Multiple Github Account on a Computer]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/"/>
+    <updated>2017-03-26T23:47:22+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer</id>
+    <content type="html"><![CDATA[<p>Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
+
+<h2>Change Remote URL to HTTPS</h2>
+
+<p>This way is by changing the remote URL to HTTPS with the following format.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote <span class="nb">set</span>-url origin https://USERNAME@github.com/USERNAME/PROJECTNAME.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then do normal git operation such as <code>commit</code>, <code>push</code> etc.
+To ensure that the commits appear as performed by USERNAME, we can configure the username and email on our working directory.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config user.name USERNAME
+</span><span class='line'><span class="nv">$ </span>git config user.email USERNAME@example.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Multiple SSH Key</h2>
+
+<p>The other way is by using multiple SSH key. <a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">Here</a> is the complete tutorial by <a href="https://twitter.com/jeffrey_way">Jeffrey Way</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer">http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer</a></li>
+<li><a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[C++ Set With Custom Comparator]]></title>
@@ -2726,203 +2766,6 @@ Right click on your Project and select <code>Configure > Convert into Maven Proj
 
 
 <p>After converting into maven project, I can update my maven project and everything running well :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Generic Singleton Pattern in Java]]></title>
-    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/"/>
-    <updated>2013-08-29T14:38:32+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java</id>
-    <content type="html"><![CDATA[<p>In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.</p>
-
-<p>In this post I want to implement it in Java. As far as I know even though both C# and Java have generic feature, generic in C# quite different from the one in Java. While converting of what I did about generic singleton in C# to Java, I feel that the way I do in Java is not as elegant as in C#. The following code is the generic singleton code I write in Java.</p>
-
-<figure class='code'><figcaption><span>generic singleton</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span><span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Singleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Singleton</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span> <span class="s">&quot;rawtypes&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">mapHolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="nf">Singleton</span><span class="o">()</span> <span class="o">{}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;unchecked&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getInstance</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">classOf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>        <span class="kd">synchronized</span><span class="o">(</span><span class="n">instance</span><span class="o">){</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">if</span><span class="o">(!</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">classOf</span><span class="o">)){</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">T</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">classOf</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">classOf</span><span class="o">,</span> <span class="n">obj</span><span class="o">);</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">return</span> <span class="o">(</span><span class="n">T</span><span class="o">)</span><span class="n">instance</span><span class="o">.</span><span class="na">mapHolder</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">classOf</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">CloneNotSupportedException</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The following code show how to use the generic singleton class. It’s quite similar to the C# version.</p>
-
-<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Starter</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">     * @param args</span>
-</span><span class='line'><span class="cm">     * @throws InvocationTargetException</span>
-</span><span class='line'><span class="cm">     * @throws IllegalArgumentException</span>
-</span><span class='line'><span class="cm">     * @throws SecurityException</span>
-</span><span class='line'><span class="cm">     * @throws NoSuchMethodException</span>
-</span><span class='line'><span class="cm">     * @throws IllegalAccessException</span>
-</span><span class='line'><span class="cm">     * @throws InstantiationException</span>
-</span><span class='line'><span class="cm">     */</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstantiationException</span><span class="o">,</span> <span class="n">IllegalAccessException</span>  <span class="o">{</span>
-</span><span class='line'>        <span class="c1">// TODO Auto-generated method stub</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp1</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">emp1</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Employee</span> <span class="n">emp2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Employee</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">emp2</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;neutro&quot;</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">boolean</span> <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp1</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test1 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">emp1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">emp2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">emp1</span><span class="o">==</span><span class="n">emp2</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test2 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp1 = &quot;</span><span class="o">+</span> <span class="n">emp1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;emp2 = &quot;</span><span class="o">+</span> <span class="n">emp2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Information Technology&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt1</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">Departement</span> <span class="n">dpt2</span> <span class="o">=</span> <span class="n">Singleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Departement</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">isEqual</span> <span class="o">=</span> <span class="n">dpt1</span><span class="o">==</span><span class="n">dpt2</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Equal Test3 = &quot;</span><span class="o">+</span> <span class="n">isEqual</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt1 = &quot;</span><span class="o">+</span> <span class="n">dpt1</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;dpt2 = &quot;</span><span class="o">+</span> <span class="n">dpt2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Again, if we see from the sample code above it seems that generic singleton in C# is more elegant than in Java.
-The main thing that I should do is I have to use <code>HashMap</code> collection to hold any instance of what that want to be as singleton and reuse for the future need in the life cycle of my application.</p>
-
-<p>Anyway, if you have better and much more elegant solution how to implement generic singleton pattern in Java I am very appreciate for any suggestion. Finally I would like to thank you very much for visiting and reading my blog, and have a nice day.</p>
-
-<h3>Update March 11, 2016</h3>
-
-
-<blockquote><p>If you want to the java singleton above, please ensure you have remove / clean up method to clean up <code>HashMap</code> contents if the singleton objects are not needed anymore. At least at the end of application lifecycle, the <code>HashMap</code> and its contents should be removed completely from memory.</p></blockquote>
 ]]></content>
   </entry>
   
