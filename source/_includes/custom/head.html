@@ -12,3 +12,28 @@ article img, article video, article .flash-video{
   box-shadow: rgba(255,255,255,0.15) 0 1px 4px;
 }
 </style>
+
+<!-- badge -->
+<style type="text/css">
+  .badge1 {
+  position:relative;
+  }
+  .badge1[data-badge]:after {
+  content: attr(data-badge);
+  position: absolute;
+  /*top: -10px;*/
+  right: -30px;
+  font-size: .7em;
+  background: #c57373;
+  color: white;
+  /* width: 18px; */
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 450%;
+  box-shadow: 0 0 1px #333;
+
+  padding: 2px;
+  }
+</style>
