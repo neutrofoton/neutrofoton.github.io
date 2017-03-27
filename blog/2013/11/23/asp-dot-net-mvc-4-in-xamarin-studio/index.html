@@ -41,6 +41,31 @@ article img, article video, article .flash-video{
 }
 </style>
 
+<!-- badge -->
+<style type="text/css">
+  .badge1 {
+  position:relative;
+  }
+  .badge1[data-badge]:after {
+  content: attr(data-badge);
+  position: absolute;
+  /*top: -10px;*/
+  right: -30px;
+  font-size: .7em;
+  background: #c57373;
+  color: white;
+  /* width: 18px; */
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 450%;
+  box-shadow: 0 0 1px #333;
+
+  padding: 2px;
+  }
+</style>
+
   
 
 </head>
@@ -422,30 +447,30 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/apache/'>apache (4)</a></li>
-<li class='category'><a href='/blog/categories/aspnet/'>aspnet (1)</a></li>
-<li class='category'><a href='/blog/categories/code-block/'>code block (1)</a></li>
-<li class='category'><a href='/blog/categories/cpp/'>cpp (4)</a></li>
-<li class='category'><a href='/blog/categories/csharp/'>csharp (10)</a></li>
-<li class='category'><a href='/blog/categories/eclipse/'>eclipse (2)</a></li>
-<li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>ios (2)</a></li>
-<li class='category'><a href='/blog/categories/java/'>java (4)</a></li>
-<li class='category'><a href='/blog/categories/javascript/'>javascript (1)</a></li>
-<li class='category'><a href='/blog/categories/linux/'>linux (5)</a></li>
-<li class='category'><a href='/blog/categories/mathematic/'>mathematic (1)</a></li>
-<li class='category'><a href='/blog/categories/mono/'>mono (4)</a></li>
-<li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
-<li class='category'><a href='/blog/categories/osx/'>osx (11)</a></li>
-<li class='category'><a href='/blog/categories/pattern/'>pattern (2)</a></li>
-<li class='category'><a href='/blog/categories/php/'>php (3)</a></li>
-<li class='category'><a href='/blog/categories/spring/'>spring (1)</a></li>
-<li class='category'><a href='/blog/categories/virtualbox/'>virtualbox (2)</a></li>
-<li class='category'><a href='/blog/categories/visual-studio/'>visual studio (1)</a></li>
-<li class='category'><a href='/blog/categories/windows/'>windows (1)</a></li>
-<li class='category'><a href='/blog/categories/xamarin/'>xamarin (1)</a></li>
-<li class='category'><a href='/blog/categories/xcode/'>xcode (4)</a></li>
+    <li class='category'><a href='/blog/categories/apache/' class='badge1' data-badge='4'>apache</a></li>
+<li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
+<li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
+<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='4'>cpp</a></li>
+<li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='2'>git</a></li>
+<li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
+<li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
+<li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='5'>linux</a></li>
+<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='1'>mathematic</a></li>
+<li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
+<li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
+<li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
+<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='11'>osx</a></li>
+<li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
+<li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='3'>php</a></li>
+<li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
+<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='1'>visual studio</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='1'>windows</a></li>
+<li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
+<li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
 
   </ul>
 </section>
