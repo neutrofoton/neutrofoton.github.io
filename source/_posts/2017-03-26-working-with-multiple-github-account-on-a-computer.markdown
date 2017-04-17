@@ -6,6 +6,7 @@ comments: true
 categories: [git]
 ---
 
+{% img left /images/logo/git.png %}
 Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let's assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.
 
 ## Change Remote URL to HTTPS
