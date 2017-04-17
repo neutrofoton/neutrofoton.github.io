@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-04-17T22:54:31+07:00</updated>
+  <updated>2017-04-17T23:42:28+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Import From Existing Git Repository to Another]]></title>
-    <link href="http://neutrofoton.github.io/blog/2017/04/17/import-from-existing-git-repository-to-another/"/>
+    <title type="html"><![CDATA[Import Existing Git Repository to Another]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/04/17/import-existing-git-repository-to-another/"/>
     <updated>2017-04-17T16:44:53+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2017/04/17/import-from-existing-git-repository-to-another</id>
+    <id>http://neutrofoton.github.io/blog/2017/04/17/import-existing-git-repository-to-another</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png"></p>
 
 <p>While working with git, we may need to import source code from an existing git repository to our working copy. Merging it and pushing to origin master.
