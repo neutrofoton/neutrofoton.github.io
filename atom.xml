@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-03-27T13:25:19+07:00</updated>
+  <updated>2017-04-17T22:54:31+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -14,11 +14,114 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Import From Existing Git Repository to Another]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/04/17/import-from-existing-git-repository-to-another/"/>
+    <updated>2017-04-17T16:44:53+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/04/17/import-from-existing-git-repository-to-another</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/git.png"></p>
+
+<p>While working with git, we may need to import source code from an existing git repository to our working copy. Merging it and pushing to origin master.
+The scenario that I had was :</p>
+
+<p><br/></p>
+
+<ul>
+<li> I have a project template that I store on a git repository. Let say the url is <code>http://server/git/template.git</code>
+   <img class="center" src="http://neutrofoton.github.io/images/post/2017-04-17-template.png">
+</li>
+<li>
+I have another git repository with url <code>http://server/git/project1.git</code>
+   <img class="center" src="http://neutrofoton.github.io/images/post/2017-04-17-project1.png">
+</li>
+</ul>
+
+
+<p>What I need from the two repositories are importing all contents (libraries, sources, etc) from <code>template</code> repository into my <code>project1</code> working copy. Since I don&rsquo;t want to coding from zero. To get into what I need, here are the steps.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># git clone project1</span>
+</span><span class='line'><span class="nv">$ </span>git clone http://server/git/project1.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>project1
+</span><span class='line'>
+</span><span class='line'><span class="c"># add remote url named REMOTE.TEMPLATE</span>
+</span><span class='line'><span class="nv">$ </span>git remote add REMOTE.TEMPLATE http://server/git/template.git
+</span><span class='line'>
+</span><span class='line'><span class="c"># fetch from REMOTE.TEMPLATE remote url</span>
+</span><span class='line'><span class="nv">$ </span>git fetch REMOTE.TEMPLATE
+</span><span class='line'>
+</span><span class='line'><span class="c"># checkout REMOTE.TEMPLATE/master and create a new branch called TEMPLATE</span>
+</span><span class='line'><span class="nv">$ </span>git checkout -b TEMPLATE REMOTE.TEMPLATE/master
+</span><span class='line'>
+</span><span class='line'><span class="c">#switch back to master branch</span>
+</span><span class='line'><span class="nv">$ </span>git checkout master
+</span><span class='line'>
+</span><span class='line'><span class="c"># merge TEMPLATE brach to master branch</span>
+</span><span class='line'><span class="nv">$ </span>git merge TEMPLATE
+</span><span class='line'>
+</span><span class='line'><span class="c"># commit changes</span>
+</span><span class='line'><span class="nv">$ </span>git commit
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The next step is checking the merge result on our working copy of master branch.
+If what we have been imported already there, now we can remove the remote URL of REMOTE.TEMPLATE
+and TEMPLATE branch to get rid of the extra branch before pushing.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># remove REMOTE.TEMPLATE remote address</span>
+</span><span class='line'><span class="nv">$ </span>git remote rm REMOTE.TEMPLATE
+</span><span class='line'>
+</span><span class='line'><span class="c"># remove template branch. It is useful to get rid of the extra branch before pushing</span>
+</span><span class='line'><span class="nv">$ </span>git branch -d TEMPLATE
+</span><span class='line'>
+</span><span class='line'><span class="c"># push to remote origin/master</span>
+</span><span class='line'><span class="nv">$ </span>git push
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/1683531/how-to-import-existing-git-repository-into-another">http://stackoverflow.com/questions/1683531/how-to-import-existing-git-repository-into-another</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Working With Multiple Github Account on a Computer]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/"/>
     <updated>2017-03-26T23:47:22+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer</id>
-    <content type="html"><![CDATA[<p>Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/git.png">
+Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
 
 <h2>Change Remote URL to HTTPS</h2>
 
@@ -602,7 +705,8 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
     <link href="http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/"/>
     <updated>2016-11-09T12:40:34+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain</id>
-    <content type="html"><![CDATA[<p>This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>
+    <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/git.png">
+This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>
 
 <p>I got a condition which I have just changed my git password. Surely I cannot pull or push since my local credential was not valid anymore. When I run <code>git config &ndash;list</code>, I believe my git password stored on OS X Keychain. The simple way I do was running a command via terminal :</p>
 
@@ -2738,34 +2842,6 @@ If download/update disappear, close the appstore then reopen it.
   <li>http://apple.stackexchange.com/questions/61646/xcode-failed-to-download-use-the-purchases-page-to-try-again/71202#71202</li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Unsupported IClasspathEntry in Eclipse-STS]]></title>
-    <link href="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/"/>
-    <updated>2013-08-30T14:48:31+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts</id>
-    <content type="html"><![CDATA[<p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
-
-<p>Googling for that problem finally got a trick how to resolve it.</p>
-
-<ol>
-<li>Right-click on your project, select <code>Maven > Disable Maven Nature</code></li>
-<li>
-Open your terminal, go to your project folder and do
-<figure class='code'><figcaption><span>clean eclipse cache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn eclipse:clean
-</span></code></pre></td></tr></table></div></figure>
-</li>
-<li>
-Right click on your Project and select <code>Configure > Convert into Maven Project</code>
-</li>
-
-</ol>
-
-
-<p>After converting into maven project, I can update my maven project and everything running well :)</p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a &hellip;">
+  <meta name="description" content="I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was Unsupported IClasspathEntry kind &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,6 +102,57 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Unsupported IClasspathEntry in Eclipse-STS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-08-30T14:48:31+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:48 pm</span></time>
+        
+           | <a href="/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
+
+<p>Googling for that problem finally got a trick how to resolve it.</p>
+
+<ol>
+<li>Right-click on your project, select <code>Maven > Disable Maven Nature</code></li>
+<li>
+Open your terminal, go to your project folder and do
+<figure class='code'><figcaption><span>clean eclipse cache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn eclipse:clean
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Right click on your Project and select <code>Configure > Convert into Maven Project</code>
+</li>
+
+</ol>
+
+
+<p>After converting into maven project, I can update my maven project and everything running well :)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1268,182 +1319,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/06/jomla-encryption-in-c-number/">Jomla Encryption in C#</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-08-06T09:21:53+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>9:21 am</span></time>
-        
-           | <a href="/blog/2012/08/06/jomla-encryption-in-c-number/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Couple days ago I got a task to migrate user from an existing website which build based on Jomla CMS to an ASP.NET website user. Both of them use different encryption technique. The plan was that the Jomla based website would be replaced with the .NET website. In sort the scenario was :</p>
-
-<ol>
-<li>Replace PHP website build on top Jomla CMS with .NET</li>
-<li>Migrate users from Jomla so they can login into the new .NET website using old password</li>
-<li>Migrate some roles</li>
-</ol>
-
-
-<p>The first thing that come to my mind is to check whether they use the different encryption algorithm or not. And yup…they use different algorithm :( . So I decide to extend the <code>MembershipProvider</code> used by the .NET. In my case, thankfully I just need to override one method on that is <code>ValidateUser</code>. I will not talk the the detail what inside the methods is. The main point is just to validate if user login using existing password created by jomla can be validated by the .NET. To do that I create a simple class called <code>JomlaEncryption</code> to validate if user enter valid Jomla password.</p>
-
-<figure class='code'><figcaption><span>encrypt with jomla algorithm</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">JomlaEncryption</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">bool</span> <span class="nf">IsValidPassword</span><span class="p">(</span><span class="kt">string</span> <span class="n">password</span><span class="p">,</span> <span class="kt">string</span> <span class="n">encryptedPassword</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nf">EncryptUsingJomlaAlgorithm</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">encryptedPassword</span><span class="p">)</span> <span class="p">==</span> <span class="n">encryptedPassword</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>    <span class="c1">/// Source : http://stackoverflow.com/questions/2727043/using-php-to-create-a-joomla-user-password</span>
-</span><span class='line'>    <span class="c1">///   From joomla Forum, that&#39;s what happen behind:</span>
-</span><span class='line'>    <span class="c1">///</span>
-</span><span class='line'>    <span class="c1">///   1. Generate a password</span>
-</span><span class='line'>    <span class="c1">///   2. Generate 32 random characters</span>
-</span><span class='line'>    <span class="c1">///   3. Concatenate 1 and 2</span>
-</span><span class='line'>    <span class="c1">///   4. md5(3)</span>
-</span><span class='line'>    <span class="c1">///   5. store 4:2</span>
-</span><span class='line'>    <span class="c1">///   Example:</span>
-</span><span class='line'>    <span class="c1">///</span>
-</span><span class='line'>    <span class="c1">///   1. Generate a password - we&#39;ll use &#39;password&#39;</span>
-</span><span class='line'>    <span class="c1">///   2. Generate 32 random characters - we&#39;ll use &#39;WnvTroeiBmd5bjGmmsVUnNjppadH7giK&#39;</span>
-</span><span class='line'>    <span class="c1">///   3. Concatenate 1 and 2 - passwordWnvTroeiBmd5bjGmmsVUnNjppadH7giK</span>
-</span><span class='line'>    <span class="c1">///   4. md5(3) - 3c57ebfec712312f30c3fd1981979f58</span>
-</span><span class='line'>    <span class="c1">///   5. store 4:2 - 3c57ebfec712312f30c3fd1981979f58:WnvTroeiBmd5bjGmmsVUnNjppadH7giK</span>
-</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>    <span class="c1">/// &lt;param name=&quot;password&quot;&gt;</span>
-</span><span class='line'>    <span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
-</span><span class='line'>    <span class="k">static</span> <span class="kt">string</span> <span class="nf">EncryptUsingJomlaAlgorithm</span><span class="p">(</span><span class="kt">string</span> <span class="n">password</span><span class="p">,</span> <span class="kt">string</span> <span class="n">encryptedPassword</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(!</span><span class="n">encryptedPassword</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span>
-</span><span class='line'>            <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">string</span> <span class="n">randChar32Bit</span> <span class="p">=</span> <span class="n">encryptedPassword</span><span class="p">.</span><span class="n">Split</span><span class="p">(</span><span class="sc">&#39;:&#39;</span><span class="p">)[</span><span class="m">1</span><span class="p">];</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="n">randChar32Bit</span><span class="p">)</span> <span class="p">||</span> <span class="n">randChar32Bit</span><span class="p">.</span><span class="n">Length</span> <span class="p">!=</span> <span class="m">32</span><span class="p">)</span>
-</span><span class='line'>            <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">string</span> <span class="n">concatePassAndRandChar32Bit</span> <span class="p">=</span> <span class="n">password</span> <span class="p">+</span> <span class="n">randChar32Bit</span><span class="p">;</span>
-</span><span class='line'>        <span class="kt">string</span> <span class="n">hashedConcatePassAndRandChar32Bit</span> <span class="p">=</span> <span class="n">MD5</span><span class="p">(</span><span class="n">concatePassAndRandChar32Bit</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0}:{1}&quot;</span><span class="p">,</span> <span class="n">hashedConcatePassAndRandChar32Bit</span><span class="p">,</span> <span class="n">randChar32Bit</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">static</span> <span class="kt">string</span> <span class="nf">MD5</span><span class="p">(</span><span class="kt">string</span> <span class="n">password</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="kt">byte</span><span class="p">[]</span> <span class="n">bytes</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">Encoding</span><span class="p">.</span><span class="n">Default</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">password</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">try</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">System</span><span class="p">.</span><span class="n">Security</span><span class="p">.</span><span class="n">Cryptography</span><span class="p">.</span><span class="n">MD5CryptoServiceProvider</span> <span class="n">cryptProvider</span><span class="p">;</span>
-</span><span class='line'>            <span class="n">cryptProvider</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Security</span><span class="p">.</span><span class="n">Cryptography</span><span class="p">.</span><span class="n">MD5CryptoServiceProvider</span><span class="p">();</span>
-</span><span class='line'>            <span class="kt">byte</span><span class="p">[]</span> <span class="n">hash</span> <span class="p">=</span> <span class="n">cryptProvider</span><span class="p">.</span><span class="n">ComputeHash</span><span class="p">(</span><span class="n">bytes</span><span class="p">);</span>
-</span><span class='line'>            <span class="kt">string</span> <span class="n">ret</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">foreach</span> <span class="p">(</span><span class="kt">byte</span> <span class="n">a</span> <span class="k">in</span> <span class="n">hash</span><span class="p">)</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="p">&lt;</span> <span class="m">16</span><span class="p">)</span>
-</span><span class='line'>                    <span class="n">ret</span> <span class="p">+=</span> <span class="s">&quot;0&quot;</span> <span class="p">+</span> <span class="n">a</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">);</span>
-</span><span class='line'>                <span class="k">else</span>
-</span><span class='line'>                    <span class="n">ret</span> <span class="p">+=</span> <span class="n">a</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>            <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">catch</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="k">throw</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s all for now and thanks for reading :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -1468,6 +1343,10 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/04/17/import-from-existing-git-repository-to-another/">Import From Existing Git Repository to Another</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
       </li>
     
@@ -1489,10 +1368,6 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     
       <li class="post">
         <a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Mono Multiple Application on a Virtual Host</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Mono Mod_mono Apache2 on Ubuntu</a>
       </li>
     
   </ul>
@@ -1572,7 +1447,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
     <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/git/index.html">git ( 2 )</a></li>
+    <li><a href="/blog/categories/git/index.html">git ( 3 )</a></li>
     
   </ul>
 </section>
@@ -1586,7 +1461,7 @@ Create directory in <code>/usr/local</code> if we don’t have it yet.</p>
 <li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='4'>cpp</a></li>
 <li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
 <li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
-<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='2'>git</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='3'>git</a></li>
 <li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
 <li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
 <li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>

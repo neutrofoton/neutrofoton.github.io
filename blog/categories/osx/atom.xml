@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Osx | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-03-27T13:25:19+07:00</updated>
+  <updated>2017-04-17T22:54:31+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -18,7 +18,8 @@
     <link href="http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/"/>
     <updated>2016-11-09T12:40:34+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain</id>
-    <content type="html"><![CDATA[<p>This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
+This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>
 
 <p>I got a condition which I have just changed my git password. Surely I cannot pull or push since my local credential was not valid anymore. When I run <code>git config &ndash;list</code>, I believe my git password stored on OS X Keychain. The simple way I do was running a command via terminal :</p>
 
