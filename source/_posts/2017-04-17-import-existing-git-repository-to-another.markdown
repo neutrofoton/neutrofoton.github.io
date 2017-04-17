@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Import from Existing Git Repository to Another"
+title: "Import Existing Git Repository to Another"
 date: 2017-04-17 16:44:53 +0700
 comments: true
 categories: [git]
