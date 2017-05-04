@@ -6,7 +6,7 @@ comments: true
 categories: [cpp]
 ---
 
-{% img left /images/logo/cpp-logo.png %}
+{% img left /images/logo/cpp.png %}
 
 <code>std::set</code> is a C++ STL container that store unique elements following a specific order. It is defined in the <code>set</code> header file.
 <br/>

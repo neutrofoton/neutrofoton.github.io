@@ -6,6 +6,7 @@ comments: true
 categories: [arduino,c]
 ---
 
+{% img left /images/logo/arduino.png %}
 Couple days ayo, I met a friend of mine when I was at university. He plays extensively with [Arduino](http://www.arduino.org), [Raspberry Pi](https://www.raspberrypi.org), [Orange Pi](http://www.orangepi.org) and other IoT stuff. He showed me how interesting IoT is, include wiring modules, and surely its programming. I remember that a few months ago, I got Arduino kit with GPS module from another friend of mine. The items were idle since I have other things to do in my work. Yesterday, I just have a free time to play with the Arduino kit. And I never play or explore Arduino before.
 
 On the first time exploring Arduino, the hardware I use are :
