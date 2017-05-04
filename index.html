@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="While working with git, we may need to import source code from an existing git repository to our working copy. Merging it and pushing to origin &hellip;">
+  <meta name="description" content="Couple days ayo, I met a friend of mine when I was at university. He plays extensively with Arduino, Raspberry Pi, Orange Pi and other IoT stuff. He &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,8 @@ article img, article video, article .flash-video{
 
   
 
+
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
 </head>
 
 <body   >
@@ -102,6 +104,389 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-05-04T07:32:17+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>7:32 am</span></time>
+        
+           | <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Couple days ayo, I met a friend of mine when I was at university. He plays extensively with <a href="http://www.arduino.org">Arduino</a>, <a href="https://www.raspberrypi.org">Raspberry Pi</a>, <a href="http://www.orangepi.org">Orange Pi</a> and other IoT stuff. He showed me how interesting IoT is, include wiring modules, and surely its programming. I remember that a few months ago, I got Arduino kit with GPS module from another friend of mine. The items were idle since I have other things to do in my work. Yesterday, I just have a free time to play with the Arduino kit. And I never play or explore Arduino before.</p>
+
+<p>On the first time exploring Arduino, the hardware I use are :</p>
+
+<ol>
+<li><a href="http://www.arduino.org/products/boards/arduino-uno">Arduino Uno</a></li>
+<li><a href="https://www.aliexpress.com/store/product/GPS-Receiver-U-blox-NEO-6M-Module-with-Ceramic-Antenna-TTL-Interface-for-raspberry-pi-2/1266255_32365271431.html">GPS Module NEO-6M-0-001</a></li>
+</ol>
+
+
+<p>To get working Arduino with GPS module, I use <a href="https://github.com/mikalhart/TinyGPS">TinyGPS</a> library. TinyGPS is designed to provide most of the NMEA GPS functionality. The detail description about TinyGPS can found <a href="http://arduiniana.org/libraries/tinygps/">here</a>. TinyGPS is additional library for Arduino. So we need to install it before include it to our project. The steps of installation additional Arduino libraries can be found <a href="https://www.arduino.cc/en/Guide/Libraries">here</a></p>
+
+<p>The table below shows wiring between Arduino and NEO-6M-0-001 GPS module</p>
+
+<table>
+<thead>
+<tr>
+<th> NEO-6M-0-001 GPS     </th>
+<th> Arduino Uno      </th>
+<th> Cable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Vcc                  </td>
+<td> Power 3.3 Volt   </td>
+<td> Black</td>
+</tr>
+<tr>
+<td> GND                  </td>
+<td> GND              </td>
+<td> White</td>
+</tr>
+<tr>
+<td> TXD                  </td>
+<td> RX pin 4         </td>
+<td> Gray</td>
+</tr>
+<tr>
+<td> RXD                  </td>
+<td> TX pin 3         </td>
+<td> Magenta</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><p/></p>
+
+<p><img class="center" src="/images/post/2017-05-04-neo-6m-0-0-001.png"></p>
+
+<p><img class="center" src="/images/post/2017-05-04-arduino-uno.png"></p>
+
+<p><img class="center" src="/images/post/2017-05-04-arduino-uno-gps.png"></p>
+
+<p>To simplify our testing, I grab sample source code provided by <a href="https://github.com/mikalhart/TinyGPS">TinyGPS</a>. On This sample, I Set the data rate in bits per second (baud) for serial data transmission to 9600.</p>
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;SoftwareSerial.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#include &lt;TinyGPS.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/<em> This sample code demonstrates the normal use of a TinyGPS object.</span>
+</span><span class='line'><span class="cm">   It requires the use of SoftwareSerial, and assumes that you have a</span>
+</span><span class='line'><span class="cm">   4800-baud serial GPS device hooked up on pins 4(rx) and 3(tx).</span>
+</span><span class='line'><span class="cm"></em>/</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">TinyGPS</span> <span class="n">gps</span><span class="p">;</span>
+</span><span class='line'><span class="n">SoftwareSerial</span> <span class="nf">ss</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">smartdelay</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ms</span><span class="p">);</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_float</span><span class="p">(</span><span class="kt">float</span> <span class="n">val</span><span class="p">,</span> <span class="kt">float</span> <span class="n">invalid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prec</span><span class="p">);</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_int</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">val</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">invalid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_date</span><span class="p">(</span><span class="n">TinyGPS</span> <span class="o">&amp;</span><span class="n">gps</span><span class="p">);</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_str</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o"><em></span><span class="n">str</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="c1">//Serial.begin(115200);</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Testing TinyGPS library v. &quot;</span><span class="p">);</span> <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">TinyGPS</span><span class="o">::</span><span class="n">library_version</span><span class="p">());</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;by Mikal Hart&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Sats HDOP Latitude  Longitude  Fix  Date       Time     Date Alt    Course Speed Card  Distance Course Card  Chars Sentences Checksum&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;          (deg)     (deg)      Age                      Age  (m)    &mdash; from GPS &mdash;-  &mdash;- to London  &mdash;-  RX    RX        Fail&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//ss.begin(4800);</span>
+</span><span class='line'>  <span class="n">ss</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">float</span> <span class="n">flat</span><span class="p">,</span> <span class="n">flon</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">age</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">chars</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">sentences</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">failed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">static</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">LONDON_LAT</span> <span class="o">=</span> <span class="mf">51.508131</span><span class="p">,</span> <span class="n">LONDON_LON</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.128002</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">gps</span><span class="p">.</span><span class="n">satellites</span><span class="p">(),</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_SATELLITES</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">gps</span><span class="p">.</span><span class="n">hdop</span><span class="p">(),</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_HDOP</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">gps</span><span class="p">.</span><span class="n">f_get_position</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flat</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flon</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">age</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_float</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_float</span><span class="p">(</span><span class="n">flon</span><span class="p">,</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_AGE</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_date</span><span class="p">(</span><span class="n">gps</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_float</span><span class="p">(</span><span class="n">gps</span><span class="p">.</span><span class="n">f_altitude</span><span class="p">(),</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ALTITUDE</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_float</span><span class="p">(</span><span class="n">gps</span><span class="p">.</span><span class="n">f_course</span><span class="p">(),</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_float</span><span class="p">(</span><span class="n">gps</span><span class="p">.</span><span class="n">f_speed_kmph</span><span class="p">(),</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_SPEED</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_str</span><span class="p">(</span><span class="n">gps</span><span class="p">.</span><span class="n">f_course</span><span class="p">()</span> <span class="o">==</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span> <span class="o">?</span> <span class="s">&quot;</em><strong> &quot;</span> <span class="o">:</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">cardinal</span><span class="p">(</span><span class="n">gps</span><span class="p">.</span><span class="n">f_course</span><span class="p">()),</span> <span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">flat</span> <span class="o">==</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span> <span class="o">?</span> <span class="mh">0xFFFFFFFF</span> <span class="o">:</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">TinyGPS</span><span class="o">::</span><span class="n">distance_between</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">flon</span><span class="p">,</span> <span class="n">LONDON_LAT</span><span class="p">,</span> <span class="n">LONDON_LON</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mh">0xFFFFFFFF</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_float</span><span class="p">(</span><span class="n">flat</span> <span class="o">==</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span> <span class="o">?</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="nl">GPS_INVALID_F_ANGLE</span> <span class="p">:</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">course_to</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">flon</span><span class="p">,</span> <span class="n">LONDON_LAT</span><span class="p">,</span> <span class="n">LONDON_LON</span><span class="p">),</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_str</span><span class="p">(</span><span class="n">flat</span> <span class="o">==</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_F_ANGLE</span> <span class="o">?</span> <span class="s">&quot;</strong><em> &quot;</span> <span class="o">:</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">cardinal</span><span class="p">(</span><span class="n">TinyGPS</span><span class="o">::</span><span class="n">course_to</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">flon</span><span class="p">,</span> <span class="n">LONDON_LAT</span><span class="p">,</span> <span class="n">LONDON_LON</span><span class="p">)),</span> <span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">gps</span><span class="p">.</span><span class="n">stats</span><span class="p">(</span><span class="o">&amp;</span><span class="n">chars</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sentences</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">failed</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="mh">0xFFFFFFFF</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="mh">0xFFFFFFFF</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">failed</span><span class="p">,</span> <span class="mh">0xFFFFFFFF</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">smartdelay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">smartdelay</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ms</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="n">millis</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">do</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">available</span><span class="p">())</span>
+</span><span class='line'>      <span class="n">gps</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">read</span><span class="p">());</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">millis</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">ms</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_float</span><span class="p">(</span><span class="kt">float</span> <span class="n">val</span><span class="p">,</span> <span class="kt">float</span> <span class="n">invalid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prec</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="n">invalid</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">len</span><span class="o">&ndash;</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="sc">&#39;</em>&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="sc">&#39; &#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">prec</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">vi</span> <span class="o">=</span> <span class="n">abs</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">val</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">flen</span> <span class="o">=</span> <span class="n">prec</span> <span class="o">+</span> <span class="p">(</span><span class="n">val</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="o">?</span> <span class="mi">2</span> <span class="o">:</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// . and -</span>
+</span><span class='line'>    <span class="n">flen</span> <span class="o">+=</span> <span class="n">vi</span> <span class="o">&gt;=</span> <span class="mi">1000</span> <span class="o">?</span> <span class="mi">4</span> <span class="o">:</span> <span class="n">vi</span> <span class="o">&gt;=</span> <span class="mi">100</span> <span class="o">?</span> <span class="mi">3</span> <span class="o">:</span> <span class="n">vi</span> <span class="o">&gt;=</span> <span class="mi">10</span> <span class="o">?</span> <span class="mi">2</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">flen</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="sc">&#39; &#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">smartdelay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_int</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">val</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">invalid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">sz</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="n">invalid</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">strcpy</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span> <span class="s">&quot;<strong><strong><strong><em>&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span> <span class="s">&quot;%ld&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">sz</span><span class="p">[</span><span class="n">len</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">strlen</span><span class="p">(</span><span class="n">sz</span><span class="p">);</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">sz</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">sz</span><span class="p">[</span><span class="n">len</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">sz</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">smartdelay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_date</span><span class="p">(</span><span class="n">TinyGPS</span> <span class="o">&amp;</span><span class="n">gps</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">year</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">byte</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">hundredths</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">age</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">gps</span><span class="p">.</span><span class="n">crack_datetime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">year</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">month</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">day</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hour</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">minute</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">second</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hundredths</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">age</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">age</span> <span class="o">==</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_AGE</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</em></strong></strong></strong><strong><em> </em></strong><em>**** &quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">sz</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span> <span class="s">&quot;%02d/%02d/%02d %02d:%02d:%02d &quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">sz</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">print_int</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">TinyGPS</span><span class="o">::</span><span class="n">GPS_INVALID_AGE</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">smartdelay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">print_str</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o"></em></span><span class="n">str</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">slen</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">slen</span> <span class="o">?</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">:</span> <span class="sc">&#39; &#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">smartdelay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>The output of this testing on Serial monitor showed as follow.</p>
+
+<p><img class="center" src="/images/post/2017-05-04-output.png"></p>
+
+<p>If you do not get similar output as above (get <code>*</code> on table output) it means your arduino fails get data from GPS module. Please ensure your GPS led is blinking which indicate it receives data from the GPS satellites.</p>
+
+<p>The other thing that you should ensure is you have the right wiring. RX of the Arduino (pin 4, according to the <code>SoftwareSerial</code> statement) goes to the TX of the GPS. Arduino pin 3 (ss TX) goes to the GPS RX.</p>
+
+<p>To validate the accuracy of GPS output (Latitude, Longitude) showed on Arduino Serial Monitor you can check it on google map.</p>
+
+<h2>References</h2>
+
+<p><ul>
+<li><a href="https://www.u-blox.com/sites/default/files/products/documents/NEO-6_DataSheet_(GPS.G6-HW-09005).pdf">NEO-6 u-blox 6 GPS Modules Data Sheet</a></li>
+<li><a href="http://www.ayomaonline.com/iot/gy-gps6mv2-neo6mv2-neo-6m-gps-module-with-arduino-usb-ttl/">GY-GPS6MV2 – NEO6MV2 (NEO 6M) GPS MODULE WITH ARDUINO / USB TTL</a></li>
+<li><a href="https://arduino.stackexchange.com/questions/24235/arduino-softwareserial-cant-get-data-from-neo-6m-gps-module">Arduino SoftwareSerial - can&rsquo;t get data from NEO 6M-GPS module</a></li>
+<ul></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1600,447 +1985,6 @@ We should have the page displayed current date time.</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-05-11T23:15:18+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:15 pm</span></time>
-        
-           | <a href="/blog/2016/05/11/lambda-in-c-plus-plus/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/images/logo/lambda.png">
-C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
-For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
-
-<figure class='code'><figcaption><span>C++11 Lambda Syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>[capture_block](parameters) mutable exception_specification -&gt; return_type {body}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li> <strong><code>capture_block</code></strong> is a comma-separated list of zero or more captures, optionally beginning with a capture-default. Capture list can be passed as follows (see below for the detailed description):
-<ol>
-<li><code>[a,&b]</code> where a is captured by value and b is captured by reference.</li>
-<li><code>[this]</code> captures the this pointer by value</li>
-<li><code>[&]</code> captures all automatic variables odr-used in the body of the lambda by reference</li>
-<li><code>[=]</code> captures all automatic variables odr-used in the body of the lambda by value</li>
-<li><code>[x]</code> captures only x by value and nothing else.</li>
-<li><code>[]</code> captures nothing</li>
-</ol>
-</li>
-<li>
-<strong><code>parameters</code></strong> is (optional) list of parameters for the lambda expression.
-</li>
-<li>
-<strong><code>mutable</code></strong> is (optional) if variables from the enclosing scope are captured by value, a copy of those variables will become available in the body of the lambda expression. Those copies are marked as const by default, meaning the lambda body cannot change the value of those copies. If the lambda expression is marked as mutable, those copies are not const and the body can modify those local copies.
-</li>
-<li>
-<strong><code>exception_specification</code></strong> is (optional) and can be used to specify which exceptions the body of the lambda expression can throw.
-</li>
-<li>
-<strong><code>return_type</code></strong> is Return type. If not present it's implied by the function return statements (or void if it doesn't return any value)
-</li>
-</ol>
-
-
-
-
-<h3>Lambda and Direct Invoke</h3>
-
-
-<p>The following snipped code is an example of lambda expression.</p>
-
-<figure class='code'><figcaption><span>example lambda and directly invoked</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hi &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;}(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The lambda expression above shows that it has a <code>const string&amp;</code> parameter and return a <code>string</code> type. To execute the lambda is by placing round brackets <code>()</code> and put object that will be passed to inside it. The <code>&ldquo;neutro&rdquo;</code> literal string will substitute <code>str</code> parameter. The output of the above code is :</p>
-
-<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>Hi neutro
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<h3>Lambda as Variable</h3>
-
-
-<p>Pointer to a lambda expression can be stored and executed through the function pointer. C++ provides <code>std::function</code> which is a STL template class that provides a very convenient wrapper to a simple function, to a functor or to a lambda expression. We can also use the C++11 <code>auto</code> keyword to make it easier.</p>
-
-<p>To make it clear the following code contains couples of various lambda expressions and store them in variables of type <code>auto</code> or its equivalent in <code>std::function</code> STL template class.</p>
-
-<figure class='code'><figcaption><span>lambda as variable</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 1&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
-</span><span class='line'><span class="n">lambda1</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
-</span><span class='line'><span class="n">lambda2</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//auto lambda3 = [](void) -&gt; void { cout &lt;&lt;&quot;Hello lambda without parameter 2&quot; &lt;&lt; endl; };</span>
-</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
-</span><span class='line'><span class="n">lambda3</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//auto lambda4 = [](const string&amp; str) -&gt; string {return &quot;Hello from &quot; + str;};</span>
-</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="n">string</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hello from &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lambda4</span><span class="p">(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The snipped code above shows how lambda expressions stored in variable of auto type or theirs equivalent in <code>std::function</code> type and how to invoke the lambda. <a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">Here</a> is a good article about <code>std::function</code>.</p>
-
-<h3>Lambda Capture Block</h3>
-
-
-<p>Lambda Capture Block basically describes how we want to capture variables from the enclosing scope. Capturing a variable means that the variable becomes available inside the body of the lambda. The detail variant of capture block has been described on previous section. The following code shows various scenario how to play with capture block.</p>
-
-<figure class='code'><figcaption><span>lambda capture block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="n">variableA</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">variableB</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">variableC</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Init Values : &quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableA : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="c1">//--------------------------------------</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 1 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span><span class="o">-&gt;</span> <span class="kt">int</span>     <span class="c1">//==&gt; [=] lambda has default access to variable is by value</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda1 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">lambda1</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda1, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//--------------------------------------------</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 2 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>      <span class="c1">//==&gt; [&amp;] lambda has default access to variable is by reference</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>                <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">lambda2</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//-------------------------------------</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 3 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="k">auto</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="o">*</span><span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda3 : &quot;</span><span class="o">&lt;&lt;*</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda3 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="o">*</span><span class="n">param</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">result3</span> <span class="o">=</span> <span class="n">lambda3</span><span class="p">(</span><span class="o">&amp;</span><span class="n">variableA</span><span class="p">);</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, result3 : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">result3</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//--------------------------------</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 4 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="k">auto</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableB</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [=, &amp;variableB, &amp;variableC] captures by value by default,</span>
-</span><span class='line'>                                             <span class="c1">// except variables variableB and variableC, which are captured by reference.</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">lambda4</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//--------------------------------</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 5 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="k">auto</span> <span class="n">lambda5</span> <span class="o">=</span> <span class="p">[</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="k">mutable</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [variableC] captures only variableC by value and nothing else.</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//should mark as mutable lambda, since Cannot assign to a variable captured by copy in a non-mutable lambda</span>
-</span><span class='line'>    <span class="c1">//variableB = variableB * 2; //ERROR : variableB not captured, since only capture specific variable that&#39;s variableC</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">///</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">lambda5</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The output of the sample code is :</p>
-
-<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>Init Values :
-</span><span class='line'>variableA : 1
-</span><span class='line'>variableB : 1
-</span><span class='line'>variableC : 1
-</span><span class='line'>
-</span><span class='line'>---## lamda 1 ##---
-</span><span class='line'>param inside lambda1 : 2
-</span><span class='line'>After lamda1, variableA : 1
-</span><span class='line'>
-</span><span class='line'>---## lamda 2 ##---
-</span><span class='line'>param inside lambda2 : 2
-</span><span class='line'>variableB inside lambda2 : 2
-</span><span class='line'>After lamda2, variableA : 1
-</span><span class='line'>After lamda2, variableB : 2
-</span><span class='line'>
-</span><span class='line'>---## lamda 3 ##---
-</span><span class='line'>param inside lambda3 : 2
-</span><span class='line'>variableB inside lambda3 : 4
-</span><span class='line'>After lamda3, result3 : 2
-</span><span class='line'>After lamda3, variableA : 2
-</span><span class='line'>After lamda3, variableB : 4
-</span><span class='line'>
-</span><span class='line'>---## lamda 4 ##---
-</span><span class='line'>param inside lambda4 : 4
-</span><span class='line'>variableB inside lambda4 : 8
-</span><span class='line'>variableC inside lambda4 : 2
-</span><span class='line'>After lamda4, variableA : 2
-</span><span class='line'>After lamda4, variableB : 8
-</span><span class='line'>After lamda4, variableC : 2
-</span><span class='line'>
-</span><span class='line'>---## lamda 5 ##---
-</span><span class='line'>param inside lambda5 : 4
-</span><span class='line'>variableC inside lambda5 : 4
-</span><span class='line'>After lamda5, variableA : 2
-</span><span class='line'>After lamda5, variableC : 2
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><h4>Reference<h4>
-<ol type="1">
-<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">Wrox Professional C++</a></li>
-<li><a href="http://en.cppreference.com/w/cpp/language/lambda">http://en.cppreference.com/w/cpp/language/lambda</a></li>
-<li><a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/</a></li>
-<li><a href="http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1">http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1</a></li>
-</ol></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2061,6 +2005,10 @@ For those who are familiar with C# lambda expression, C++ lambda expression is s
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2017/04/17/import-existing-git-repository-to-another/">Import Existing Git Repository to Another</a>
@@ -2084,10 +2032,6 @@ For those who are familiar with C# lambda expression, C++ lambda expression is s
     
       <li class="post">
         <a href="/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/">Ubuntu Server Does Not Recognize VirtualBox Adapter</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Mono Multiple Application on a Virtual Host</a>
       </li>
     
   </ul>
@@ -2169,6 +2113,12 @@ For those who are familiar with C# lambda expression, C++ lambda expression is s
     
     <li><a href="/blog/categories/git/index.html">git ( 3 )</a></li>
     
+    
+    <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/c/index.html">c ( 1 )</a></li>
+    
   </ul>
 </section>
 -->
@@ -2176,7 +2126,9 @@ For those who are familiar with C# lambda expression, C++ lambda expression is s
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/apache/' class='badge1' data-badge='4'>apache</a></li>
+<li class='category'><a href='/blog/categories/arduino/' class='badge1' data-badge='1'>arduino</a></li>
 <li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
+<li class='category'><a href='/blog/categories/c/' class='badge1' data-badge='1'>c</a></li>
 <li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
 <li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='4'>cpp</a></li>
 <li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
