@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cpp | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/cpp/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-05-04T12:38:27+07:00</updated>
+  <updated>2017-05-04T21:20:11+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -18,7 +18,7 @@
     <link href="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/"/>
     <updated>2016-12-30T09:42:04+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator</id>
-    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp-logo.png"></p>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp.png"></p>
 
 <p><code>std::set</code> is a C++ STL container that store unique elements following a specific order. It is defined in the <code>set</code> header file.
 <br/></p>
@@ -117,7 +117,7 @@ struct CustomCompare
     <link href="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/"/>
     <updated>2016-12-29T14:52:23+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator</id>
-    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp-logo.png"></p>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp.png"></p>
 
 <p><code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
 

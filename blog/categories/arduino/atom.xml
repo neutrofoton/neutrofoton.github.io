@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Arduino | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/arduino/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-05-04T12:38:27+07:00</updated>
+  <updated>2017-05-04T21:20:11+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -18,7 +18,8 @@
     <link href="http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module/"/>
     <updated>2017-05-04T07:32:17+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module</id>
-    <content type="html"><![CDATA[<p>Couple days ayo, I met a friend of mine when I was at university. He plays extensively with <a href="http://www.arduino.org">Arduino</a>, <a href="https://www.raspberrypi.org">Raspberry Pi</a>, <a href="http://www.orangepi.org">Orange Pi</a> and other IoT stuff. He showed me how interesting IoT is, include wiring modules, and surely its programming. I remember that a few months ago, I got Arduino kit with GPS module from another friend of mine. The items were idle since I have other things to do in my work. Yesterday, I just have a free time to play with the Arduino kit. And I never play or explore Arduino before.</p>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/arduino.png">
+Couple days ayo, I met a friend of mine when I was at university. He plays extensively with <a href="http://www.arduino.org">Arduino</a>, <a href="https://www.raspberrypi.org">Raspberry Pi</a>, <a href="http://www.orangepi.org">Orange Pi</a> and other IoT stuff. He showed me how interesting IoT is, include wiring modules, and surely its programming. I remember that a few months ago, I got Arduino kit with GPS module from another friend of mine. The items were idle since I have other things to do in my work. Yesterday, I just have a free time to play with the Arduino kit. And I never play or explore Arduino before.</p>
 
 <p>On the first time exploring Arduino, the hardware I use are :</p>
 
