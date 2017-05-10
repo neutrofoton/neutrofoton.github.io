@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Osx | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-05-10T13:30:13+07:00</updated>
+  <updated>2017-05-10T14:27:28+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,114 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[WinMerge and DiffMerge as Git Diff Merge Tool]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/"/>
+    <updated>2017-05-10T10:01:23+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
+On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
+
+<h2>DiffMerge on macOS</h2>
+
+<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by running the following command via terminal.</p>
+
+<pre><code class="bash">
+$ git config --global mergetool.prompt false
+$ git config --global mergetool.keepBackup false
+$ git config --global mergetool.keepTemporaries false
+
+$ git config --global diff.tool diffmerge
+$ git config --global difftool.diffmerge.cmd 'diffmerge "$LOCAL" "$REMOTE"'
+
+$ git config --global merge.tool diffmerge
+$ git config --global mergetool.diffmerge.cmd 'diffmerge --merge --result="$MERGED" "$LOCAL" "$(if test -f "$BASE"; then echo "$BASE"; else echo "$LOCAL"; fi)" "$REMOTE"'
+$ git config --global mergetool.diffmerge.trustExitCode true
+</code></pre>
+
+<p>The command will add the following config code in global <code>.gitconfig</code></p>
+
+<pre><code>[mergetool]
+  prompt = false
+  keepBackup = false
+  keepTemporaries = false
+
+[diff]
+    tool = diffmerge
+
+[difftool "diffmerge"]
+    cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
+
+[merge]
+    tool = diffmerge
+
+[mergetool "diffmerge"]
+    cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
+    trustExitCode = true
+</code></pre>
+
+<p>We can also directly edit the <code>.gitconfig</code> and manually add the config code.</p>
+
+<h2>WinMerge 2.x on Windows</h2>
+
+<p><a href="http://winmerge.org/">WinMerge</a> is an open source differencing and merging tool for Windows. It can compare both folders and files, presenting differences in a visual text format that is easy to understand and handle.
+At the time of writing this blog post, WinMerge 3 is still in progress of development and no release yet. WinMerge 3 will be modern compare/synchronization tool. It will be based on Qt library and cross-platform. You can use the same tool in Windows and in Linux.
+So for now and so on in this blog post, WinMerge term means WinMerge 2.x.</p>
+
+<p>After installing WinMerge, to configure it as diff and merge tool of Git is by adding /editing the following config setting to <code>C:\Users\{UserName}\.gitconfig</code></p>
+
+<pre><code class="bash">
+[mergetool]
+  prompt = false
+  keepBackup = false
+  keepTemporaries = false
+
+[merge]
+  tool = winmerge
+
+[mergetool "winmerge"]
+  name = WinMerge
+  trustExitCode = true
+  cmd = "/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe" -u -e -dl \"Local\" -dr \"Remote\" $LOCAL $REMOTE $MERGED
+
+[diff]
+  tool = winmerge
+
+[difftool "winmerge"]
+  name = WinMerge
+  trustExitCode = true
+  cmd = "/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe" -u -e $LOCAL $REMOTE
+</code></pre>
+
+<p>The config above also can be configured by Git bash shell with <code>&ndash;global</code> parameter instead of manual edit via text editor.</p>
+
+<p>Now, whenever you want it to launch diffs just use difftool[1]:</p>
+
+<pre><code class="bash"># diff the local file.m against the checked-in version
+$ git difftool file.m
+
+# diff the local file.m against the version in some-feature-branch
+$ git difftool some-feature-branch file.m
+
+# diff the file.m from the Build-54 tag to the Build-55 tag
+$ git difftool Build-54..Build-55 file.m
+</code></pre>
+
+<p>To resolve merge conflicts
+<code>
+$ git mergetool
+</code></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/">http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/</a></li>
+<li><a href="http://winmerge.org/">http://winmerge.org/</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Reset Git Credential on OS X Keychain]]></title>
@@ -490,66 +598,6 @@ We should get the similar picture as below.</p>
 <p><img class="center" src="/images/post/2016-03-08-pic27.png"></p>
 
 <p>The above picture shows that the Hello World app can be run on real device.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Xcode Failed to Download Use the Purchases Page to Try Again]]></title>
-    <link href="http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/"/>
-    <updated>2013-09-24T14:56:27+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again</id>
-    <content type="html"><![CDATA[<p>The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .</p>
-
-<p>The next thing is updating my Xcode, since I got a notification to update my xcode from version 4.6.3 to version 5.0 via app store of version 1.2.2. My OSX version is 10.8.5.
-While updatig process, several times I got error message <code>Xcode failed to download use the purchases page to try again</code>, and my download prosess suddenly stopped. Googling on internet and asking forum got many different suggestion and solution. Thankfully one of them success that is by clearing appstore download cache.</p>
-
-<p>The steps to get things to work are quite simple.</p>
-
-<ol>
-<li>
-Keep the AppStore App open. Open terminal and type
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /private/var/folders/
-</span></code></pre></td></tr></table></div></figure>
-
-Once there, search for com.apple.appstore
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . <span class="p">|</span> grep com.apple.appstore
-</span></code></pre></td></tr></table></div></figure>
-You will find folder structure like this <code>./40/lhn22jn901zdw2bpf82hkggw0000gn/C/com.apple.appstore</code>
-
-</li>
-
-<li>
-Once inside the folder, open it in finder
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>open .
-</span></code></pre></td></tr></table></div></figure>
-</li>
-<li>
-While keeping AppStore open, remove this folder
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -rf *
-</span></code></pre></td></tr></table></div></figure>
-</li>
-<li>
-Now, go back to AppStore and click on Download again.
-</li>
-<li>
-If download/update disappear, close the appstore then reopen it.
- </li>
-</ol>
-
-
-<p>That steps worked well to me. Good luck and have a nice day.</p>
-
-<h4>References</h4>
-
-
-<ol type="1">
-  <li>http://apple.stackexchange.com/questions/61646/xcode-failed-to-download-use-the-purchases-page-to-try-again/71202#71202</li>
-</ol>
-
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-05-10T13:30:13+07:00</updated>
+  <updated>2017-05-10T14:27:28+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -23,9 +23,14 @@ On software development while working with source control, it&rsquo;s inevitable
 
 <h2>DiffMerge on macOS</h2>
 
-<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by run the following command via terminal.</p>
+<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by running the following command via terminal.</p>
 
-<pre><code class="bash">$ git config --global diff.tool diffmerge
+<pre><code class="bash">
+$ git config --global mergetool.prompt false
+$ git config --global mergetool.keepBackup false
+$ git config --global mergetool.keepTemporaries false
+
+$ git config --global diff.tool diffmerge
 $ git config --global difftool.diffmerge.cmd 'diffmerge "$LOCAL" "$REMOTE"'
 
 $ git config --global merge.tool diffmerge
@@ -35,13 +40,20 @@ $ git config --global mergetool.diffmerge.trustExitCode true
 
 <p>The command will add the following config code in global <code>.gitconfig</code></p>
 
-<pre><code>[diff]
+<pre><code>[mergetool]
+  prompt = false
+  keepBackup = false
+  keepTemporaries = false
+
+[diff]
     tool = diffmerge
+
 [difftool "diffmerge"]
     cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
 
 [merge]
     tool = diffmerge
+
 [mergetool "diffmerge"]
     cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
     trustExitCode = true

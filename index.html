@@ -134,7 +134,7 @@ On software development while working with source control, it&rsquo;s inevitable
 
 <h2>DiffMerge on macOS</h2>
 
-<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by run the following command via terminal.</p>
+<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by running the following command via terminal.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -142,7 +142,15 @@ On software development while working with source control, it&rsquo;s inevitable
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config --global diff.tool diffmerge
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config --global mergetool.prompt <span class="nb">false</span>
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.keepBackup <span class="nb">false</span>
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.keepTemporaries <span class="nb">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>git config --global diff.tool diffmerge
 </span><span class='line'><span class="nv">$ </span>git config --global difftool.diffmerge.cmd <span class="s1">&#39;diffmerge &quot;$LOCAL&quot; &quot;$REMOTE&quot;&#39;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nv">$ </span>git config --global merge.tool diffmerge
@@ -163,13 +171,27 @@ On software development while working with source control, it&rsquo;s inevitable
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>diff<span class="o">]</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mergetool<span class="o">]</span>
+</span><span class='line'>  <span class="nv">prompt</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepBackup</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepTemporaries</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>diff<span class="o">]</span>
 </span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'>
 </span><span class='line'><span class="o">[</span>difftool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
 </span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> diffmerge <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">[</span>merge<span class="o">]</span>
 </span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'>
 </span><span class='line'><span class="o">[</span>mergetool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
 </span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;diffmerge --merge --result=\&quot;$MERGED\&quot; \&quot;$LOCAL\&quot; \&quot;$(if test -f \&quot;$BASE\&quot;; then echo \&quot;$BASE\&quot;; else echo \&quot;$LOCAL\&quot;; fi)\&quot; \&quot;$REMOTE\&quot;&quot;</span>
 </span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
@@ -2135,7 +2157,7 @@ We should have the page displayed current date time.</li>
     <li><a href="/blog/categories/php/index.html">php ( 3 )</a></li>
     
     
-    <li><a href="/blog/categories/osx/index.html">osx ( 11 )</a></li>
+    <li><a href="/blog/categories/osx/index.html">osx ( 12 )</a></li>
     
     
     <li><a href="/blog/categories/apache/index.html">apache ( 4 )</a></li>
@@ -2189,7 +2211,7 @@ We should have the page displayed current date time.</li>
     <li><a href="/blog/categories/linux/index.html">linux ( 5 )</a></li>
     
     
-    <li><a href="/blog/categories/windows/index.html">windows ( 1 )</a></li>
+    <li><a href="/blog/categories/windows/index.html">windows ( 2 )</a></li>
     
     
     <li><a href="/blog/categories/cpp/index.html">cpp ( 4 )</a></li>
@@ -2229,13 +2251,13 @@ We should have the page displayed current date time.</li>
 <li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
 <li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
 <li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
-<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='11'>osx</a></li>
+<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='12'>osx</a></li>
 <li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
 <li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='3'>php</a></li>
 <li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
 <li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
 <li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='1'>visual studio</a></li>
-<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='1'>windows</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='2'>windows</a></li>
 <li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
 <li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-05-10T13:30:13+07:00</updated>
+  <updated>2017-05-10T14:27:28+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -23,7 +23,7 @@ On software development while working with source control, it&rsquo;s inevitable
 
 <h2>DiffMerge on macOS</h2>
 
-<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by run the following command via terminal.</p>
+<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by running the following command via terminal.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -31,7 +31,15 @@ On software development while working with source control, it&rsquo;s inevitable
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config --global diff.tool diffmerge
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config --global mergetool.prompt <span class="nb">false</span>
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.keepBackup <span class="nb">false</span>
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.keepTemporaries <span class="nb">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>git config --global diff.tool diffmerge
 </span><span class='line'><span class="nv">$ </span>git config --global difftool.diffmerge.cmd <span class="s1">&#39;diffmerge &quot;$LOCAL&quot; &quot;$REMOTE&quot;&#39;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nv">$ </span>git config --global merge.tool diffmerge
@@ -52,13 +60,27 @@ On software development while working with source control, it&rsquo;s inevitable
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>diff<span class="o">]</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mergetool<span class="o">]</span>
+</span><span class='line'>  <span class="nv">prompt</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepBackup</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepTemporaries</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>diff<span class="o">]</span>
 </span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'>
 </span><span class='line'><span class="o">[</span>difftool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
 </span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> diffmerge <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">[</span>merge<span class="o">]</span>
 </span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'>
 </span><span class='line'><span class="o">[</span>mergetool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
 </span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;diffmerge --merge --result=\&quot;$MERGED\&quot; \&quot;$LOCAL\&quot; \&quot;$(if test -f \&quot;$BASE\&quot;; then echo \&quot;$BASE\&quot;; else echo \&quot;$LOCAL\&quot;; fi)\&quot; \&quot;$REMOTE\&quot;&quot;</span>
 </span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
