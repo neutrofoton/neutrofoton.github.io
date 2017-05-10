@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate &hellip;">
+  <meta name="description" content="VM VirtualBox is one of free popular hypervisor for x86 computer from Oracle. I use it as part of my development environment, since occasionally I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +104,88 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-17T10:41:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 am</span></time>
+        
+           | <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
+
+<p>Before sharing folder, ensure we have installed Guest Addition that shipped with VirtualBox. To do that :</p>
+
+<ol>
+<li>Go to  Device menu > Insert Guest CD Addition Images.</li>
+<li>If it automatically mounting and has popup dialog, just hit run otherwise we may have to manually mounting it.</li>
+</ol>
+
+
+<p> I usually restart my OS guest after installing this VirtualBox Guest Addition.</p>
+
+<p>The steps are :</p>
+
+<ul>
+<li>Go to Devices menu > Shared Folders > Shared Folder Settings</li>
+<li>Select folder path of Host to be shared to Guest OS</li>
+<li><p>Checked Make Permanent option if we want to make it permanent</p>
+
+<blockquote><p>On my sample, I shared folder from OS X Host /Volumes/MacintoshHDData/share</p></blockquote>
+
+<p> Till this step is enough for Windows guest. On Ubuntu guest, it need additional steps to make the shared folder accessible in guest.</p></li>
+<li><p>When we shared a Host&rsquo;s folder on Ubuntu guest, VirtualBox should create a folder on <code>/Media</code> just like the shared folder name with <code>sf_</code> prefix. In my case <code>/Media/sf_share</code>. If the folder does not exist, open terminal, create directory <code>/Media/sf_share</code> and give folder name</p>
+
+<pre><code>mkdir /Media/sf_share
+</code></pre></li>
+<li><p>VirtualBox with Ubuntu operating system guest, it added a group called <code>vboxsf</code>. Before we can access the shared folder we have to be a member of the group.</p>
+
+<pre><code class="bash">sudo add user [username] vboxsf
+</code></pre>
+
+<p> To verify what groups are username belongs to,</p>
+
+<pre><code class="bash">id [username]
+</code></pre></li>
+<li><p>Mount the shared folder</p>
+
+<pre><code class="bash">sudo mount -t vboxsf share /media/sf_share
+</code></pre></li>
+</ul>
+
+
+<p>Now we should be able to the shared folder via Nautilus (File Manager). To make it automatic mounting, ensure we checked option automatic mounting on shared folder setting dialog.</p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine">http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine</a></li>
+<li><a href="http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/">http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1649,175 +1731,6 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/">ASP.Net MVC 4 in Xamarin Studio</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-11-23T15:15:03+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2013</span></span> <span class='time'>3:15 pm</span></time>
-        
-           | <a href="/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
-<code>
-Xamarin Studio
-Version 4.2.1 (build 1)
-Runtime:
-Mono 3.2.5 ((no/964e8f0)
-GTK+ 2.24.20 theme: Raleigh
-GTK# (2.12.0.0)
-Package version: 302050000
-</code></p>
-
-<p>Xamarin Studio includes with ASP.NET MVC 2 and 3 project template. While trying to create ASP.NET MVC 3 project, I got couples of errors such as authorization access etc. The good news is even though there is no project template for ASP.NET MVC 4, we still can convert our ASP.NET MVC 3 to run as ASP.NET MVC 4. The steps are :</p>
-
-<ol type="1">
-<li>
-Create an ASP.NET MVC 3 project either with aspx or razor view engine
-</li>
-<li>
-Run the project via Xamarin studio menu (Run > Run With > Mono Soft Debugger for ASP.NET. While running the project, we may got an error message :
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>System.UnauthorizedAccessException
-</span><span class='line'>Access to the path &quot;/Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry&quot; is denied.
-</span><span class='line'>
-</span><span class='line'>Description: HTTP 500.Error processing request.
-</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
-</span><span class='line'>Exception stack trace:
-</span><span class='line'>
-</span><span class='line'>......
-</span></code></pre></td></tr></table></div></figure>
-To solve the error, run the following command in terminal :
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
-</span><span class='line'>sudo chmod g+rwx /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
-</span></code></pre></td></tr></table></div></figure>
-</li>
-
-<li>
-Re-run again the ASP.NET MVC project. We may get another error message.
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>System.IO.FileNotFoundException
-</span><span class='line'>Could not load file or assembly &#39;System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&#39; or one of its dependencies. The system cannot find the file specified.
-</span><span class='line'>
-</span><span class='line'>Description: HTTP 500.Error processing request.
-</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
-</span><span class='line'>Exception stack trace:
-</span><span class='line'>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-To solve the error message, just use NuGet package manager, search for “ASP.NET MVC 4″ and add reference to it and its dependencies.
-
-</li>
-<li>
-Re-run the ASP.NET MVC again. Now we may get another error message as following :
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>System.InvalidOperationException
-</span><span class='line'>Conflicting versions of ASP.NET Web Pages detected: specified version is &quot;1.0.0.0&quot;, but the version in bin is &quot;2.0.0.0&quot;. To continue, remove files from the application&#39;s bin directory or remove the version specification in web.config.
-</span><span class='line'>
-</span><span class='line'>Description: HTTP 500.Error processing request.
-</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): System.Web.WebPages.Deployment.
-</span><span class='line'>Exception stack trace:
-</span><span class='line'>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-As the error message, we need to make our ASP.NET Web Pages version to 2.0.0.0 in web.config. So just open web.config and change webpages:Version to 2.0.0.0. as follow :
-
-<figure class='code'><figcaption><span>web.config</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">&quot;webpages:Version&quot;</span> <span class="na">value=</span><span class="s">&quot;2.0.0.0&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'><span class="nt">&lt;/add&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-</li>
-
-<li>
-Change assembly version declared in root <code>web.config</code> and <code>/View/web.config</code> of the following
-
-<table style="width:80%">
-  <tr>
-    <td colspan="3"> <hr/> </td>
-  </tr>
-  <tr>
-    <td>assembly</td>
-    <td>from</td>
-    <td>to</td>
-  </tr>
-  <tr>
-    <td colspan="3"> <hr/> </td>
-  </tr>
-  <tr>
-    <td><code>System.Web.WebPages.Razor</code></td>
-    <td>1.0.0.0</td>
-    <td>2.0.0.0</td>
-  </tr>
-  <tr>
-    <td><code>System.Web.Mvc</code></td>
-    <td>3.0.0.0</td>
-    <td>4.0.0.0</td>
-  </tr>
-</table>
-
-</li>
-</ol>
-
-
-<p>Now re-run the project again via Xamarin Studio and our project should run well as expected.</p>
-
-<h4>References</h4>
-
-
-<p><ol type="1">
-<li> <a href="http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html">http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html</a>
-</li>
-<ol></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1842,6 +1755,10 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
       </li>
     
@@ -1863,10 +1780,6 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
     
       <li class="post">
         <a href="/blog/2016/11/09/reset-git-credential-on-os-x-keychain/">Reset Git Credential on OS X Keychain</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/">Ubuntu Server Does Not Recognize VirtualBox Adapter</a>
       </li>
     
   </ul>
@@ -1946,7 +1859,7 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
     <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/git/index.html">git ( 3 )</a></li>
+    <li><a href="/blog/categories/git/index.html">git ( 4 )</a></li>
     
     
     <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
@@ -1968,7 +1881,7 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
 <li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='4'>cpp</a></li>
 <li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
 <li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
-<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='3'>git</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
 <li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
 <li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
 <li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>

@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="Couple days ayo, I met a friend of mine when I was at university. He plays extensively with Arduino, Raspberry Pi, Orange Pi and other IoT stuff. He &hellip;">
+  <meta name="description" content="On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +104,174 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-05-10T10:01:23+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:01 am</span></time>
+        
+           | <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/git.png">
+On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
+
+<h2>DiffMerge on macOS</h2>
+
+<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by run the following command via terminal.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config --global diff.tool diffmerge
+</span><span class='line'><span class="nv">$ </span>git config --global difftool.diffmerge.cmd <span class="s1">&#39;diffmerge &quot;$LOCAL&quot; &quot;$REMOTE&quot;&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>git config --global merge.tool diffmerge
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.diffmerge.cmd <span class="s1">&#39;diffmerge --merge --result=&quot;$MERGED&quot; &quot;$LOCAL&quot; &quot;$(if test -f &quot;$BASE&quot;; then echo &quot;$BASE&quot;; else echo &quot;$LOCAL&quot;; fi)&quot; &quot;$REMOTE&quot;&#39;</span>
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.diffmerge.trustExitCode <span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The command will add the following config code in global <code>.gitconfig</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>diff<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'><span class="o">[</span>difftool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> diffmerge <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>merge<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'><span class="o">[</span>mergetool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;diffmerge --merge --result=\&quot;$MERGED\&quot; \&quot;$LOCAL\&quot; \&quot;$(if test -f \&quot;$BASE\&quot;; then echo \&quot;$BASE\&quot;; else echo \&quot;$LOCAL\&quot;; fi)\&quot; \&quot;$REMOTE\&quot;&quot;</span>
+</span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can also directly edit the <code>.gitconfig</code> and manually add the config code.</p>
+
+<h2>WinMerge 2.x on Windows</h2>
+
+<p><a href="http://winmerge.org/">WinMerge</a> is an open source differencing and merging tool for Windows. It can compare both folders and files, presenting differences in a visual text format that is easy to understand and handle.
+At the time of writing this blog post, WinMerge 3 is still in progress of development and no release yet. WinMerge 3 will be modern compare/synchronization tool. It will be based on Qt library and cross-platform. You can use the same tool in Windows and in Linux.
+So for now and so on in this blog post, WinMerge term means WinMerge 2.x.</p>
+
+<p>After installing WinMerge, to configure it as diff and merge tool of Git is by adding /editing the following config setting to <code>C:\Users\{UserName}\.gitconfig</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mergetool<span class="o">]</span>
+</span><span class='line'>  <span class="nv">prompt</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepBackup</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepTemporaries</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>merge<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> winmerge
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>mergetool <span class="s2">&quot;winmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">name</span> <span class="o">=</span> WinMerge
+</span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe&quot;</span> -u -e -dl <span class="se">\&quot;</span>Local<span class="se">\&quot;</span> -dr <span class="se">\&quot;</span>Remote<span class="se">\&quot;</span> <span class="nv">$LOCAL</span> <span class="nv">$REMOTE</span> <span class="nv">$MERGED</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>diff<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> winmerge
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>difftool <span class="s2">&quot;winmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">name</span> <span class="o">=</span> WinMerge
+</span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe&quot;</span> -u -e <span class="nv">$LOCAL</span> <span class="nv">$REMOTE</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The config above also can be configured by Git bash shell with <code>&ndash;global</code> parameter instead of manual edit via text editor.</p>
+
+<p>Now, whenever you want it to launch diffs just use difftool[1]:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># diff the local file.m against the checked-in version</span>
+</span><span class='line'><span class="nv">$ </span>git difftool file.m
+</span><span class='line'>
+</span><span class='line'><span class="c"># diff the local file.m against the version in some-feature-branch</span>
+</span><span class='line'><span class="nv">$ </span>git difftool some-feature-branch file.m
+</span><span class='line'>
+</span><span class='line'><span class="c"># diff the file.m from the Build-54 tag to the Build-55 tag</span>
+</span><span class='line'><span class="nv">$ </span>git difftool Build-54..Build-55 file.m
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To resolve merge conflicts</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git mergetool
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/">http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/</a></li>
+<li><a href="http://winmerge.org/">http://winmerge.org/</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1904,88 +2072,6 @@ We should have the page displayed current date time.</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-09-17T10:41:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 am</span></time>
-        
-           | <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
-
-<p>Before sharing folder, ensure we have installed Guest Addition that shipped with VirtualBox. To do that :</p>
-
-<ol>
-<li>Go to  Device menu > Insert Guest CD Addition Images.</li>
-<li>If it automatically mounting and has popup dialog, just hit run otherwise we may have to manually mounting it.</li>
-</ol>
-
-
-<p> I usually restart my OS guest after installing this VirtualBox Guest Addition.</p>
-
-<p>The steps are :</p>
-
-<ul>
-<li>Go to Devices menu > Shared Folders > Shared Folder Settings</li>
-<li>Select folder path of Host to be shared to Guest OS</li>
-<li><p>Checked Make Permanent option if we want to make it permanent</p>
-
-<blockquote><p>On my sample, I shared folder from OS X Host /Volumes/MacintoshHDData/share</p></blockquote>
-
-<p> Till this step is enough for Windows guest. On Ubuntu guest, it need additional steps to make the shared folder accessible in guest.</p></li>
-<li><p>When we shared a Host&rsquo;s folder on Ubuntu guest, VirtualBox should create a folder on <code>/Media</code> just like the shared folder name with <code>sf_</code> prefix. In my case <code>/Media/sf_share</code>. If the folder does not exist, open terminal, create directory <code>/Media/sf_share</code> and give folder name</p>
-
-<pre><code>mkdir /Media/sf_share
-</code></pre></li>
-<li><p>VirtualBox with Ubuntu operating system guest, it added a group called <code>vboxsf</code>. Before we can access the shared folder we have to be a member of the group.</p>
-
-<pre><code class="bash">sudo add user [username] vboxsf
-</code></pre>
-
-<p> To verify what groups are username belongs to,</p>
-
-<pre><code class="bash">id [username]
-</code></pre></li>
-<li><p>Mount the shared folder</p>
-
-<pre><code class="bash">sudo mount -t vboxsf share /media/sf_share
-</code></pre></li>
-</ul>
-
-
-<p>Now we should be able to the shared folder via Nautilus (File Manager). To make it automatic mounting, ensure we checked option automatic mounting on shared folder setting dialog.</p>
-
-<h2>References</h2>
-
-<ol>
-<li><a href="http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine">http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine</a></li>
-<li><a href="http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/">http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/</a></li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2006,6 +2092,10 @@ We should have the page displayed current date time.</li>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
@@ -2029,10 +2119,6 @@ We should have the page displayed current date time.</li>
     
       <li class="post">
         <a href="/blog/2016/11/09/reset-git-credential-on-os-x-keychain/">Reset Git Credential on OS X Keychain</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/">Ubuntu Server Does Not Recognize VirtualBox Adapter</a>
       </li>
     
   </ul>
@@ -2112,7 +2198,7 @@ We should have the page displayed current date time.</li>
     <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/git/index.html">git ( 3 )</a></li>
+    <li><a href="/blog/categories/git/index.html">git ( 4 )</a></li>
     
     
     <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
@@ -2134,7 +2220,7 @@ We should have the page displayed current date time.</li>
 <li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='4'>cpp</a></li>
 <li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
 <li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
-<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='3'>git</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
 <li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
 <li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
 <li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>

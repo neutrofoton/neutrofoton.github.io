@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>From WordPress to Octopress - neutrofoton</title>
+  <title>WinMerge and DiffMerge as Git Diff Merge Tool - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="I have just migrated my blog engine from WordPress to Octopress. After exploring (googling) for hours about it, how to install, customize, hosting &hellip;">
+  <meta name="description" content="On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -107,7 +107,7 @@ article img, article video, article .flash-video{
   
   <header>
     
-      <h1 class="entry-title">From WordPress to Octopress</h1>
+      <h1 class="entry-title">WinMerge and DiffMerge as Git Diff Merge Tool</h1>
     
     
       <p class="meta">
@@ -116,7 +116,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2016-03-07T07:32:33+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>7:32 am</span></time>
+<time class='entry-date' datetime='2017-05-10T10:01:23+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:01 am</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
@@ -126,29 +126,143 @@ article img, article video, article .flash-video{
   </header>
 
 
-<div class="entry-content"><p>I have just migrated my blog engine from <a href="https://wordpress.com/">WordPress</a> to <a href="http://octopress.org/">Octopress</a>. After exploring (googling) for hours about it, how to install, customize, hosting etc, finally I got a decision :</p>
+<div class="entry-content"><p><img class="left" src="/images/logo/git.png">
+On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
 
-<blockquote><p>Ok I will migrate my blog to <a href="http://octopress.org/">Octopress</a>.</p></blockquote>
+<h2>DiffMerge on macOS</h2>
 
-<p><a href="http://octopress.org/">Octopress</a> is a framework designed for Jekyll, the static blogging engine powering <a href="https://github.com/">Github</a> Pages.
-In this post, I will not write detail about <a href="http://octopress.org/">Octopress</a>. Many complete articles out there available to be as reference.</p>
+<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by run the following command via terminal.</p>
 
-<p>The reasons that make me interest in <a href="http://octopress.org/">Octopress</a> are :</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config --global diff.tool diffmerge
+</span><span class='line'><span class="nv">$ </span>git config --global difftool.diffmerge.cmd <span class="s1">&#39;diffmerge &quot;$LOCAL&quot; &quot;$REMOTE&quot;&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>git config --global merge.tool diffmerge
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.diffmerge.cmd <span class="s1">&#39;diffmerge --merge --result=&quot;$MERGED&quot; &quot;$LOCAL&quot; &quot;$(if test -f &quot;$BASE&quot;; then echo &quot;$BASE&quot;; else echo &quot;$LOCAL&quot;; fi)&quot; &quot;$REMOTE&quot;&#39;</span>
+</span><span class='line'><span class="nv">$ </span>git config --global mergetool.diffmerge.trustExitCode <span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The command will add the following config code in global <code>.gitconfig</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>diff<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'><span class="o">[</span>difftool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> diffmerge <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>merge<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> diffmerge
+</span><span class='line'><span class="o">[</span>mergetool <span class="s2">&quot;diffmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;diffmerge --merge --result=\&quot;$MERGED\&quot; \&quot;$LOCAL\&quot; \&quot;$(if test -f \&quot;$BASE\&quot;; then echo \&quot;$BASE\&quot;; else echo \&quot;$LOCAL\&quot;; fi)\&quot; \&quot;$REMOTE\&quot;&quot;</span>
+</span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can also directly edit the <code>.gitconfig</code> and manually add the config code.</p>
+
+<h2>WinMerge 2.x on Windows</h2>
+
+<p><a href="http://winmerge.org/">WinMerge</a> is an open source differencing and merging tool for Windows. It can compare both folders and files, presenting differences in a visual text format that is easy to understand and handle.
+At the time of writing this blog post, WinMerge 3 is still in progress of development and no release yet. WinMerge 3 will be modern compare/synchronization tool. It will be based on Qt library and cross-platform. You can use the same tool in Windows and in Linux.
+So for now and so on in this blog post, WinMerge term means WinMerge 2.x.</p>
+
+<p>After installing WinMerge, to configure it as diff and merge tool of Git is by adding /editing the following config setting to <code>C:\Users\{UserName}\.gitconfig</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mergetool<span class="o">]</span>
+</span><span class='line'>  <span class="nv">prompt</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepBackup</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">keepTemporaries</span> <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>merge<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> winmerge
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>mergetool <span class="s2">&quot;winmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">name</span> <span class="o">=</span> WinMerge
+</span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe&quot;</span> -u -e -dl <span class="se">\&quot;</span>Local<span class="se">\&quot;</span> -dr <span class="se">\&quot;</span>Remote<span class="se">\&quot;</span> <span class="nv">$LOCAL</span> <span class="nv">$REMOTE</span> <span class="nv">$MERGED</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>diff<span class="o">]</span>
+</span><span class='line'>  <span class="nv">tool</span> <span class="o">=</span> winmerge
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>difftool <span class="s2">&quot;winmerge&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="nv">name</span> <span class="o">=</span> WinMerge
+</span><span class='line'>  <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span><span class="nv">cmd</span> <span class="o">=</span> <span class="s2">&quot;/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe&quot;</span> -u -e <span class="nv">$LOCAL</span> <span class="nv">$REMOTE</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The config above also can be configured by Git bash shell with <code>&ndash;global</code> parameter instead of manual edit via text editor.</p>
+
+<p>Now, whenever you want it to launch diffs just use difftool[1]:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># diff the local file.m against the checked-in version</span>
+</span><span class='line'><span class="nv">$ </span>git difftool file.m
+</span><span class='line'>
+</span><span class='line'><span class="c"># diff the local file.m against the version in some-feature-branch</span>
+</span><span class='line'><span class="nv">$ </span>git difftool some-feature-branch file.m
+</span><span class='line'>
+</span><span class='line'><span class="c"># diff the file.m from the Build-54 tag to the Build-55 tag</span>
+</span><span class='line'><span class="nv">$ </span>git difftool Build-54..Build-55 file.m
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To resolve merge conflicts</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git mergetool
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>References</h2>
 
 <ol>
-<li>No database needed</li>
-<li>Hosting does not have to have php support </li>
-<li>Using <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a></li>
-<li>Having nice project structure, very intuitive to customize it. Just need html, would be better if have ruby knowledge but not have to</li>
-<li>Supported by github, so can use terminal to post articles</li>
-<li>Many plugin support</li>
-<li>Can use any simple text editor like <a href="https://atom.io/">Atom</a>, <a href="https://www.sublimetext.com/">Sublime</a>, <a href="https://notepad-plus-plus.org/">Notepad++</a> or even <a href="http://www.vim.org/">Vim</a> etc</li>
+<li><a href="http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/">http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/</a></li>
+<li><a href="http://winmerge.org/">http://winmerge.org/</a></li>
 </ol>
 
-
-<p>I plan will not maintain <a href="http://www.neutrofoton.com">http://www.neutrofoton.com</a> anymore. Even though at the time of this blog post the site is still accessible and maybe some articles visible on google search. In case the links are broken, please kindly find the related articles on <a href="https://neutrofoton.github.io">https://neutrofoton.github.io</a></p>
-
-<p>The last, I would say thank you very much to <a href="https://wordpress.com/">WordPress</a> for had been my platform writing blog, and welcome <a href="http://octopress.org/">Octopress</a> for being the new one :)</p>
 </div>
 
 
@@ -166,12 +280,12 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
 
 
 
-<time class='entry-date' datetime='2016-03-07T07:32:33+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>7:32 am</span></time>
+<time class='entry-date' datetime='2017-05-10T10:01:23+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:01 am</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>octopress</a>
+    <a class='category' href='/blog/categories/git/'>git</a>
   
 </span>
 
@@ -180,7 +294,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/" >Tweet</a>
   
   
   
@@ -191,10 +305,8 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/09/08/extract-c-number-exception/" title="Previous Post: Extract C# exception">&laquo; Extract C# exception</a>
+        <a class="basic-alignment left" href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/" title="Previous Post: Arduino and NEO-6M GPS Module">&laquo; Arduino and NEO-6M GPS Module</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/03/08/deploying-ios-app-to-real-device/" title="Next Post: Deploying iOS app to Real Device">Deploying iOS app to Real Device &raquo;</a>
       
     </p>
   </footer>
@@ -403,8 +515,8 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/';
-        var disqus_url = 'http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/';
         var disqus_script = 'embed.js';
       
     (function () {
