@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="VM VirtualBox is one of free popular hypervisor for x86 computer from Oracle. I use it as part of my development environment, since occasionally I &hellip;">
+  <meta name="description" content="I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +104,219 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Mono Mod_mono Apache2 on Ubuntu</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-18T08:34:23+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:34 am</span></time>
+        
+           | <a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
+I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
+
+<p>The details environment I use :</p>
+
+<ol>
+<li>Ubuntu 14.04 LTS</li>
+<li>Mono JIT compiler version 4.4.2</li>
+<li>Apache 2.4.7</li>
+</ol>
+
+
+<h2>Install Mono, Apache 2, Mod Mono</h2>
+
+<p>To install Mono, the first step is add package repository to our system.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;deb http://download.mono-project.com/repo/debian wheezy main&quot;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sudo apt-get update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To enable mod_mono installation on Ubuntu 13.10 or later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main&quot;</span> <span class="p">|</span> sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then run package update to update and a package upgrade to upgrade existing packages to the latest available.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get update
+</span><span class='line'><span class="nv">$ </span>sudo apt-get upgrade
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To install mono, run the following command</p>
+
+<figure class='code'><figcaption><span>install mono</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install mono-complete
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we do not have Apache 2 on our system, we need to install it first. Or we can check the existing version <code>apache2 -v</code></p>
+
+<figure class='code'><figcaption><span>install apache2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install apache2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To be able to host ASP.NET application on apache, we need to install <code>mod_mono</code>. <code>mod_mono</code> is a module for the Apache HTTP Server that allows us to host ASP.NET pages and other assemblies on multiple platforms by using Mono.</p>
+
+<p>To install Mod Mono and its dependencies run the following command</p>
+
+<figure class='code'><figcaption><span>install mod_mono</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install libapache2-mod-mono
+</span><span class='line'><span class="nv">$ </span>apt-get install mono-apache-server4
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Before going through the next step, the things than we can verify are :</p>
+
+<ol>
+<li><p>Ensuring Apache 2 running well at least by checking its version or start stop its service.</p>
+
+<pre><code class="` bash apache version"> $ apache2 -v
+</code></pre>
+
+<pre><code class="` bash start apache"> $ service apache2 start
+</code></pre>
+
+<pre><code class="` bash stop apache"> $ service apache2 stop
+</code></pre></li>
+<li><p>Checking mono version</p>
+
+<pre><code class="bash mono version">$ mono --version
+</code></pre></li>
+<li>Ensuring we have <code>/usr/bin/mod-mono-server4</code></li>
+</ol>
+
+
+<h2>Configuring Application Virtual Host</h2>
+
+<p>To configure virtual host application, the steps are</p>
+
+<ol>
+<li><p>Create a directory where the application physical files reside.
+In this sample I put my  application files in <code>/var/www/hellodotnet</code></p>
+
+<p>We needed to grant permissions to the login user so that the user could copy or create files to the <code>hellodotnet</code> directory.  For our purposes we made the current user the owner of the directory</p>
+
+<pre><code class="` bash application directory"> $ chown -R -v your_user_name /var/www/
+</code></pre></li>
+<li><p>Lets create a simple <code>/var/www/hellodotnet/index.aspx</code> file.</p>
+
+<pre><code class="` html index.aspx"> &lt;center&gt;mod_mono is working:&lt;%=System.DateTime.Now.ToString()%&gt;&lt;/center&gt;
+</code></pre></li>
+<li><p>Create a site configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code></p>
+
+<pre><code class="` xml site configuration">    &lt;VirtualHost *:81&gt;
+       ServerName hellodotnet
+       ServerAdmin hello@test-apache-config.com
+       DocumentRoot /var/www/hellodotnet
+       MonoServerPath hellodotnet "/usr/bin/mod-mono-server4"
+       MonoDebug hellodotnet true
+       MonoSetEnv hellodotnet MONO_IOMAP=all
+       MonoApplications hellodotnet "/:/var/www/hellodotnet"
+
+       ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+       AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+       &lt;Location "/"&gt;
+         Allow from all
+         Order allow,deny
+         MonoSetServerAlias hellodotnet
+         SetHandler mono
+         SetOutputFilter DEFLATE
+         SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+       &lt;/Location&gt;
+       &lt;IfModule mod_deflate.c&gt;
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+       &lt;/IfModule&gt;
+     &lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In this site I use port 81 instead of default 80.</p></li>
+<li><p>Since we use port 81, we need to register port 81 in <code>/etc/apache2/ports.conf</code> by simply add the following code</p>
+
+<pre><code class="` bash"> Listen 81
+</code></pre></li>
+<li><p>Enabling the site by running the following command from terminal</p>
+
+<pre><code class="` bash"> $ sudo a2ensite hellodotnet.conf
+</code></pre></li>
+<li>Restart apache</li>
+<li>Hit from browser : <a href="http://localhost:81">http://localhost:81</a>
+We should have the page displayed current date time.</li>
+</ol>
+
+
+<h2>Tips</h2>
+
+<ol>
+<li><p>If we get the page not displayed, we can see the message on the page displayed, HTML error code, or any clue on apache logs located in <code>/var/log/apache2</code></p></li>
+<li><p>If we get message access denied cannot access bin, simply change permission of the application site.</p>
+
+<pre><code class="` bash"> $ find hellodotnet -type d -exec chmod 755 {} \;
+ $ find hellodotnet -type f -exec chmod 644 {} \;
+</code></pre></li>
+<li><p>If getting message could not find <code>/etc/mono/registry</code>, simply create the directory.</p>
+
+<pre><code class="` bash"> $ sudo mkdir /etc/mono/registry
+</code></pre></li>
+<li><p>If getting <code>System.UnauthorizedAccessException</code> access to the path <code>/etc/mono/registry</code>, give access to it as its need, for example</p>
+
+<pre><code class="`` bash">  $ chmod uog+rw /etc/mono/registry
+</code></pre></li>
+</ol>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.mono-project.com/docs/getting-started/install/linux/">http://www.mono-project.com/docs/getting-started/install/linux/</a></li>
+<li><a href="http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts">http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts</a></li>
+<li><a href="http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3">http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3</a></li>
+<li><a href="http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p">http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p</a></li>
+<li><a href="https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied">https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied</a></li>
+<li><a href="https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/">https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1519,218 +1732,6 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/">Get Excel Column Name by Index and Vice Versa</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-05-13T15:43:52+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:43 pm</span></time>
-        
-           | <a href="/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.</p>
-
-<figure class='code'><figcaption><span>excel helper</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">ExcelUtility</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Convert Excel column name into number/index. Column number start from 1. A equal to 1</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;columnName&quot;&gt;Column name</span>
-</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Excel column in numeric&lt;/returns&gt;</span>
-</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="nf">GetExcelColumnNumber</span><span class="p">(</span><span class="kt">string</span> <span class="n">columnName</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="n">columnName</span><span class="p">))</span>
-</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span><span class="p">(</span><span class="s">&quot;Invalid column name parameter&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">columnName</span> <span class="p">=</span> <span class="n">columnName</span><span class="p">.</span><span class="n">ToUpperInvariant</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kt">int</span> <span class="n">sum</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">columnName</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="n">ch</span> <span class="p">=</span> <span class="n">columnName</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="kt">char</span><span class="p">.</span><span class="n">IsDigit</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span>
-</span><span class='line'>                    <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span><span class="p">(</span><span class="s">&quot;Invalid column name parameter on character &quot;</span> <span class="p">+</span> <span class="n">ch</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">sum</span> <span class="p">*=</span> <span class="m">26</span><span class="p">;</span>
-</span><span class='line'>                <span class="n">sum</span> <span class="p">+=</span> <span class="p">(</span><span class="n">ch</span> <span class="p">-</span> <span class="sc">&#39;A&#39;</span> <span class="p">+</span> <span class="m">1</span><span class="p">);</span>
-</span><span class='line'>                <span class="c1">//sum += (columnName[i] - &#39;A&#39;);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Convert Excel column index into name. Column start from 1</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;columnNumber&quot;&gt;Column name/number</span>
-</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Column name&lt;/returns&gt;</span>
-</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">GetExcelColumnName</span><span class="p">(</span><span class="kt">int</span> <span class="n">columnNumber</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="kt">int</span> <span class="n">dividend</span> <span class="p">=</span> <span class="n">columnNumber</span><span class="p">;</span>
-</span><span class='line'>            <span class="kt">string</span> <span class="n">columnName</span> <span class="p">=</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
-</span><span class='line'>            <span class="kt">int</span> <span class="n">modulo</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">while</span> <span class="p">(</span><span class="n">dividend</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="n">modulo</span> <span class="p">=</span> <span class="p">(</span><span class="n">dividend</span> <span class="p">-</span> <span class="m">1</span><span class="p">)</span> <span class="p">%</span> <span class="m">26</span><span class="p">;</span>
-</span><span class='line'>                <span class="n">columnName</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToChar</span><span class="p">(</span><span class="m">65</span> <span class="p">+</span> <span class="n">modulo</span><span class="p">).</span><span class="n">ToString</span><span class="p">()</span> <span class="p">+</span> <span class="n">columnName</span><span class="p">;</span>
-</span><span class='line'>                <span class="n">dividend</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)((</span><span class="n">dividend</span> <span class="p">-</span> <span class="n">modulo</span><span class="p">)</span> <span class="p">/</span> <span class="m">26</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">return</span> <span class="n">columnName</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>sample code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">class</span> <span class="nc">Program</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="k">try</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="kt">string</span> <span class="n">columnName</span> <span class="p">=</span> <span class="s">&quot;A&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="kt">int</span> <span class="n">columnIndex</span> <span class="p">=</span> <span class="n">ExcelUtility</span><span class="p">.</span><span class="n">GetExcelColumnNumber</span><span class="p">(</span><span class="n">columnName</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Index of {0} is {1} &quot;</span><span class="p">,</span> <span class="n">columnName</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="c1">//increment columnIndex</span>
-</span><span class='line'>                <span class="p">++</span><span class="n">columnIndex</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Increment index = &quot;</span> <span class="p">+</span> <span class="n">columnIndex</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>                <span class="n">columnName</span> <span class="p">=</span> <span class="n">ExcelUtility</span><span class="p">.</span><span class="n">GetExcelColumnName</span><span class="p">(</span><span class="n">columnIndex</span><span class="p">);</span>
-</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Column name of index {0} is {1}&quot;</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">,</span> <span class="n">columnName</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>            <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">ex</span><span class="p">.</span><span class="n">Message</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">Console</span><span class="p">.</span><span class="n">Read</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I write the code in my blog just to remind me in the future in case I get the same need. And it would be great if it can help others who have the same need as me :)</p>
-
-<p><h4>Reference<h4>
-<ol type="1">
-<li> <a href="http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa">http://stackoverflow.com/questions/181596/how-to-convert-a-column-number-eg-127-into-an-excel-column-eg-aa</a>
-</li> <li><a href="http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number">http://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number</a></li>
-</ol></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1755,6 +1756,10 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
       </li>
     
@@ -1776,10 +1781,6 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
     
       <li class="post">
         <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/11/09/reset-git-credential-on-os-x-keychain/">Reset Git Credential on OS X Keychain</a>
       </li>
     
   </ul>
@@ -1844,16 +1845,16 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
     <li><a href="/blog/categories/code-block/index.html">code block ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 1 )</a></li>
+    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 2 )</a></li>
     
     
     <li><a href="/blog/categories/linux/index.html">linux ( 5 )</a></li>
     
     
-    <li><a href="/blog/categories/windows/index.html">windows ( 2 )</a></li>
+    <li><a href="/blog/categories/windows/index.html">windows ( 3 )</a></li>
     
     
-    <li><a href="/blog/categories/cpp/index.html">cpp ( 4 )</a></li>
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 5 )</a></li>
     
     
     <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
@@ -1878,7 +1879,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
 <li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
 <li class='category'><a href='/blog/categories/c/' class='badge1' data-badge='1'>c</a></li>
 <li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
-<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='4'>cpp</a></li>
+<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
 <li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
 <li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
 <li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
@@ -1895,8 +1896,8 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
 <li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='3'>php</a></li>
 <li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
 <li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
-<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='1'>visual studio</a></li>
-<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='2'>windows</a></li>
+<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='2'>visual studio</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='3'>windows</a></li>
 <li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
 <li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
 

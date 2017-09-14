@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Visual Studio | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/visual-studio/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-05-10T14:27:28+07:00</updated>
+  <updated>2017-09-14T13:21:57+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,407 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Create and Consume C++ Class DLL on Windows]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/"/>
+    <updated>2017-09-14T13:04:05+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp.png"></p>
+
+<p>while visiting clients of the company I work on, sometime I still found some applications especially desktop application build on unmanaged code (such as Delphi, Visual Basic 6, C++, etc). Even though at the time of this blog post, many application build on .NET (managed code) on Windows platform. There are various reasons why they do not migrate to managed code which has some advantages over unmanaged code (such as the application still run well with the version of OS they use, rewrite app will need extra cost, etc). This means unmanaged code application is not dead at all for LOB app, even though the percentage is much lower than the managed one.</p>
+
+<p>Maybe this topic seems out of date topic in the .NET era, but at least this post as a note for my self in case I need it on the other day.</p>
+
+<p>While developing an application, usually we want to share some of our code with other application. Dynamic Link Library (DLL) is Microsoft&rsquo;s implementation of the shared library concept in the Microsoft Windows. The term DLL in this post will refer to unmanaged code and only focus to the one build with Visual C++ compiler on Windows environment.</p>
+
+<p>When we create a DLL, we also create a .lib file that contains information of exported class or functions. When we build an executable that calls the DLL, the linker uses the exported symbols in the .lib file to store this information for the loader. When the loader loads a DLL, the DLL is mapped into the memory space of the executable.</p>
+
+<p>An executable file links to (or loads) a DLL in one of two ways, <em>implicit</em> or <em>explicit linking</em>. In this post will create simple sample both of them how C++ class exported in the two ways. The samples in this post created using IDE Microsoft Visual Studio 2013 Ultimate. To simplify the code, I just created a single solution contains a Win32 DLL project and a console application client. The DLL project contains classes for both sample <em>implicit</em> and <em>explicit linking</em>. Either the console application contains sample code for <em>implicit</em> and <em>explicit linking</em> caller. Here is the classes I use in this sample.</p>
+
+<p><img class="center" src="/images/post/2017-09-04-classdiagram.png"></p>
+
+<h2>Implicit Linking</h2>
+
+<p><em>Implicit linking</em>, where the operating system loads the DLL when the executable using it is loaded. The executable client calls the exported functions of the DLL just as if the functions were statically linked and contained within the executable. <em>Implicit linking</em> is sometimes referred to as static load or load-time dynamic linking<sup>[4]</sup>. Now let&rsquo;s create a sample of DLL with <em>implicit linking</em>.</p>
+
+<p>First of all, create an empty solution in Visual Studio by selecting <code>File</code> > <code>New Project</code> > scroll down on the left pane, expand <code>Other Project Types</code> > <code>Visual Studio Solutions</code> select <code>Black Solution</code>. Fill the solution name as <code>VCppDLL</code>.</p>
+
+<p>Now we have an empty solution in Visual Studio. Right click the <code>VCppDLL</code> solution > <code>Add</code> > <code>New Project</code>. In the left pane of the New Project dialog box, expand Installed templates <code>Visual C++</code>, and then select <code>Win32</code>. Fill the project name as <strong>MathWin32DLL</strong>, then click OK.</p>
+
+<p>On the Win32 Application Wizard dialog in the <code>Application Settings</code> part, select <code>DLL</code> and check <code>Empty project</code>, then click Finish</p>
+
+<p><img class="center" src="/images/post/2017-09-04-Win32AppWizard.png"></p>
+
+<p>Now we have an empty C++ DLL project in the Visual Studio solution. As the class diagram picture above, let create a simple <code>BaseMath</code> class. Right click the MathWin32DLL project > <code>Add</code> > <code>Class</code>. On <code>Visual C++</code> template on the left pane dialog, select <code>C++ Class</code> > click <code>Add</code>. On the <code>Generic C++ Class Wizard</code>, fill the <code>Class name</code> as <strong>BaseMath</strong> then click <code>Finish</code>. Edit the <code>BaseMath.h</code> with the following code.</p>
+
+<pre><code class="cpp BaseMath.h">// If you are building the DLL project on the command line,
+// use the /D compiler option to define the MATHDLLWIN32_EXPORTS symbol.
+
+#pragma once
+
+#ifdef MATHWIN32DLL_EXPORTS
+#define Math_API __declspec(dllexport)
+#else
+#define Math_API __declspec(dllimport)
+#endif // MATHWIN32DLL_EXPORTS
+
+#include &lt;string&gt;
+
+using namespace std;
+
+namespace core
+{
+    class BaseMath
+    {
+    public:
+        virtual void Destroy()
+        {
+            delete this;
+        }
+
+        virtual string Say(string&amp; s) = 0;
+        virtual double Calculate(const double a, const double b) = 0;
+    };
+}
+</code></pre>
+
+<p>We can delete <code>BaseMath.cpp</code> file since we will make the <code>BaseMath</code> as an <em>abstract class</em>.</p>
+
+<p>In Visual Studio, by default the New Project template for a DLL adds PROJECTNAME_EXPORTS to the defined preprocessor symbols for the DLL project. We can see the preprocessor symbols definition in <code>Property Pages</code> of <strong>MathWin32DLL</strong> project in the <code>Configuration Properties</code> > <code>C/C++</code> > <code>Preposesor</code> > <code>Preposesor Definitions</code>.</p>
+
+<p><img class="center" src="/images/post/2017-09-04-preposesordefinitions.png"></p>
+
+<p>In the code of <code>BaseMath.h</code>, when <code>MATHWIN32DLL_EXPORTS</code> symbol is defined, the <code>Math_API</code> symbol is set to <code>__declspec(dllexport)</code> modifier otherwise it is set to <code>__declspec(dllimport)</code>. The <code>__declspec(dllexport)</code> modifier can be applied to classes, functions, or variables that tells the compiler and linker to export them from the DLL so that it can be used by other applications.</p>
+
+<p>Meanwhile when we include <code>BaseMath.h</code> in client project, <code>Math_API</code> is set to <code>__declspec(dllimport)</code>. This modifier optimizes the import of the exported class in an application.</p>
+
+<p>For the next, let&rsquo;s create another class called <code>AddOperationMath</code>. Edit the <code>AddOperationMath.h</code> and <code>AddOperationMath.cpp</code> respectively as follow.</p>
+
+<pre><code class="cpp AddOperationMath.h">#pragma once
+#include "BaseMath.h"
+
+using namespace std;
+
+namespace core
+{
+  // MS Visual C++ compiler emits C4275 warning about not exported base class.
+    class Math_API AddOperationMath : public BaseMath
+    {
+    public:
+        AddOperationMath();
+        virtual ~AddOperationMath();
+
+
+        string Say(string&amp; s);
+        double Calculate(const double a, const double b);
+
+        static double Add(const double a, const double b);
+    };
+}
+</code></pre>
+
+<pre><code class="cpp AddOperationMath.cpp">
+#include "AddOperationMath.h"
+
+namespace core
+{
+    AddOperationMath::AddOperationMath()
+    {
+    }
+
+    AddOperationMath::~AddOperationMath()
+    {
+    }
+
+    string AddOperationMath::Say(string&amp; s)
+    {
+        string result =  s + " is calling add operation of class AddOperationMath";
+        return result;
+    }
+
+    double AddOperationMath::Calculate(const double a, const double b)
+    {
+        return a + b;
+    }
+
+    double AddOperationMath::Add(const double a, const double b)
+    {
+        return a + b;
+    }
+}
+</code></pre>
+
+<p>The class <code>AddOperationMath</code> inherits from <code>BaseMath</code>. We also mark the <code>AddOperationMath</code> class with <code>Math_API</code> macro that&rsquo;s defined in <code>BaseMath.h</code> which means we will expose the <code>AddOperationMath</code> class in the DLL to executable client application. When we compile the DLL project, we should get a warning</p>
+
+<pre><code class="text">warning C4275: non dll-interface class 'core::BaseMath' used as base for dll-interface class 'core::AddOperationMath'
+</code></pre>
+
+<p>In this case, ideally we should export (mark with <code>Math_API</code> macro) both <code>core::BaseMath</code> and <code>core::AddOperationMath</code> to make the compiler does not fire the warning message.</p>
+
+<p>To complete our sample, let&rsquo;s create another project called <strong><em>MathWin32ClientConsole</em></strong> as we did the creation of <strong><em>MathWin32DLL</em></strong> project, except select <code>Console Application</code> instead of <code>DLL</code> in the <code>Application Settings</code> dialog.</p>
+
+<p>In the <strong><em>MathWin32ClientConsole</em></strong> project, right click > <code>Add</code> > <code>New Item</code>. Select <code>Visual C++</code> project template on the left pane, then select <code>C++ File (.cpp)</code>. Fill the name with <code>Main.cpp</code>.</p>
+
+<p>To make the <strong><em>MathWin32ClientConsole</em></strong> project has reference to <strong><em>MathWin32DLL</em></strong> project, right click <strong><em>MathWin32ClientConsole</em></strong> project > <code>Properties</code>. Scroll up the <code>Property Pages</code> dialog, expand <code>Common Properties</code> on the left pane > select <code>References</code>. Click <code>Add New Reference</code> button, select <code>Projects</code> and check the <code>MathWin32DLL</code> > <code>OK</code>. Now you should see <code>MathWin32DLL</code> added to the <code>References</code> pane as the following picture.</p>
+
+<p> <img class="center" src="/images/post/2017-09-04-MathWin32ClientConsoleReference.png"></p>
+
+<p> To make the <code>AddOperationMath</code> class is recognized in the <strong><em>MathWin32ClientConsole</em></strong> project, we have to include <code>AddOperationMath.h</code>. We can copy the <code>AddOperationMath.h</code> and <code>BaseMath.h</code> to the <strong><em>MathWin32ClientConsole</em></strong> project. But it is not a good way in our scenario, because if we make changes to one of them, we have to recopy it to the <strong><em>MathWin32ClientConsole</em></strong> project directory. To avoid this manual copy, we can include the <strong><em>MathWin32DLL</em></strong> project directory to the <strong><em>MathWin32ClientConsole</em></strong> so that we can include any header files of <strong><em>MathWin32DLL</em></strong> to <strong><em>MathWin32ClientConsole</em></strong> if needed. To do that open the Property pages of <strong><em>MathWin32ClientConsole</em></strong>, select <code>Configuration Properties</code> > <code>C/C++</code> > <code>General</code>. Select the drop-down control next to the <code>Additional Include Directories</code> edit box, and then choose <code>&lt;Edit...&gt;</code>. Select the top pane of the <code>Additional Include Directories</code> dialog box to enable an edit control. In the edit control, fill <code>$(SolutionDir)\MathWin32DLL</code> which tells to Visual Studio to scan or search header files that we include in directory <code>MathWin32DLL</code> inside solution directory.</p>
+
+<p> <img class="center" src="/images/post/2017-09-04-IncludeMathWin32DLLDirectory.png"></p>
+
+<p>Now we can include header file defined in <code>MathWin32DLL</code> from <code>MathWin32ClientConsole</code>. Let create code that call class defined in the DLL.</p>
+
+<pre><code class="cpp Main.cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+#include "AddOperationMath.h"
+
+using namespace std;
+
+
+void CallDLLByImplicitLinking(double a, double b, string s);
+
+int main()
+{
+    double a = 2;
+    double b = 4;
+    string s = "neutro";
+
+    CallDLLByImplicitLinking(a, b, s);
+
+
+    cout &lt;&lt; "Press any key to exit ";
+    cin.get();
+
+    return 0;
+}
+
+
+
+void CallDLLByImplicitLinking(double a, double b, string s)
+{
+    cout &lt;&lt; a &lt;&lt; " + " &lt;&lt; b &lt;&lt; " = " &lt;&lt; core::AddOperationMath::Add(a, b) &lt;&lt; endl;
+
+    core::AddOperationMath* math = new core::AddOperationMath();
+    cout &lt;&lt; math-&gt;Say(s) &lt;&lt; endl;
+
+    delete math;
+
+    cout &lt;&lt; endl &lt;&lt; "===============================================================" &lt;&lt; endl;
+}
+</code></pre>
+
+<pre><code class="text Output">2 + 4 = 6
+neutro is calling add operation of class AddOperationMath
+
+Press any key to exit
+</code></pre>
+
+<blockquote><p>There is no need to explicitly specify a calling convention for exporting classes or their methods. By default, the C++ compiler uses the <code>__thiscall</code> calling convention for class methods. However, due to different naming decoration schemes that are used by different compilers, the exported C++ class can only be used by the same compiler and by the same version of the compiler. Only the MS Visual C++ compiler can use this DLL now. Both the DLL and the client code must be compiled with the same version of MS Visual C++ in order to ensure that the naming decoration scheme matches between the caller and the callee<sup>[5]</sup></p></blockquote>
+
+<p>To use a DLL by <em>implicit linking</em>, an executable must include the header files that declare the data, functions or C++ classes exported by the DLL in each source file that contains calls to the exported data, functions, and classes.  The classes, functions, and data exported by the DLL must all be marked <code>__declspec(dllimport)</code> in the header file. From a coding perspective, calls to the exported functions are just like any other function call.</p>
+
+<p>To build the calling executable file, we must link with the import library (.lib). If we use an external makefile or build system, we need to specify the file name of the import library where we list other object (.obj) files or libraries that we link.</p>
+
+<p>The operating system must be able to locate the DLL file when it loads the calling executable. This means that we must deploy or verify the existence of the DLL when our application is installed.</p>
+
+<h2>Explicit Linking</h2>
+
+<p><em>Explicit linking</em>, where the operating system loads the DLL on demand at runtime. An executable that uses a DLL by <em>explicit linking</em> must make function calls to explicitly load and unload the DLL and to access the functions exported by the DLL. Unlike calls to functions in a statically linked library, the client executable must call the exported functions in a DLL through a function pointer. <em>Explicit linking</em> is sometimes referred to as dynamic load or run-time dynamic linking<sup>[4]</sup>.</p>
+
+<p>To use a DLL by <em>explicit linking</em>, applications must make a function call to explicitly load the DLL at run time. To explicitly link to a DLL, an application must <sup>[4]</sup>:</p>
+
+<ol>
+<li><p>Call <code>LoadLibrary</code>, <code>LoadLibraryEx</code>, or a similar function to load the DLL and obtain a module handle.</p></li>
+<li><p>Call <code>GetProcAddress</code> to obtain a function pointer to each exported function that the application calls. Because applications call the DLL functions through a pointer, the compiler does not generate external references, so there is no need to link with an import library. However, you must have a typedef or using statement that defines the call signature of the exported functions that you call.</p></li>
+<li><p>Call <code>FreeLibrary</code> when done with the DLL.</p></li>
+</ol>
+
+
+<p>To create a sample for <em>explicit linking</em>, we will use an abstract interface (a class with pure virtual methods, and no data) and create a factory method for object instantiation.</p>
+
+<p>On the <strong><em>MathWin32DLL</em></strong> create a new class called <code>LogarithmicMath</code>. Edit the header and implementation files as follow</p>
+
+<pre><code class="cpp LogarithmicMath.h">
+#pragma once
+
+#include "BaseMath.h"
+
+namespace core
+{
+    class LogarithmicMath : public BaseMath
+    {
+    public:
+        LogarithmicMath();
+        virtual ~LogarithmicMath();
+
+
+        string Say(string&amp; s);
+        double Calculate(const double a, const double b);
+    };
+}
+</code></pre>
+
+<pre><code class="cpp LogarithmicMath.cpp">#include "LogarithmicMath.h"
+#include &lt;math.h&gt;
+
+namespace core
+{
+    LogarithmicMath::LogarithmicMath()
+    {
+    }
+
+
+    LogarithmicMath::~LogarithmicMath()
+    {
+    }
+
+    string LogarithmicMath::Say(string&amp; s)
+    {
+        string result = s + " is calling Logarithmic operation of class LogarithmicMath";
+        return result;
+    }
+
+    double LogarithmicMath::Calculate(const double a, const double b)
+    {
+        return log10(b) / log10(a);
+    }
+}
+</code></pre>
+
+<p>Next, create a <code>Factory</code> class that encapsulates <code>LogarithmicMath</code> instantiation and will be called from client app.</p>
+
+<pre><code class="cpp Factory.h">#include "BaseMath.h"
+
+using namespace std;
+
+extern "C" Math_API core::BaseMath* __cdecl CreateLogarithmicMath();
+</code></pre>
+
+<pre><code class="cpp Factory.cpp">#include "Factory.h"
+#include "LogarithmicMath.h"
+
+using namespace std;
+
+core::BaseMath* CreateLogarithmicMath()
+{
+    return new core::LogarithmicMath();
+}
+</code></pre>
+
+<p>We can see that the <code>LogarithmicMath</code> class look like a standard C++ class. Instead of directly export the <code>LogarithmicMath</code> class, we use <code>Factory</code> that handle the export technics.</p>
+
+<p>In the <code>Factory.h</code> defined <code>extern "C"</code> which tells the C++ compiler that the linker should use the C calling convention. It is required in order to prevent the mangling of the function name. So, this function is exposed as a regular C function, and can be easily recognized by any C-compatible compiler. The name itself is exported from the DLL unmangled (<code>CreateLogarithmicMath</code>). The <code>Math_API</code> tells the linker to export the <code>CreateLogarithmicMath</code> method from the DLL. <code>__cdecl</code> is the default calling convention for C and C++ programs.</p>
+
+<p>Now let create a sample code in the <strong><em>MathWin32ClientConsole</em></strong> by editing the <code>Main.cpp</code> as following.</p>
+
+<pre><code class="cpp Main.cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+#include &lt;Windows.h&gt;
+
+#include "AddOperationMath.h"
+
+using namespace std;
+
+typedef core::BaseMath* (__cdecl *LogarithmicMathFactory)();
+
+void CallDLLByImplicitLinking(double a, double b, string s);
+void CallDLLByExplicitLinking(double a, double b, string s);
+
+int main()
+{
+    double a = 2;
+    double b = 4;
+    string s = "neutro";
+
+    CallDLLByImplicitLinking(a, b, s);
+    CallDLLByExplicitLinking(a, b, s);
+
+
+    cout &lt;&lt; "Press any key to exit ";
+    cin.get();
+
+    return 0;
+}
+
+
+
+void CallDLLByImplicitLinking(double a, double b, string s)
+{
+    cout &lt;&lt; a &lt;&lt; " + " &lt;&lt; b &lt;&lt; " = " &lt;&lt; core::AddOperationMath::Add(a, b) &lt;&lt; endl;
+
+    core::AddOperationMath* math = new core::AddOperationMath();
+    cout &lt;&lt; math-&gt;Say(s) &lt;&lt; endl;
+
+    delete math;
+
+    cout &lt;&lt; endl &lt;&lt; "===============================================================" &lt;&lt; endl;
+}
+
+
+void CallDLLByExplicitLinking(double a, double b, string s)
+{
+    HMODULE dll = LoadLibrary(L"MathWin32DLL.dll");
+    if (!dll)
+    {
+        cout &lt;&lt; "Fail load library" &lt;&lt; endl;
+        return;
+    }
+
+    LogarithmicMathFactory factory = reinterpret_cast&lt;LogarithmicMathFactory&gt;(GetProcAddress(dll, "CreateLogarithmicMath"));
+
+    if (!factory)
+    {
+        cerr &lt;&lt; "Unable to load CreateLogarithmicMath from DLL!\n";
+        FreeLibrary(dll);
+        return;
+    }
+
+    core::BaseMath* instance = factory();
+    cout &lt;&lt; a &lt;&lt; " log (" &lt;&lt; b &lt;&lt; ") = " &lt;&lt; instance-&gt;Calculate(a, b) &lt;&lt; endl;
+    cout &lt;&lt; instance-&gt;Say(s) &lt;&lt; endl;
+
+    instance-&gt;Destroy();
+
+    FreeLibrary(dll);
+
+    cout &lt;&lt; endl &lt;&lt; "===============================================================" &lt;&lt; endl;
+}
+</code></pre>
+
+<p>Now build and run the <strong><em>MathWin32ClientConsole</em></strong>, we should get the following output.</p>
+
+<pre><code class="text output">2 + 4 = 6
+neutro is calling add operation of class AddOperationMath
+
+===============================================================
+2 log (4) = 2
+neutro is calling Logarithmic operation of class LogarithmicMath
+
+===============================================================
+Press any key to exit
+</code></pre>
+
+<p>In order to ensure proper resource release, an abstract interface provides an additional method for the disposal of an instance. In this case we provide <code>Destroy</code> method. Calling this method manually can be tedious and error prone. It&rsquo;s recommend use smart pointer for auto resource release instead of manual release.</p>
+
+<h2>References New</h2>
+
+<ol>
+<li><a href="https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp">https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/1ez7dh12.aspx">https://msdn.microsoft.com/en-us/library/1ez7dh12.aspx</a></li>
+<li><a href="https://docs.microsoft.com/en-us/cpp/build/dlls-in-visual-cpp">https://docs.microsoft.com/en-us/cpp/build/dlls-in-visual-cpp</a></li>
+<li><a href="https://docs.microsoft.com/en-us/cpp/build/linking-an-executable-to-a-dll#determining-which-linking-method-to-use">https://docs.microsoft.com/en-us/cpp/build/linking-an-executable-to-a-dll#determining-which-linking-method-to-use</a></li>
+<li><a href="https://www.codeproject.com/Articles/28969/HowTo-Export-C-classes-from-a-DLL">https://www.codeproject.com/Articles/28969/HowTo-Export-C-classes-from-a-DLL</a></li>
+<li><a href="http://eli.thegreenplace.net/2011/09/16/exporting-c-classes-from-a-dll">http://eli.thegreenplace.net/2011/09/16/exporting-c-classes-from-a-dll</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
