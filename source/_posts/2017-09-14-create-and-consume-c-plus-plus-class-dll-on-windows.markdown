@@ -414,6 +414,8 @@ Press any key to exit
 
 In order to ensure proper resource release, an abstract interface provides an additional method for the disposal of an instance. In this case we provide ```Destroy``` method. Calling this method manually can be tedious and error prone. It's recommend use smart pointer for auto resource release instead of manual release.
 
+The code of this article can be found [here](https://github.com/neutrofoton/VCppDLL)
+
 ## References New
 1. https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp
 2. https://msdn.microsoft.com/en-us/library/1ez7dh12.aspx
