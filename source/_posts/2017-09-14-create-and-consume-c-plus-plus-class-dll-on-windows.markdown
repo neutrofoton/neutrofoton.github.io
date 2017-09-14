@@ -1,10 +1,11 @@
 ---
 layout: post
 title: "Create and consume C++ Class DLL on Windows"
-date: 2017-09-04 22:49:23 +0700
+date: 2017-09-14 13:04:05 +0700
 comments: true
 categories: [cpp, visual studio, windows]
 ---
+
 {% img left /images/logo/cpp.png %}
 
 while visiting clients of the company I work on, sometime I still found some applications especially desktop application build on unmanaged code (such as Delphi, Visual Basic 6, C++, etc). Even though at the time of this blog post, many application build on .NET (managed code) on Windows platform. There are various reasons why they do not migrate to managed code which has some advantages over unmanaged code (such as the application still run well with the version of OS they use, rewrite app will need extra cost, etc). This means unmanaged code application is not dead at all for LOB app, even though the percentage is much lower than the managed one.
