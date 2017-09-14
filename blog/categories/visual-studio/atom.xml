@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Visual Studio | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/visual-studio/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T13:21:57+07:00</updated>
+  <updated>2017-09-14T14:57:08+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -399,6 +399,8 @@ Press any key to exit
 </code></pre>
 
 <p>In order to ensure proper resource release, an abstract interface provides an additional method for the disposal of an instance. In this case we provide <code>Destroy</code> method. Calling this method manually can be tedious and error prone. It&rsquo;s recommend use smart pointer for auto resource release instead of manual release.</p>
+
+<p>The code of this article can be found <a href="https://github.com/neutrofoton/VCppDLL">here</a></p>
 
 <h2>References New</h2>
 
