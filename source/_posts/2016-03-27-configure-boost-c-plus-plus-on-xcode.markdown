@@ -147,6 +147,8 @@ The snipped code above just print text and write it to a text file. We just want
 
 The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.
 
+The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a>
+
 <h4>Reference<h4>
 <ol type="1">
 <li>
