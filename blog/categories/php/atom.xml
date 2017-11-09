@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T15:39:10+07:00</updated>
+  <updated>2017-11-10T00:18:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Install phpMyAdmin on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-10T10:39:53+07:00</updated>
+    <updated>2012-08-10T11:39:53+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
 
@@ -40,7 +40,7 @@ sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
   <entry>
     <title type="html"><![CDATA[Install PHP on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-09T10:13:16+07:00</updated>
+    <updated>2012-08-09T11:13:16+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>On the previous post, we have set up apache on OS X Mountain Lion. In this post we will continue to install php module to run with apache on Mountain Lion. PHP actually is shipped in OS X 10.8. The first step is edit <code>httpd.conf</code> in apache directory.</p>
 
@@ -67,7 +67,7 @@ LoadModule php5_module libexec/apache2/libphp5.so
   <entry>
     <title type="html"><![CDATA[Jomla Encryption in C#]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number/"/>
-    <updated>2012-08-06T09:21:53+07:00</updated>
+    <updated>2012-08-06T10:21:53+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number</id>
     <content type="html"><![CDATA[<p>Couple days ago I got a task to migrate user from an existing website which build based on Jomla CMS to an ASP.NET website user. Both of them use different encryption technique. The plan was that the Jomla based website would be replaced with the .NET website. In sort the scenario was :</p>
 

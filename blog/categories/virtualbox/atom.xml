@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Virtualbox | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/virtualbox/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T15:39:10+07:00</updated>
+  <updated>2017-11-10T00:18:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Ubuntu Server Does Not Recognize VirtualBox Adapter]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/"/>
-    <updated>2016-10-12T21:25:24+07:00</updated>
+    <updated>2016-10-12T22:25:24+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter</id>
     <content type="html"><![CDATA[<p>As we know, VirtualBox provides several adapters that we can add and be used by OS guest.
 At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.1 LTS (guest). The needs are, I want to be able to remote my Ubuntu from OS X terminal. I also want my Ubuntu guest can connect to internet. I have configured two network adapters for the guest (NAT and host-only).</p>
@@ -52,7 +52,7 @@ iface enp0s8 inet dhcp
   <entry>
     <title type="html"><![CDATA[VirtualBox Share Host Folder Ubuntu Guest]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/"/>
-    <updated>2016-09-17T10:41:13+07:00</updated>
+    <updated>2016-09-17T11:41:13+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest</id>
     <content type="html"><![CDATA[<p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
 

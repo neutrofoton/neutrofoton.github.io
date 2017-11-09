@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Windows | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/windows/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T15:39:10+07:00</updated>
+  <updated>2017-11-10T00:18:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Create and Consume C++ Class DLL on Windows]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/"/>
-    <updated>2017-09-14T13:04:05+07:00</updated>
+    <updated>2017-09-14T14:04:05+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp.png"></p>
 
@@ -419,7 +419,7 @@ Press any key to exit
   <entry>
     <title type="html"><![CDATA[WinMerge and DiffMerge as Git Diff Merge Tool]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/"/>
-    <updated>2017-05-10T10:01:23+07:00</updated>
+    <updated>2017-05-10T11:01:23+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
 On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
@@ -527,7 +527,7 @@ $ git mergetool
   <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
-    <updated>2016-03-27T20:38:49+07:00</updated>
+    <updated>2016-03-27T21:38:49+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
 <a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
@@ -732,6 +732,8 @@ The snipped code above just print text and write it to a text file. We just want
 
 
 <p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
+
+<p>The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a></p>
 
 <p><h4>Reference<h4>
 <ol type="1">

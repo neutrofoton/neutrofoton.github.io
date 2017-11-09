@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T15:39:10+07:00</updated>
+  <updated>2017-11-10T00:18:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[WinMerge and DiffMerge as Git Diff Merge Tool]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/"/>
-    <updated>2017-05-10T10:01:23+07:00</updated>
+    <updated>2017-05-10T11:01:23+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
 On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
@@ -124,7 +124,7 @@ $ git mergetool
   <entry>
     <title type="html"><![CDATA[Import Existing Git Repository to Another]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/04/17/import-existing-git-repository-to-another/"/>
-    <updated>2017-04-17T16:44:53+07:00</updated>
+    <updated>2017-04-17T17:44:53+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/04/17/import-existing-git-repository-to-another</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png"></p>
 
@@ -194,9 +194,9 @@ $ git push
   
   <entry>
     <title type="html"><![CDATA[Working With Multiple Github Account on a Computer]]></title>
-    <link href="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/"/>
-    <updated>2017-03-26T23:47:22+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer</id>
+    <link href="http://neutrofoton.github.io/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/"/>
+    <updated>2017-03-27T00:47:22+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/03/27/working-with-multiple-github-account-on-a-computer</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
 Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
 
@@ -231,7 +231,7 @@ $ git config user.email USERNAME@example.com
   <entry>
     <title type="html"><![CDATA[Reset Git Credential on OS X Keychain]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/"/>
-    <updated>2016-11-09T12:40:34+07:00</updated>
+    <updated>2016-11-09T13:40:34+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
 This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>

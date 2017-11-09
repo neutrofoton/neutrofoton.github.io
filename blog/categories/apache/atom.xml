@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Apache | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/apache/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T15:39:10+07:00</updated>
+  <updated>2017-11-10T00:18:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
-    <updated>2016-09-19T22:06:13+07:00</updated>
+    <updated>2016-09-19T23:06:13+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
 On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
@@ -174,7 +174,7 @@ $ find project2 -type f -exec chmod 644 {} \;
   <entry>
     <title type="html"><![CDATA[Mono Mod_mono Apache2 on Ubuntu]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/"/>
-    <updated>2016-09-18T08:34:23+07:00</updated>
+    <updated>2016-09-18T09:34:23+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
 I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
@@ -347,7 +347,7 @@ We should have the page displayed current date time.</li>
   <entry>
     <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-09-14T12:36:00+07:00</updated>
+    <updated>2012-09-14T13:36:00+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
 
@@ -421,7 +421,7 @@ or</p>
   <entry>
     <title type="html"><![CDATA[Configure Apache on OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-08-08T09:47:05+07:00</updated>
+    <updated>2012-08-08T10:47:05+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>After installing Mountain Lion on my Macbook, I decided to prepare and set up software development tools in it. One of it is activate web sharing feature which can be found at System Preferences > Sharing on previous version. I was very suprise that apple seems remove it from the list.</p>
 

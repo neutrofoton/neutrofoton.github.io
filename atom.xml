@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T15:39:10+07:00</updated>
+  <updated>2017-11-10T00:18:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Create and Consume C++ Class DLL on Windows]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/"/>
-    <updated>2017-09-14T13:04:05+07:00</updated>
+    <updated>2017-09-14T14:04:05+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/cpp.png"></p>
 
@@ -694,7 +694,7 @@
   <entry>
     <title type="html"><![CDATA[WinMerge and DiffMerge as Git Diff Merge Tool]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/"/>
-    <updated>2017-05-10T10:01:23+07:00</updated>
+    <updated>2017-05-10T11:01:23+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/git.png">
 On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
@@ -861,7 +861,7 @@ So for now and so on in this blog post, WinMerge term means WinMerge 2.x.</p>
   <entry>
     <title type="html"><![CDATA[Arduino and NEO-6M GPS Module]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module/"/>
-    <updated>2017-05-04T07:32:17+07:00</updated>
+    <updated>2017-05-04T08:32:17+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/arduino.png">
 Couple days ayo, I met a friend of mine when I was at university. He plays extensively with <a href="http://www.arduino.org">Arduino</a>, <a href="https://www.raspberrypi.org">Raspberry Pi</a>, <a href="http://www.orangepi.org">Orange Pi</a> and other IoT stuff. He showed me how interesting IoT is, include wiring modules, and surely its programming. I remember that a few months ago, I got Arduino kit with GPS module from another friend of mine. The items were idle since I have other things to do in my work. Yesterday, I just have a free time to play with the Arduino kit. And I never play or explore Arduino before.</p>
@@ -1222,7 +1222,7 @@ Couple days ayo, I met a friend of mine when I was at university. He plays exten
   <entry>
     <title type="html"><![CDATA[Import Existing Git Repository to Another]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/04/17/import-existing-git-repository-to-another/"/>
-    <updated>2017-04-17T16:44:53+07:00</updated>
+    <updated>2017-04-17T17:44:53+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/04/17/import-existing-git-repository-to-another</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/git.png"></p>
 
@@ -1323,9 +1323,9 @@ and TEMPLATE branch to get rid of the extra branch before pushing.</p>
   
   <entry>
     <title type="html"><![CDATA[Working With Multiple Github Account on a Computer]]></title>
-    <link href="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/"/>
-    <updated>2017-03-26T23:47:22+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer</id>
+    <link href="http://neutrofoton.github.io/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/"/>
+    <updated>2017-03-27T00:47:22+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/03/27/working-with-multiple-github-account-on-a-computer</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/git.png">
 Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
 
@@ -1365,7 +1365,7 @@ To ensure that the commits appear as performed by USERNAME, we can configure the
   <entry>
     <title type="html"><![CDATA[C++ Set With Custom Comparator]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/"/>
-    <updated>2016-12-30T09:42:04+07:00</updated>
+    <updated>2016-12-30T10:42:04+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/cpp.png"></p>
 
@@ -1480,7 +1480,7 @@ To ensure that the commits appear as performed by USERNAME, we can configure the
   <entry>
     <title type="html"><![CDATA[C++ Priority Queue With Comparator]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/"/>
-    <updated>2016-12-29T14:52:23+07:00</updated>
+    <updated>2016-12-29T15:52:23+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/cpp.png"></p>
 
@@ -1909,7 +1909,7 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
   <entry>
     <title type="html"><![CDATA[Reset Git Credential on OS X Keychain]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/"/>
-    <updated>2016-11-09T12:40:34+07:00</updated>
+    <updated>2016-11-09T13:40:34+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/git.png">
 This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>
@@ -1942,7 +1942,7 @@ This post basically just a note for my self. In case I got the same condition in
   <entry>
     <title type="html"><![CDATA[Ubuntu Server Does Not Recognize VirtualBox Adapter]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/"/>
-    <updated>2016-10-12T21:25:24+07:00</updated>
+    <updated>2016-10-12T22:25:24+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter</id>
     <content type="html"><![CDATA[<p>As we know, VirtualBox provides several adapters that we can add and be used by OS guest.
 At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.1 LTS (guest). The needs are, I want to be able to remote my Ubuntu from OS X terminal. I also want my Ubuntu guest can connect to internet. I have configured two network adapters for the guest (NAT and host-only).</p>
@@ -1990,7 +1990,7 @@ At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.
   <entry>
     <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
-    <updated>2016-09-19T22:06:13+07:00</updated>
+    <updated>2016-09-19T23:06:13+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/mono.png">
 On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
@@ -2263,7 +2263,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
   <entry>
     <title type="html"><![CDATA[Mono Mod_mono Apache2 on Ubuntu]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/"/>
-    <updated>2016-09-18T08:34:23+07:00</updated>
+    <updated>2016-09-18T09:34:23+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/mono.png">
 I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
@@ -2453,7 +2453,7 @@ We should have the page displayed current date time.</li>
   <entry>
     <title type="html"><![CDATA[VirtualBox Share Host Folder Ubuntu Guest]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/"/>
-    <updated>2016-09-17T10:41:13+07:00</updated>
+    <updated>2016-09-17T11:41:13+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest</id>
     <content type="html"><![CDATA[<p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
 
@@ -2511,9 +2511,9 @@ We should have the page displayed current date time.</li>
   
   <entry>
     <title type="html"><![CDATA[Lambda in C++]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/"/>
-    <updated>2016-05-11T23:15:18+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus</id>
+    <link href="http://neutrofoton.github.io/blog/2016/05/12/lambda-in-c-plus-plus/"/>
+    <updated>2016-05-12T00:15:18+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/05/12/lambda-in-c-plus-plus</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/lambda.png">
 C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
 For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
@@ -2930,7 +2930,7 @@ For those who are familiar with C# lambda expression, C++ lambda expression is s
   <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
-    <updated>2016-03-27T20:38:49+07:00</updated>
+    <updated>2016-03-27T21:38:49+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/post/2016-03-27-boost.png">
 <a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
@@ -3127,6 +3127,8 @@ As on OS X and Ubuntu, the last step quite take time.
 
 <p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
 
+<p>The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a></p>
+
 <p><h4>Reference<h4>
 <ol type="1">
 <li>
@@ -3142,7 +3144,7 @@ As on OS X and Ubuntu, the last step quite take time.
   <entry>
     <title type="html"><![CDATA[GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/"/>
-    <updated>2016-03-12T15:08:34+07:00</updated>
+    <updated>2016-03-12T16:08:34+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/spring.png">
 Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
@@ -3173,7 +3175,7 @@ Sometime for some reasons when dealing with open source technology we have inter
   <entry>
     <title type="html"><![CDATA[Math in Web]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/"/>
-    <updated>2016-03-09T21:41:47+07:00</updated>
+    <updated>2016-03-09T22:41:47+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/09/math-in-web</id>
     <content type="html"><![CDATA[<p>There are several frameworks that can be used to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
 
@@ -3272,9 +3274,9 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
   
   <entry>
     <title type="html"><![CDATA[Create iOS Ipa for In-House Distribution]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/"/>
-    <updated>2016-03-08T23:10:44+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution</id>
+    <link href="http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/"/>
+    <updated>2016-03-09T00:10:44+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/ios.png"></p>
 
 <p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
@@ -3348,7 +3350,7 @@ Now we should get the similar picture as follow.</p>
   <entry>
     <title type="html"><![CDATA[Deploying iOS App to Real Device]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/"/>
-    <updated>2016-03-08T12:35:31+07:00</updated>
+    <updated>2016-03-08T13:35:31+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://neutrofoton.github.io/images/logo/ios.png">
 While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>
@@ -3503,7 +3505,7 @@ We should get the similar picture as below.</p>
   <entry>
     <title type="html"><![CDATA[From WordPress to Octopress]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/"/>
-    <updated>2016-03-07T07:32:33+07:00</updated>
+    <updated>2016-03-07T08:32:33+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress</id>
     <content type="html"><![CDATA[<p>I have just migrated my blog engine from <a href="https://wordpress.com/">WordPress</a> to <a href="http://octopress.org/">Octopress</a>. After exploring (googling) for hours about it, how to install, customize, hosting etc, finally I got a decision :</p>
 
@@ -3534,7 +3536,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
   <entry>
     <title type="html"><![CDATA[Extract C# Exception]]></title>
     <link href="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/"/>
-    <updated>2014-09-08T15:49:39+07:00</updated>
+    <updated>2014-09-08T16:49:39+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception</id>
     <content type="html"><![CDATA[<p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
 

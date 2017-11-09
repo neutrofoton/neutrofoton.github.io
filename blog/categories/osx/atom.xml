@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Osx | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-09-14T15:39:10+07:00</updated>
+  <updated>2017-11-10T00:18:18+08:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[WinMerge and DiffMerge as Git Diff Merge Tool]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/"/>
-    <updated>2017-05-10T10:01:23+07:00</updated>
+    <updated>2017-05-10T11:01:23+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
 On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
@@ -124,7 +124,7 @@ $ git mergetool
   <entry>
     <title type="html"><![CDATA[Reset Git Credential on OS X Keychain]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/"/>
-    <updated>2016-11-09T12:40:34+07:00</updated>
+    <updated>2016-11-09T13:40:34+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
 This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>
@@ -153,7 +153,7 @@ $ git config --global credential.helper osxkeychain
   <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
-    <updated>2016-03-27T20:38:49+07:00</updated>
+    <updated>2016-03-27T21:38:49+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
 <a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
@@ -359,6 +359,8 @@ The snipped code above just print text and write it to a text file. We just want
 
 <p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
 
+<p>The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a></p>
+
 <p><h4>Reference<h4>
 <ol type="1">
 <li>
@@ -373,9 +375,9 @@ The snipped code above just print text and write it to a text file. We just want
   
   <entry>
     <title type="html"><![CDATA[Create iOS Ipa for In-House Distribution]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/"/>
-    <updated>2016-03-08T23:10:44+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution</id>
+    <link href="http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/"/>
+    <updated>2016-03-09T00:10:44+08:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/ios.png"></p>
 
 <p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
@@ -449,7 +451,7 @@ Now we should get the similar picture as follow.</p>
   <entry>
     <title type="html"><![CDATA[Deploying iOS App to Real Device]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/"/>
-    <updated>2016-03-08T12:35:31+07:00</updated>
+    <updated>2016-03-08T13:35:31+08:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/ios.png">
 While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>
