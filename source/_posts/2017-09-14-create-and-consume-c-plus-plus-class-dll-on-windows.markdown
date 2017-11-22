@@ -416,7 +416,7 @@ In order to ensure proper resource release, an abstract interface provides an ad
 
 The code of this article can be found [here](https://github.com/neutrofoton/VCppDLL)
 
-## References New
+## References
 1. https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp
 2. https://msdn.microsoft.com/en-us/library/1ez7dh12.aspx
 3. https://docs.microsoft.com/en-us/cpp/build/dlls-in-visual-cpp
