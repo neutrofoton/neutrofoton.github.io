@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/c/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Arduino and NEO-6M GPS Module]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module/"/>
-    <updated>2017-05-04T08:32:17+08:00</updated>
+    <updated>2017-05-04T07:32:17+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/arduino.png">
 Couple days ayo, I met a friend of mine when I was at university. He plays extensively with <a href="http://www.arduino.org">Arduino</a>, <a href="https://www.raspberrypi.org">Raspberry Pi</a>, <a href="http://www.orangepi.org">Orange Pi</a> and other IoT stuff. He showed me how interesting IoT is, include wiring modules, and surely its programming. I remember that a few months ago, I got Arduino kit with GPS module from another friend of mine. The items were idle since I have other things to do in my work. Yesterday, I just have a free time to play with the Arduino kit. And I never play or explore Arduino before.</p>

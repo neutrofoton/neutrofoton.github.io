@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/"/>
-    <updated>2016-03-12T16:08:34+08:00</updated>
+    <updated>2016-03-12T15:08:34+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/spring.png">
 Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
@@ -47,7 +47,7 @@ Sometime for some reasons when dealing with open source technology we have inter
   <entry>
     <title type="html"><![CDATA[Unsupported IClasspathEntry in Eclipse-STS]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts/"/>
-    <updated>2013-08-30T15:48:31+08:00</updated>
+    <updated>2013-08-30T14:48:31+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/08/30/unsupported-iclasspathentry-in-eclipse-sts</id>
     <content type="html"><![CDATA[<p>I often got annoying pup up error message. An internal error occurred during updating Maven project. The message was <code>Unsupported IClasspathEntry kind=… </code></p>
 
@@ -75,7 +75,7 @@ Right click on your Project and select <code>Configure > Convert into Maven Proj
   <entry>
     <title type="html"><![CDATA[Generic Singleton Pattern in Java]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/"/>
-    <updated>2013-08-29T15:38:32+08:00</updated>
+    <updated>2013-08-29T14:38:32+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java</id>
     <content type="html"><![CDATA[<p>In my previous post about singleton pattern in C#, it is very nice flexible singleton code which make us be able to create a singleton instance of a non singleton class. But we can still be able to create a non singleton instance of the target class.</p>
 
@@ -186,7 +186,7 @@ The main thing that I should do is I have to use <code>HashMap</code> collection
   <entry>
     <title type="html"><![CDATA[Install Tomcat in OS X 10.8 Mountain Lion]]></title>
     <link href="http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion/"/>
-    <updated>2012-09-14T13:36:00+08:00</updated>
+    <updated>2012-09-14T12:36:00+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2012/09/14/install-tomcat-in-os-x-10-dot-8-mountain-lion</id>
     <content type="html"><![CDATA[<p>In this blog post will show us about step installing Apache Tomcat on OS X Mountain Lion. I assume we already have Java installed on our machine. The first step is downloading Tomcat binary distribution in <a href="http://tomcat.apache.org/">Tomcat website</a>. In this case I use version 7.0.30.</p>
 

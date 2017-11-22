@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Math in Web - neutrofoton</title>
+  <title>PPTP on macOS - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="There are several frameworks that can be used to display math equation on web page. Usually math equestion written in LaTeX format. LaTeX is used for &hellip;">
+  <meta name="description" content="One day I need to connect my macOS to a network of client of the company I work for via Point-to-Point Tunneling Protocol (PPTP) VPN. Unfortunately &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -107,7 +107,7 @@ article img, article video, article .flash-video{
   
   <header>
     
-      <h1 class="entry-title">Math in Web</h1>
+      <h1 class="entry-title">PPTP on macOS</h1>
     
     
       <p class="meta">
@@ -116,7 +116,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2016-03-09T21:41:47+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:41 pm</span></time>
+<time class='entry-date' datetime='2017-11-22T06:59:38+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2017</span></span> <span class='time'>6:59 am</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
@@ -126,14 +126,20 @@ article img, article video, article .flash-video{
   </header>
 
 
-<div class="entry-content"><p>There are several frameworks that can be used to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
+<div class="entry-content"><p>One day I need to connect my macOS to a network of client of the company I work for via <a href="https://en.wikipedia.org/wiki/Point-to-Point_Tunneling_Protocol">Point-to-Point Tunneling Protocol (PPTP)</a> VPN. Unfortunately <a href="https://support.apple.com/en-us/HT206844">Apple removed PPTP support on macOS Sierra</a>, so I had to find an alternative for that. Some of them I found are third parties application that need a one time buying or annual subscription. In fact, Apple just remove the user interface option for PPTP VPN, meanwhile the libraries of it are still available on Sierre.</p>
 
-<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript frameworks that can render LaTeX expression to beautiful math equation in browser.</p>
+<p>Since the libraries of PPTP are still available on Sierra, theoritically we should be able to call the libraries via terminal. Finally I found 3 blogs that write about PPTP protocol on macos and I put them in a reference section in this blog. Basically the three of them use the same technique that&rsquo;s write a script contains configuration of PPTP that&rsquo;s put in <code>/etc/ppp/peers/</code> and call it via <code>pppd</code> command via terminal.</p>
 
-<p>The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
-To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code></p>
+<p>First of all create a file called <code>/etc/ppp/peers/pptpvpn-client1</code></p>
 
-<figure class='code'><figcaption><span>KaTeX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo /etc/ppp/peers/pptpvpn-client1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Fill the <code>pptpvpn-client1</code> that contains configuration that pppd daemon will refer to connect.</p>
+
+<figure class='code'><figcaption><span>/etc/ppp/peers/pptpvpn-client1</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -145,79 +151,76 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;div&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq1&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq2&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq3&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq4&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq5&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq6&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq7&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>plugin PPTP.ppp
+</span><span class='line'>noauth
+</span><span class='line'><span class="c"># logfile /tmp/ppp.log</span>
+</span><span class='line'>remoteaddress <span class="s2">&quot;xxx.xxx.xxx.xxx&quot;</span>
+</span><span class='line'>user <span class="s2">&quot;xxxxxx&quot;</span>
+</span><span class='line'>password <span class="s2">&quot;xxxxxxxx&quot;</span>
+</span><span class='line'>redialcount 1
+</span><span class='line'>redialtimer 5
+</span><span class='line'>idle 1800
+</span><span class='line'><span class="c"># mru 1368</span>
+</span><span class='line'><span class="c"># mtu 1368</span>
+</span><span class='line'>receive-all
+</span><span class='line'>novj 0:0
+</span><span class='line'>ipcp-accept-local
+</span><span class='line'>ipcp-accept-remote
+</span><span class='line'><span class="c"># noauth</span>
+</span><span class='line'>refuse-eap
+</span><span class='line'>refuse-pap
+</span><span class='line'>refuse-chap-md5
+</span><span class='line'>hide-password
+</span><span class='line'>mppe-stateless
+</span><span class='line'>mppe-128
+</span><span class='line'><span class="c"># require-mppe-128</span>
+</span><span class='line'>looplocal
+</span><span class='line'>nodetach
+</span><span class='line'><span class="c"># ms-dns 8.8.8.8</span>
+</span><span class='line'>usepeerdns
+</span><span class='line'><span class="c"># ipparam gwvpn</span>
+</span><span class='line'>defaultroute
+</span><span class='line'>debug
 </span></code></pre></td></tr></table></div></figure>
 
 
-<figure class='code'><figcaption><span>KaTeX sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;c = \\pm\\sqrt{a^2 + b^2}&quot;</span><span class="p">,</span> <span class="nx">eq1</span><span class="p">);</span>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(a,b,c) = (a^2+b^2+c^2)^3&quot;</span><span class="p">,</span> <span class="nx">eq2</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx&quot;</span><span class="p">,</span> <span class="nx">eq3</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}&quot;</span><span class="p">,</span> <span class="nx">eq4</span><span class="p">);</span>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\oint \\vec{F} \\cdot d\\vec{s}=0&quot;</span><span class="p">,</span> <span class="nx">eq5</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)&quot;</span><span class="p">,</span> <span class="nx">eq6</span><span class="p">);</span>
+<p>Then open terminal and call</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo pppd call pptpvpn-client1
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"/></p>
+<p>If you cannot connect with the configuration code I use, you can check the error messages displayed in terminal. May be some configuration items do not match with the vpn server setting you connect to.</p>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+<p>If the you got no any error messages and connection established with your VPN network you can open a new tab on the terminal and try to ping to an ip address in the VPN local network.</p>
 
+<h2>References</h2>
 
+<ol>
+<li><a href="https://smallhacks.wordpress.com/2016/12/20/pptp-on-osx-sierra/">https://smallhacks.wordpress.com/2016/12/20/pptp-on-osx-sierra/</a></li>
+<li><a href="https://malucelli.net/2017/05/16/pptp-vpn-on-macos-sierra/">https://malucelli.net/2017/05/16/pptp-vpn-on-macos-sierra/</a></li>
+<li><a href="https://www.cts-llc.net/2017/02/21/pptp-on-osx-just-one-last-time.html">https://www.cts-llc.net/2017/02/21/pptp-on-osx-just-one-last-time.html</a></li>
+</ol>
 
-
-<div>
-<p><span class="katex" id="eq1"></span></p>
-<p><span class="katex" id="eq2"></span></p>
-<p><span class="katex" id="eq3"></span></p>
-<p><span class="katex" id="eq4"></span></p>
-<p><span class="katex" id="eq5"></span></p>
-<p><span class="katex" id="eq6"></span></p>
-<p><span class="katex" id="eq7"></span></p>
-</div>
-
-
-
-
-<script>
-
-    katex.render("c = \\pm\\sqrt{a^2 + b^2}", eq1);
-    katex.render("f(a,b,c) = (a^2+b^2+c^2)^3", eq2);
-
-    katex.render("\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx", eq3);
-
-    katex.render("f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}", eq4);
-    katex.render("\\oint \\vec{F} \\cdot d\\vec{s}=0", eq5);
-
-    katex.render("\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)", eq6);
-</script>
-
-
-<p>The comparison between <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> can be found <a href="http://www.intmath.com/cg5/katex-mathjax-comparison.php">here</a>. At the time of writing this blog post, I got <a href="https://khan.github.io/KaTeX/">KaTeX</a> is faster than <a href="https://www.mathjax.org/">MathJax</a>. But <a href="https://khan.github.io/KaTeX/">KaTeX</a> can not render a few expressions that <a href="https://www.mathjax.org/">MathJax</a> can.</p>
-
-<p>The comparison results could be changed in the next. Since both of them are actively developed.</p>
 </div>
 
 
@@ -235,12 +238,12 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
 
 
 
-<time class='entry-date' datetime='2016-03-09T21:41:47+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:41 pm</span></time>
+<time class='entry-date' datetime='2017-11-22T06:59:38+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2017</span></span> <span class='time'>6:59 am</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/mathematic/'>mathematic</a>
+    <a class='category' href='/blog/categories/osx/'>osx</a>
   
 </span>
 
@@ -249,7 +252,7 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos/" >Tweet</a>
   
   
   
@@ -260,10 +263,8 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/" title="Previous Post: Create iOS ipa for In-House Distribution">&laquo; Create iOS ipa for In-House Distribution</a>
+        <a class="basic-alignment left" href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/" title="Previous Post: Create and consume C++ Class DLL on Windows">&laquo; Create and consume C++ Class DLL on Windows</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/" title="Next Post: GroovyDynamicElementReader is Missing Import Spring Framework Source to Eclipse STS">GroovyDynamicElementReader is Missing Import Spring Framework Source to Eclipse STS &raquo;</a>
       
     </p>
   </footer>
@@ -500,8 +501,8 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/blog/2016/03/09/math-in-web/';
-        var disqus_url = 'http://neutrofoton.github.io/blog/2016/03/09/math-in-web/';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos/';
         var disqus_script = 'embed.js';
       
     (function () {

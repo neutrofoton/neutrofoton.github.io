@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="while visiting clients of the company I work on, sometime I still found some applications especially desktop application build on unmanaged code ( &hellip;">
+  <meta name="description" content="One day I need to connect my macOS to a network of client of the company I work for via Point-to-Point Tunneling Protocol (PPTP) VPN. Unfortunately &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,6 +110,132 @@ article img, article video, article .flash-video{
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-11-22T06:59:38+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2017</span></span> <span class='time'>6:59 am</span></time>
+        
+           | <a href="/blog/2017/11/22/pptp-on-macos/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One day I need to connect my macOS to a network of client of the company I work for via <a href="https://en.wikipedia.org/wiki/Point-to-Point_Tunneling_Protocol">Point-to-Point Tunneling Protocol (PPTP)</a> VPN. Unfortunately <a href="https://support.apple.com/en-us/HT206844">Apple removed PPTP support on macOS Sierra</a>, so I had to find an alternative for that. Some of them I found are third parties application that need a one time buying or annual subscription. In fact, Apple just remove the user interface option for PPTP VPN, meanwhile the libraries of it are still available on Sierre.</p>
+
+<p>Since the libraries of PPTP are still available on Sierra, theoritically we should be able to call the libraries via terminal. Finally I found 3 blogs that write about PPTP protocol on macos and I put them in a reference section in this blog. Basically the three of them use the same technique that&rsquo;s write a script contains configuration of PPTP that&rsquo;s put in <code>/etc/ppp/peers/</code> and call it via <code>pppd</code> command via terminal.</p>
+
+<p>First of all create a file called <code>/etc/ppp/peers/pptpvpn-client1</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo /etc/ppp/peers/pptpvpn-client1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Fill the <code>pptpvpn-client1</code> that contains configuration that pppd daemon will refer to connect.</p>
+
+<figure class='code'><figcaption><span>/etc/ppp/peers/pptpvpn-client1</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>plugin PPTP.ppp
+</span><span class='line'>noauth
+</span><span class='line'><span class="c"># logfile /tmp/ppp.log</span>
+</span><span class='line'>remoteaddress <span class="s2">&quot;xxx.xxx.xxx.xxx&quot;</span>
+</span><span class='line'>user <span class="s2">&quot;xxxxxx&quot;</span>
+</span><span class='line'>password <span class="s2">&quot;xxxxxxxx&quot;</span>
+</span><span class='line'>redialcount 1
+</span><span class='line'>redialtimer 5
+</span><span class='line'>idle 1800
+</span><span class='line'><span class="c"># mru 1368</span>
+</span><span class='line'><span class="c"># mtu 1368</span>
+</span><span class='line'>receive-all
+</span><span class='line'>novj 0:0
+</span><span class='line'>ipcp-accept-local
+</span><span class='line'>ipcp-accept-remote
+</span><span class='line'><span class="c"># noauth</span>
+</span><span class='line'>refuse-eap
+</span><span class='line'>refuse-pap
+</span><span class='line'>refuse-chap-md5
+</span><span class='line'>hide-password
+</span><span class='line'>mppe-stateless
+</span><span class='line'>mppe-128
+</span><span class='line'><span class="c"># require-mppe-128</span>
+</span><span class='line'>looplocal
+</span><span class='line'>nodetach
+</span><span class='line'><span class="c"># ms-dns 8.8.8.8</span>
+</span><span class='line'>usepeerdns
+</span><span class='line'><span class="c"># ipparam gwvpn</span>
+</span><span class='line'>defaultroute
+</span><span class='line'>debug
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then open terminal and call</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo pppd call pptpvpn-client1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you cannot connect with the configuration code I use, you can check the error messages displayed in terminal. May be some configuration items do not match with the vpn server setting you connect to.</p>
+
+<p>If the you got no any error messages and connection established with your VPN network you can open a new tab on the terminal and try to ping to an ip address in the VPN local network.</p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="https://smallhacks.wordpress.com/2016/12/20/pptp-on-osx-sierra/">https://smallhacks.wordpress.com/2016/12/20/pptp-on-osx-sierra/</a></li>
+<li><a href="https://malucelli.net/2017/05/16/pptp-vpn-on-macos-sierra/">https://malucelli.net/2017/05/16/pptp-vpn-on-macos-sierra/</a></li>
+<li><a href="https://www.cts-llc.net/2017/02/21/pptp-on-osx-just-one-last-time.html">https://www.cts-llc.net/2017/02/21/pptp-on-osx-just-one-last-time.html</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a></h1>
     
     
@@ -119,7 +245,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2017-09-14T14:04:05+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:04 pm</span></time>
+<time class='entry-date' datetime='2017-09-14T13:04:05+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>1:04 pm</span></time>
         
            | <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Comments</a>
@@ -788,7 +914,7 @@ article img, article video, article .flash-video{
 
 <p>The code of this article can be found <a href="https://github.com/neutrofoton/VCppDLL">here</a></p>
 
-<h2>References New</h2>
+<h2>References</h2>
 
 <ol>
 <li><a href="https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp">https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp</a></li>
@@ -820,7 +946,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2017-05-10T11:01:23+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>11:01 am</span></time>
+<time class='entry-date' datetime='2017-05-10T10:01:23+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:01 am</span></time>
         
            | <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">Comments</a>
@@ -1010,7 +1136,7 @@ So for now and so on in this blog post, WinMerge term means WinMerge 2.x.</p>
 
 
 
-<time class='entry-date' datetime='2017-05-04T08:32:17+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>8:32 am</span></time>
+<time class='entry-date' datetime='2017-05-04T07:32:17+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>7:32 am</span></time>
         
            | <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Comments</a>
@@ -1394,7 +1520,7 @@ Couple days ayo, I met a friend of mine when I was at university. He plays exten
 
 
 
-<time class='entry-date' datetime='2017-04-17T17:44:53+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>5:44 pm</span></time>
+<time class='entry-date' datetime='2017-04-17T16:44:53+07:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>4:44 pm</span></time>
         
            | <a href="/blog/2017/04/17/import-existing-git-repository-to-another/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2017/04/17/import-existing-git-repository-to-another/">Comments</a>
@@ -1510,7 +1636,7 @@ and TEMPLATE branch to get rid of the extra branch before pushing.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a></h1>
+      <h1 class="entry-title"><a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a></h1>
     
     
       <p class="meta">
@@ -1519,10 +1645,10 @@ and TEMPLATE branch to get rid of the extra branch before pushing.</p>
 
 
 
-<time class='entry-date' datetime='2017-03-27T00:47:22+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>12:47 am</span></time>
+<time class='entry-date' datetime='2017-03-26T23:47:22+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>11:47 pm</span></time>
         
-           | <a href="/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/">Comments</a>
+           | <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Comments</a>
         
       </p>
     
@@ -1583,7 +1709,7 @@ To ensure that the commits appear as performed by USERNAME, we can configure the
 
 
 
-<time class='entry-date' datetime='2016-12-30T10:42:04+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:42 am</span></time>
+<time class='entry-date' datetime='2016-12-30T09:42:04+07:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:42 am</span></time>
         
            | <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">Comments</a>
@@ -1721,7 +1847,7 @@ To ensure that the commits appear as performed by USERNAME, we can configure the
 
 
 
-<time class='entry-date' datetime='2016-12-29T15:52:23+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:52 pm</span></time>
+<time class='entry-date' datetime='2016-12-29T14:52:23+07:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:52 pm</span></time>
         
            | <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">Comments</a>
@@ -2173,7 +2299,7 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
 
 
 
-<time class='entry-date' datetime='2016-11-09T13:40:34+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:40 pm</span></time>
+<time class='entry-date' datetime='2016-11-09T12:40:34+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:40 pm</span></time>
         
            | <a href="/blog/2016/11/09/reset-git-credential-on-os-x-keychain/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/">Comments</a>
@@ -2229,7 +2355,7 @@ This post basically just a note for my self. In case I got the same condition in
 
 
 
-<time class='entry-date' datetime='2016-10-12T22:25:24+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:25 pm</span></time>
+<time class='entry-date' datetime='2016-10-12T21:25:24+07:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:25 pm</span></time>
         
            | <a href="/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/">Comments</a>
@@ -2286,302 +2412,6 @@ At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Mono Multiple Application on a Virtual Host</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-09-19T23:06:13+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:06 pm</span></time>
-        
-           | <a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
-On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
-</span><span class='line'>    ServerAdmin admin@test.com
-</span><span class='line'>    ServerName  neutro.local
-</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
-</span><span class='line'>
-</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
-</span><span class='line'>    MonoDebug neutro.local true
-</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
-</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
-</span><span class='line'>
-</span><span class='line'>    MonoAutoApplication disabled
-</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
-</span><span class='line'>
-</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
-</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      Allow from all
-</span><span class='line'>      Order allow,deny
-</span><span class='line'>    MonoSetServerAlias neutro.local
-</span><span class='line'>      SetHandler mono
-</span><span class='line'>      SetOutputFilter DEFLATE
-</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
-</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
-</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
-</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    LogLevel    debug
-</span><span class='line'>
-</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
-</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
-</span><span class='line'>    ServerAdmin admin@test.com
-</span><span class='line'>    ServerName  neutro.local
-</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
-</span><span class='line'>
-</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
-</span><span class='line'>    MonoDebug neutro.local true
-</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
-</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
-</span><span class='line'>
-</span><span class='line'>    MonoAutoApplication disabled
-</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
-</span><span class='line'>
-</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
-</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      Allow from all
-</span><span class='line'>      Order allow,deny
-</span><span class='line'>    MonoSetServerAlias neutro.local
-</span><span class='line'>      SetHandler mono
-</span><span class='line'>      SetOutputFilter DEFLATE
-</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
-</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    Alias   /project1  &quot;/home/neutro/Workspace/dotnet/project1&quot;
-</span><span class='line'>    MonoApplications project1 &quot;/project1:/home/neutro/Workspace/dotnet/project1&quot;
-</span><span class='line'>    MonoServerPath project1 &quot;/usr/bin/mod-mono-server4&quot;
-</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project1&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      Allow from all
-</span><span class='line'>      Order allow,deny
-</span><span class='line'>      MonoSetServerAlias project1
-</span><span class='line'>      SetHandler mono
-</span><span class='line'>      SetOutputFilter DEFLATE
-</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
-</span><span class='line'>      Require all granted
-</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    Alias   /project2  &quot;/home/neutro/Workspace/dotnet/project2&quot;
-</span><span class='line'>    MonoApplications project2 &quot;/project2:/home/neutro/Workspace/dotnet/project2&quot;
-</span><span class='line'>    MonoServerPath project2 &quot;/usr/bin/mod-mono-server4&quot;
-</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project2&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      Allow from all
-</span><span class='line'>      Order allow,deny
-</span><span class='line'>      MonoSetServerAlias project2
-</span><span class='line'>      SetHandler mono
-</span><span class='line'>      SetOutputFilter DEFLATE
-</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
-</span><span class='line'>      Require all granted
-</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
-</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
-</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    LogLevel    debug
-</span><span class='line'>
-</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
-</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In the new virtual host configuration we have:</p>
-
-<ol>
-<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
-<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
-</ol>
-
-
-<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
-
-<p>We need to give access to both folders and theirs file contents</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>find project1 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
-</span><span class='line'><span class="nv">$ </span>find project1 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span>find project2 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
-</span><span class='line'><span class="nv">$ </span>find project2 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;apps&gt;</span>
-</span><span class='line'>   <span class="nt">&lt;web-application&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project1<span class="nt">&lt;/name&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project1<span class="nt">&lt;/vpath&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project1<span class="nt">&lt;/path&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;web-application&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project2<span class="nt">&lt;/name&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project2<span class="nt">&lt;/vpath&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project2<span class="nt">&lt;/path&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
-</span><span class='line'><span class="nt">&lt;/apps&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
-
-<h2>References</h2>
-
-<ol>
-<li><a href="http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono">http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono</a></li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2604,6 +2434,10 @@ On my previous post I wrote how to configure application virtual host. We can ha
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
       </li>
     
@@ -2620,15 +2454,11 @@ On my previous post I wrote how to configure application virtual host. We can ha
       </li>
     
       <li class="post">
-        <a href="/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
       </li>
     
       <li class="post">
         <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">C++ Set With Custom Comparator</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a>
       </li>
     
   </ul>
@@ -2645,7 +2475,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
     <li><a href="/blog/categories/php/index.html">php ( 3 )</a></li>
     
     
-    <li><a href="/blog/categories/osx/index.html">osx ( 12 )</a></li>
+    <li><a href="/blog/categories/osx/index.html">osx ( 13 )</a></li>
     
     
     <li><a href="/blog/categories/apache/index.html">apache ( 4 )</a></li>
@@ -2739,7 +2569,7 @@ On my previous post I wrote how to configure application virtual host. We can ha
 <li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
 <li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
 <li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
-<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='12'>osx</a></li>
+<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='13'>osx</a></li>
 <li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
 <li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='3'>php</a></li>
 <li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>

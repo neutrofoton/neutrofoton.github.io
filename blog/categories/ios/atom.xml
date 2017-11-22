@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ios | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Create iOS Ipa for In-House Distribution]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/"/>
-    <updated>2016-03-09T00:10:44+08:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution</id>
+    <link href="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/"/>
+    <updated>2016-03-08T23:10:44+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/ios.png"></p>
 
 <p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
@@ -91,7 +91,7 @@ Now we should get the similar picture as follow.</p>
   <entry>
     <title type="html"><![CDATA[Deploying iOS App to Real Device]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/"/>
-    <updated>2016-03-08T13:35:31+08:00</updated>
+    <updated>2016-03-08T12:35:31+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/ios.png">
 While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>

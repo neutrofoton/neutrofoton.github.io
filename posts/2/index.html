@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on &hellip;">
+  <meta name="description" content="On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,6 +110,302 @@ article img, article video, article .flash-video{
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Mono Multiple Application on a Virtual Host</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-19T22:06:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:06 pm</span></time>
+        
+           | <a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
+</span><span class='line'>    ServerAdmin admin@test.com
+</span><span class='line'>    ServerName  neutro.local
+</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
+</span><span class='line'>
+</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    MonoDebug neutro.local true
+</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
+</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
+</span><span class='line'>
+</span><span class='line'>    MonoAutoApplication disabled
+</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+</span><span class='line'>
+</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
+</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>    MonoSetServerAlias neutro.local
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
+</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    LogLevel    debug
+</span><span class='line'>
+</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
+</span><span class='line'>    ServerAdmin admin@test.com
+</span><span class='line'>    ServerName  neutro.local
+</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
+</span><span class='line'>
+</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    MonoDebug neutro.local true
+</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
+</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
+</span><span class='line'>
+</span><span class='line'>    MonoAutoApplication disabled
+</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+</span><span class='line'>
+</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
+</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>    MonoSetServerAlias neutro.local
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    Alias   /project1  &quot;/home/neutro/Workspace/dotnet/project1&quot;
+</span><span class='line'>    MonoApplications project1 &quot;/project1:/home/neutro/Workspace/dotnet/project1&quot;
+</span><span class='line'>    MonoServerPath project1 &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>      MonoSetServerAlias project1
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>      Require all granted
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    Alias   /project2  &quot;/home/neutro/Workspace/dotnet/project2&quot;
+</span><span class='line'>    MonoApplications project2 &quot;/project2:/home/neutro/Workspace/dotnet/project2&quot;
+</span><span class='line'>    MonoServerPath project2 &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project2&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>      MonoSetServerAlias project2
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>      Require all granted
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
+</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    LogLevel    debug
+</span><span class='line'>
+</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the new virtual host configuration we have:</p>
+
+<ol>
+<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
+<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
+</ol>
+
+
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
+
+<p>We need to give access to both folders and theirs file contents</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>find project1 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project1 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>find project2 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project2 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;apps&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;web-application&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project1<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project1<span class="nt">&lt;/vpath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project1<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;web-application&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project2<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project2<span class="nt">&lt;/vpath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project2<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
+</span><span class='line'><span class="nt">&lt;/apps&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono">http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Mono Mod_mono Apache2 on Ubuntu</a></h1>
     
     
@@ -119,7 +415,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2016-09-18T09:34:23+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:34 am</span></time>
+<time class='entry-date' datetime='2016-09-18T08:34:23+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:34 am</span></time>
         
            | <a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Comments</a>
@@ -332,7 +628,7 @@ We should have the page displayed current date time.</li>
 
 
 
-<time class='entry-date' datetime='2016-09-17T11:41:13+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:41 am</span></time>
+<time class='entry-date' datetime='2016-09-17T10:41:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 am</span></time>
         
            | <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">Comments</a>
@@ -405,7 +701,7 @@ We should have the page displayed current date time.</li>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/05/12/lambda-in-c-plus-plus/">Lambda in C++</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a></h1>
     
     
       <p class="meta">
@@ -414,10 +710,10 @@ We should have the page displayed current date time.</li>
 
 
 
-<time class='entry-date' datetime='2016-05-12T00:15:18+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:15 am</span></time>
+<time class='entry-date' datetime='2016-05-11T23:15:18+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:15 pm</span></time>
         
-           | <a href="/blog/2016/05/12/lambda-in-c-plus-plus/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/05/12/lambda-in-c-plus-plus/">Comments</a>
+           | <a href="/blog/2016/05/11/lambda-in-c-plus-plus/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/">Comments</a>
         
       </p>
     
@@ -855,7 +1151,7 @@ For those who are familiar with C# lambda expression, C++ lambda expression is s
 
 
 
-<time class='entry-date' datetime='2016-03-27T21:38:49+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:38 pm</span></time>
+<time class='entry-date' datetime='2016-03-27T20:38:49+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:38 pm</span></time>
         
            | <a href="/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/">Comments</a>
@@ -1092,7 +1388,7 @@ As on OS X and Ubuntu, the last step quite take time.
 
 
 
-<time class='entry-date' datetime='2016-03-12T16:08:34+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:08 pm</span></time>
+<time class='entry-date' datetime='2016-03-12T15:08:34+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:08 pm</span></time>
         
            | <a href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/">Comments</a>
@@ -1146,7 +1442,7 @@ Sometime for some reasons when dealing with open source technology we have inter
 
 
 
-<time class='entry-date' datetime='2016-03-09T22:41:47+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 pm</span></time>
+<time class='entry-date' datetime='2016-03-09T21:41:47+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:41 pm</span></time>
         
            | <a href="/blog/2016/03/09/math-in-web/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/">Comments</a>
@@ -1260,7 +1556,7 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a></h1>
     
     
       <p class="meta">
@@ -1269,10 +1565,10 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
 
 
 
-<time class='entry-date' datetime='2016-03-09T00:10:44+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:10 am</span></time>
+<time class='entry-date' datetime='2016-03-08T23:10:44+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:10 pm</span></time>
         
-           | <a href="/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/09/create-ios-ipa-for-in-house-distribution/">Comments</a>
+           | <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Comments</a>
         
       </p>
     
@@ -1367,7 +1663,7 @@ Now we should get the similar picture as follow.</p>
 
 
 
-<time class='entry-date' datetime='2016-03-08T13:35:31+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:35 pm</span></time>
+<time class='entry-date' datetime='2016-03-08T12:35:31+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:35 pm</span></time>
         
            | <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">Comments</a>
@@ -1545,7 +1841,7 @@ We should get the similar picture as below.</p>
 
 
 
-<time class='entry-date' datetime='2016-03-07T08:32:33+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:32 am</span></time>
+<time class='entry-date' datetime='2016-03-07T07:32:33+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>7:32 am</span></time>
         
            | <a href="/blog/2016/03/07/from-wordpress-to-octopress/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/">Comments</a>
@@ -1585,155 +1881,6 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/08/extract-c-number-exception/">Extract C# Exception</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-09-08T16:49:39+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:49 pm</span></time>
-        
-           | <a href="/blog/2014/09/08/extract-c-number-exception/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
-
-<p>The following snipped code shows how to extract detail exception message, innner excepion and its detail strack trace to be recorded / written on log.</p>
-
-<figure class='code'><figcaption><span>exception extractor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>    <span class="c1">/// Extracting &lt;seealso cref=&quot;System.Exception&quot;&gt; class include its inner exception</span>
-</span><span class='line'>    <span class="c1">/// &lt;/seealso&gt;&lt;/summary&gt;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Extractor</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Parse the specified ex.</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;exception&quot;&gt;Ex.</span>
-</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">Parse</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">exception</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="kt">string</span> <span class="n">errMessage</span> <span class="p">=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">FormatErrorDescription</span><span class="p">(</span><span class="n">exception</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">while</span> <span class="p">(</span><span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">ExtractInnerException</span><span class="p">(</span><span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span><span class="p">);</span>
-</span><span class='line'>                <span class="n">exception</span> <span class="p">=</span> <span class="n">exception</span><span class="p">.</span><span class="n">InnerException</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">return</span> <span class="n">errMessage</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Extract exception message and its strack trace</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;innerException&quot;&gt;inner excepion object</span>
-</span><span class='line'>        <span class="c1">/// &lt;returns&gt;extracted exception info including message and strack trace&lt;/returns&gt;</span>
-</span><span class='line'>        <span class="k">static</span> <span class="kt">string</span> <span class="nf">ExtractInnerException</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">innerException</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="kt">string</span> <span class="n">errMessage</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="s">&quot; InnerException &quot;</span><span class="p">;</span>
-</span><span class='line'>            <span class="n">errMessage</span> <span class="p">+=</span> <span class="n">FormatErrorDescription</span><span class="p">(</span><span class="n">innerException</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">return</span> <span class="n">errMessage</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">/// &lt;summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// Formating exception description format</span>
-</span><span class='line'>        <span class="c1">/// &lt;/summary&gt;</span>
-</span><span class='line'>        <span class="c1">/// &lt;param name=&quot;exception&quot;&gt;</span>
-</span><span class='line'>        <span class="c1">/// &lt;returns&gt;Error description&lt;/returns&gt;</span>
-</span><span class='line'>        <span class="k">static</span> <span class="kt">string</span> <span class="nf">FormatErrorDescription</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">exception</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">exception</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'>                <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">return</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="n">exception</span><span class="p">.</span><span class="n">Message</span> <span class="p">+</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">+</span> <span class="n">exception</span><span class="p">.</span><span class="n">StackTrace</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1758,6 +1905,10 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
       </li>
     
@@ -1774,15 +1925,11 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
       </li>
     
       <li class="post">
-        <a href="/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
       </li>
     
       <li class="post">
         <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">C++ Set With Custom Comparator</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a>
       </li>
     
   </ul>
@@ -1799,7 +1946,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
     <li><a href="/blog/categories/php/index.html">php ( 3 )</a></li>
     
     
-    <li><a href="/blog/categories/osx/index.html">osx ( 12 )</a></li>
+    <li><a href="/blog/categories/osx/index.html">osx ( 13 )</a></li>
     
     
     <li><a href="/blog/categories/apache/index.html">apache ( 4 )</a></li>
@@ -1893,7 +2040,7 @@ In this post, I will not write detail about <a href="http://octopress.org/">Octo
 <li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
 <li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
 <li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
-<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='12'>osx</a></li>
+<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='13'>osx</a></li>
 <li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
 <li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='3'>php</a></li>
 <li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>

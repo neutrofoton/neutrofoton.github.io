@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Xamarin | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/xamarin/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
-    <updated>2013-11-23T16:15:03+08:00</updated>
+    <updated>2013-11-23T15:15:03+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
     <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
 <code>

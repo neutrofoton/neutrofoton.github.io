@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[From WordPress to Octopress]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress/"/>
-    <updated>2016-03-07T08:32:33+08:00</updated>
+    <updated>2016-03-07T07:32:33+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/07/from-wordpress-to-octopress</id>
     <content type="html"><![CDATA[<p>I have just migrated my blog engine from <a href="https://wordpress.com/">WordPress</a> to <a href="http://octopress.org/">Octopress</a>. After exploring (googling) for hours about it, how to install, customize, hosting etc, finally I got a decision :</p>
 

@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="To install mysql the first thing that we need to do is download mysql installer on the mysql website. In that web site we can see several versions of &hellip;">
+  <meta name="description" content="In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,6 +110,57 @@ article img, article video, article .flash-video{
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Install phpMyAdmin on OS X 10.8 Mountain Lion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-10T10:39:53+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:39 am</span></time>
+        
+           | <a href="/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/10/install-phpmyadmin-on-os-x-10-dot-8-mountain-lion/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the previous post, we have installed Apache, PHP and MySQL on OS X 10.8. To do administration of mySQL database we can use various app. One of the tool that usually use by programmer to do that is <a href="http://www.phpmyadmin.net/home_page/index.php">phpMyAdmin</a>. It is a free opensource web app that’s used to manage MySQL database. Let’s install it now.</p>
+
+<p>The first thing that we need to do is open terminal and type</p>
+
+<figure class='code'><figcaption><span>symbolic link for mysql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /var/mysql
+</span><span class='line'>
+</span><span class='line'>sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Extract the downloaded <code>phpMyAdmin-3.5.2.1-english.zip</code> into web folder and rename as <code>phpMyAdmin</code>. So now we should have <code>~/Sites/phpMyAdmin</code> directory.</p>
+
+<p>On browser, open : <a href="http://localhost/~username/phpmyadmin">http://localhost/~username/phpmyadmin</a></p>
+
+<p><img class="center" src="/images/post/2012-08-10-phpmyadmin.png"></p>
+
+<p>Now we can login and administer MySQL database.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Install MySQL on OS X 10.8 Mountain Lion</a></h1>
     
     
@@ -119,7 +170,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-09T11:23:09+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>11:23 am</span></time>
+<time class='entry-date' datetime='2012-08-09T10:23:09+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:23 am</span></time>
         
            | <a href="/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-mysql-on-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -226,7 +277,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-09T11:13:16+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>11:13 am</span></time>
+<time class='entry-date' datetime='2012-08-09T10:13:16+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:13 am</span></time>
         
            | <a href="/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/09/install-php-on-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -286,7 +337,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-08T10:47:05+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:47 am</span></time>
+<time class='entry-date' datetime='2012-08-08T09:47:05+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>9:47 am</span></time>
         
            | <a href="/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/08/configure-apache-on-os-x-10-dot-8-mountain-lion/">Comments</a>
@@ -421,7 +472,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-06T10:21:53+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>10:21 am</span></time>
+<time class='entry-date' datetime='2012-08-06T09:21:53+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>9:21 am</span></time>
         
            | <a href="/blog/2012/08/06/jomla-encryption-in-c-number/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/06/jomla-encryption-in-c-number/">Comments</a>
@@ -597,7 +648,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-03T20:10:27+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>8:10 pm</span></time>
+<time class='entry-date' datetime='2012-08-03T19:10:27+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>7:10 pm</span></time>
         
            | <a href="/blog/2012/08/03/json-serializer/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/03/json-serializer/">Comments</a>
@@ -1017,7 +1068,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2012-08-03T19:29:08+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>7:29 pm</span></time>
+<time class='entry-date' datetime='2012-08-03T18:29:08+07:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2012</span></span> <span class='time'>6:29 pm</span></time>
         
            | <a href="/blog/2012/08/03/first-post/#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io/blog/2012/08/03/first-post/">Comments</a>
@@ -1063,6 +1114,10 @@ article img, article video, article .flash-video{
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
       </li>
     
@@ -1079,15 +1134,11 @@ article img, article video, article .flash-video{
       </li>
     
       <li class="post">
-        <a href="/blog/2017/03/27/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
       </li>
     
       <li class="post">
         <a href="/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/">C++ Set With Custom Comparator</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a>
       </li>
     
   </ul>
@@ -1104,7 +1155,7 @@ article img, article video, article .flash-video{
     <li><a href="/blog/categories/php/index.html">php ( 3 )</a></li>
     
     
-    <li><a href="/blog/categories/osx/index.html">osx ( 12 )</a></li>
+    <li><a href="/blog/categories/osx/index.html">osx ( 13 )</a></li>
     
     
     <li><a href="/blog/categories/apache/index.html">apache ( 4 )</a></li>
@@ -1198,7 +1249,7 @@ article img, article video, article .flash-video{
 <li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
 <li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
 <li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
-<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='12'>osx</a></li>
+<li class='category'><a href='/blog/categories/osx/' class='badge1' data-badge='13'>osx</a></li>
 <li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
 <li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='3'>php</a></li>
 <li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>

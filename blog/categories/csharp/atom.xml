@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Csharp | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/csharp/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
-    <updated>2016-09-19T23:06:13+08:00</updated>
+    <updated>2016-09-19T22:06:13+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
 On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
@@ -174,7 +174,7 @@ $ find project2 -type f -exec chmod 644 {} \;
   <entry>
     <title type="html"><![CDATA[Mono Mod_mono Apache2 on Ubuntu]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/"/>
-    <updated>2016-09-18T09:34:23+08:00</updated>
+    <updated>2016-09-18T08:34:23+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
 I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
@@ -347,7 +347,7 @@ We should have the page displayed current date time.</li>
   <entry>
     <title type="html"><![CDATA[Extract C# Exception]]></title>
     <link href="http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception/"/>
-    <updated>2014-09-08T16:49:39+08:00</updated>
+    <updated>2014-09-08T15:49:39+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2014/09/08/extract-c-number-exception</id>
     <content type="html"><![CDATA[<p>Throwing or catching exception strategy on building an application is a very important to get detail exception message, inner exception and detail strack trace where or which part of line of code that fired the exception.</p>
 
@@ -416,7 +416,7 @@ We should have the page displayed current date time.</li>
   <entry>
     <title type="html"><![CDATA[Get Excel Column Name by Index and Vice Versa]]></title>
     <link href="http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa/"/>
-    <updated>2014-05-13T16:43:52+08:00</updated>
+    <updated>2014-05-13T15:43:52+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2014/05/13/get-excel-column-name-by-index-and-vice-versa</id>
     <content type="html"><![CDATA[<p>I used to got a need to build small and simple plugin for Excel using VSTO. But I won’t write about VSTO in this post. The thing that I want to share is just a simple code to get excel column name by index and vise versa. I felt it was very important for me cause I worked intensively with index at that project.</p>
 
@@ -520,7 +520,7 @@ We should have the page displayed current date time.</li>
   <entry>
     <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
-    <updated>2013-11-23T16:15:03+08:00</updated>
+    <updated>2013-11-23T15:15:03+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
     <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
 <code>

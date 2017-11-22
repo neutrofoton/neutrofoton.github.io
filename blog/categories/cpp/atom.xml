@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cpp | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/cpp/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Create and Consume C++ Class DLL on Windows]]></title>
     <link href="http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/"/>
-    <updated>2017-09-14T14:04:05+08:00</updated>
+    <updated>2017-09-14T13:04:05+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp.png"></p>
 
@@ -402,7 +402,7 @@ Press any key to exit
 
 <p>The code of this article can be found <a href="https://github.com/neutrofoton/VCppDLL">here</a></p>
 
-<h2>References New</h2>
+<h2>References</h2>
 
 <ol>
 <li><a href="https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp">https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp</a></li>
@@ -419,7 +419,7 @@ Press any key to exit
   <entry>
     <title type="html"><![CDATA[C++ Set With Custom Comparator]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator/"/>
-    <updated>2016-12-30T10:42:04+08:00</updated>
+    <updated>2016-12-30T09:42:04+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/12/30/c-plus-plus-set-with-custom-comparator</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp.png"></p>
 
@@ -518,7 +518,7 @@ struct CustomCompare
   <entry>
     <title type="html"><![CDATA[C++ Priority Queue With Comparator]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/"/>
-    <updated>2016-12-29T15:52:23+08:00</updated>
+    <updated>2016-12-29T14:52:23+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/cpp.png"></p>
 
@@ -758,9 +758,9 @@ void SamplePriorityQueueStoreObject()
   
   <entry>
     <title type="html"><![CDATA[Lambda in C++]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/05/12/lambda-in-c-plus-plus/"/>
-    <updated>2016-05-12T00:15:18+08:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/05/12/lambda-in-c-plus-plus</id>
+    <link href="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/"/>
+    <updated>2016-05-11T23:15:18+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/lambda.png">
 C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
 For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
@@ -1006,7 +1006,7 @@ After lamda5, variableC : 2
   <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
-    <updated>2016-03-27T21:38:49+08:00</updated>
+    <updated>2016-03-27T20:38:49+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
 <a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>

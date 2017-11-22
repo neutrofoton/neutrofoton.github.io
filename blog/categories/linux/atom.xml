@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2017-11-10T00:18:18+08:00</updated>
+  <updated>2017-11-22T14:27:09+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Ubuntu Server Does Not Recognize VirtualBox Adapter]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/"/>
-    <updated>2016-10-12T22:25:24+08:00</updated>
+    <updated>2016-10-12T21:25:24+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter</id>
     <content type="html"><![CDATA[<p>As we know, VirtualBox provides several adapters that we can add and be used by OS guest.
 At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.1 LTS (guest). The needs are, I want to be able to remote my Ubuntu from OS X terminal. I also want my Ubuntu guest can connect to internet. I have configured two network adapters for the guest (NAT and host-only).</p>
@@ -52,7 +52,7 @@ iface enp0s8 inet dhcp
   <entry>
     <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
-    <updated>2016-09-19T23:06:13+08:00</updated>
+    <updated>2016-09-19T22:06:13+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
 On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
@@ -210,7 +210,7 @@ $ find project2 -type f -exec chmod 644 {} \;
   <entry>
     <title type="html"><![CDATA[Mono Mod_mono Apache2 on Ubuntu]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/"/>
-    <updated>2016-09-18T09:34:23+08:00</updated>
+    <updated>2016-09-18T08:34:23+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
 I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
@@ -383,7 +383,7 @@ We should have the page displayed current date time.</li>
   <entry>
     <title type="html"><![CDATA[VirtualBox Share Host Folder Ubuntu Guest]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/"/>
-    <updated>2016-09-17T11:41:13+08:00</updated>
+    <updated>2016-09-17T10:41:13+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest</id>
     <content type="html"><![CDATA[<p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
 
@@ -442,7 +442,7 @@ We should have the page displayed current date time.</li>
   <entry>
     <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
     <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
-    <updated>2016-03-27T21:38:49+08:00</updated>
+    <updated>2016-03-27T20:38:49+07:00</updated>
     <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
     <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
 <a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
