@@ -1,0 +1,2172 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>neutrofoton</title>
+  <meta name="author" content="neutro">
+
+  
+  <meta name="description" content="As we know, VirtualBox provides several adapters that we can add and be used by OS guest.
+At the time of writing this post, I have an OS X (host) and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://neutrofoton.github.io/posts/2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+article img {
+  border: 0;
+}
+aside.sidebar img {
+  border-color: #e0e0e0;
+}
+article img, article video, article .flash-video{
+  box-shadow: rgba(255,255,255,0.15) 0 1px 4px;
+}
+</style>
+
+<!-- badge -->
+<style type="text/css">
+  .badge1 {
+  position:relative;
+  }
+  .badge1[data-badge]:after {
+  content: attr(data-badge);
+  position: absolute;
+  /*top: -10px;*/
+  right: -30px;
+  font-size: .7em;
+  background: #c57373;
+  color: white;
+  /* width: 18px; */
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 450%;
+  box-shadow: 0 0 1px #333;
+
+  padding: 2px;
+  }
+</style>
+
+  
+
+
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">neutrofoton</a></h1>
+  
+    <h2>Science, Technology and Life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="neutrofoton.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!--<li><a href="/about">About</a></li>-->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/">Ubuntu Server Does Not Recognize VirtualBox Adapter</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-10-12T21:25:24+07:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:25 pm</span></time>
+        
+           | <a href="/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As we know, VirtualBox provides several adapters that we can add and be used by OS guest.
+At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.1 LTS (guest). The needs are, I want to be able to remote my Ubuntu from OS X terminal. I also want my Ubuntu guest can connect to internet. I have configured two network adapters for the guest (NAT and host-only).</p>
+
+<p>When I run</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ifconfig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first/default adapter (NAT) <code>enp0s3</code> is recognized without any problems by the guest. But not the second one (host-only). To make the second adapter visible, I have to run  a command</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo dhclient
+</span><span class='line'><span class="nv">$ </span>ifconfig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now I got both adapters <code>enp0s3</code> (NAT) and <code>enp0s8</code> (host-only) visible on terminal. And now I can ping and run ssh from host (OS X) to guest (Ubuntu server).</p>
+
+<p>In order to make it permanent, we need to edit <code>/etc/network/interfaces</code> with the following lines</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># The second network interface</span>
+</span><span class='line'>auto enp0s8
+</span><span class='line'>iface enp0s8 inet dhcp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then restart the network service by running</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo /etc/init.d/networking restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s my note for now and thanks for reading.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Mono Multiple Application on a Virtual Host</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-19T22:06:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:06 pm</span></time>
+        
+           | <a href="/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
+</span><span class='line'>    ServerAdmin admin@test.com
+</span><span class='line'>    ServerName  neutro.local
+</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
+</span><span class='line'>
+</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    MonoDebug neutro.local true
+</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
+</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
+</span><span class='line'>
+</span><span class='line'>    MonoAutoApplication disabled
+</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+</span><span class='line'>
+</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
+</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>    MonoSetServerAlias neutro.local
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
+</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    LogLevel    debug
+</span><span class='line'>
+</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
+</span><span class='line'>    ServerAdmin admin@test.com
+</span><span class='line'>    ServerName  neutro.local
+</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
+</span><span class='line'>
+</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    MonoDebug neutro.local true
+</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
+</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
+</span><span class='line'>
+</span><span class='line'>    MonoAutoApplication disabled
+</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+</span><span class='line'>
+</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
+</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>    MonoSetServerAlias neutro.local
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    Alias   /project1  &quot;/home/neutro/Workspace/dotnet/project1&quot;
+</span><span class='line'>    MonoApplications project1 &quot;/project1:/home/neutro/Workspace/dotnet/project1&quot;
+</span><span class='line'>    MonoServerPath project1 &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>      MonoSetServerAlias project1
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>      Require all granted
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    Alias   /project2  &quot;/home/neutro/Workspace/dotnet/project2&quot;
+</span><span class='line'>    MonoApplications project2 &quot;/project2:/home/neutro/Workspace/dotnet/project2&quot;
+</span><span class='line'>    MonoServerPath project2 &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project2&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>      MonoSetServerAlias project2
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>      Require all granted
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
+</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    LogLevel    debug
+</span><span class='line'>
+</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the new virtual host configuration we have:</p>
+
+<ol>
+<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
+<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
+</ol>
+
+
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
+
+<p>We need to give access to both folders and theirs file contents</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>find project1 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project1 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>find project2 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project2 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;apps&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;web-application&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project1<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project1<span class="nt">&lt;/vpath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project1<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;web-application&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project2<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project2<span class="nt">&lt;/vpath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project2<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
+</span><span class='line'><span class="nt">&lt;/apps&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono">http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Mono Mod_mono Apache2 on Ubuntu</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-18T08:34:23+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:34 am</span></time>
+        
+           | <a href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
+I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
+
+<p>The details environment I use :</p>
+
+<ol>
+<li>Ubuntu 14.04 LTS</li>
+<li>Mono JIT compiler version 4.4.2</li>
+<li>Apache 2.4.7</li>
+</ol>
+
+
+<h2>Install Mono, Apache 2, Mod Mono</h2>
+
+<p>To install Mono, the first step is add package repository to our system.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;deb http://download.mono-project.com/repo/debian wheezy main&quot;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sudo apt-get update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To enable mod_mono installation on Ubuntu 13.10 or later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main&quot;</span> <span class="p">|</span> sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then run package update to update and a package upgrade to upgrade existing packages to the latest available.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get update
+</span><span class='line'><span class="nv">$ </span>sudo apt-get upgrade
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To install mono, run the following command</p>
+
+<figure class='code'><figcaption><span>install mono</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install mono-complete
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we do not have Apache 2 on our system, we need to install it first. Or we can check the existing version <code>apache2 -v</code></p>
+
+<figure class='code'><figcaption><span>install apache2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install apache2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To be able to host ASP.NET application on apache, we need to install <code>mod_mono</code>. <code>mod_mono</code> is a module for the Apache HTTP Server that allows us to host ASP.NET pages and other assemblies on multiple platforms by using Mono.</p>
+
+<p>To install Mod Mono and its dependencies run the following command</p>
+
+<figure class='code'><figcaption><span>install mod_mono</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install libapache2-mod-mono
+</span><span class='line'><span class="nv">$ </span>apt-get install mono-apache-server4
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Before going through the next step, the things than we can verify are :</p>
+
+<ol>
+<li><p>Ensuring Apache 2 running well at least by checking its version or start stop its service.</p>
+
+<pre><code class="` bash apache version"> $ apache2 -v
+</code></pre>
+
+<pre><code class="` bash start apache"> $ service apache2 start
+</code></pre>
+
+<pre><code class="` bash stop apache"> $ service apache2 stop
+</code></pre></li>
+<li><p>Checking mono version</p>
+
+<pre><code class="bash mono version">$ mono --version
+</code></pre></li>
+<li>Ensuring we have <code>/usr/bin/mod-mono-server4</code></li>
+</ol>
+
+
+<h2>Configuring Application Virtual Host</h2>
+
+<p>To configure virtual host application, the steps are</p>
+
+<ol>
+<li><p>Create a directory where the application physical files reside.
+In this sample I put my  application files in <code>/var/www/hellodotnet</code></p>
+
+<p>We needed to grant permissions to the login user so that the user could copy or create files to the <code>hellodotnet</code> directory.  For our purposes we made the current user the owner of the directory</p>
+
+<pre><code class="` bash application directory"> $ chown -R -v your_user_name /var/www/
+</code></pre></li>
+<li><p>Lets create a simple <code>/var/www/hellodotnet/index.aspx</code> file.</p>
+
+<pre><code class="` html index.aspx"> &lt;center&gt;mod_mono is working:&lt;%=System.DateTime.Now.ToString()%&gt;&lt;/center&gt;
+</code></pre></li>
+<li><p>Create a site configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code></p>
+
+<pre><code class="` xml site configuration">    &lt;VirtualHost *:81&gt;
+       ServerName hellodotnet
+       ServerAdmin hello@test-apache-config.com
+       DocumentRoot /var/www/hellodotnet
+       MonoServerPath hellodotnet "/usr/bin/mod-mono-server4"
+       MonoDebug hellodotnet true
+       MonoSetEnv hellodotnet MONO_IOMAP=all
+       MonoApplications hellodotnet "/:/var/www/hellodotnet"
+
+       ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+       AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+       &lt;Location "/"&gt;
+         Allow from all
+         Order allow,deny
+         MonoSetServerAlias hellodotnet
+         SetHandler mono
+         SetOutputFilter DEFLATE
+         SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+       &lt;/Location&gt;
+       &lt;IfModule mod_deflate.c&gt;
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+       &lt;/IfModule&gt;
+     &lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In this site I use port 81 instead of default 80.</p></li>
+<li><p>Since we use port 81, we need to register port 81 in <code>/etc/apache2/ports.conf</code> by simply add the following code</p>
+
+<pre><code class="` bash"> Listen 81
+</code></pre></li>
+<li><p>Enabling the site by running the following command from terminal</p>
+
+<pre><code class="` bash"> $ sudo a2ensite hellodotnet.conf
+</code></pre></li>
+<li>Restart apache</li>
+<li>Hit from browser : <a href="http://localhost:81">http://localhost:81</a>
+We should have the page displayed current date time.</li>
+</ol>
+
+
+<h2>Tips</h2>
+
+<ol>
+<li><p>If we get the page not displayed, we can see the message on the page displayed, HTML error code, or any clue on apache logs located in <code>/var/log/apache2</code></p></li>
+<li><p>If we get message access denied cannot access bin, simply change permission of the application site.</p>
+
+<pre><code class="` bash"> $ find hellodotnet -type d -exec chmod 755 {} \;
+ $ find hellodotnet -type f -exec chmod 644 {} \;
+</code></pre></li>
+<li><p>If getting message could not find <code>/etc/mono/registry</code>, simply create the directory.</p>
+
+<pre><code class="` bash"> $ sudo mkdir /etc/mono/registry
+</code></pre></li>
+<li><p>If getting <code>System.UnauthorizedAccessException</code> access to the path <code>/etc/mono/registry</code>, give access to it as its need, for example</p>
+
+<pre><code class="`` bash">  $ chmod uog+rw /etc/mono/registry
+</code></pre></li>
+</ol>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.mono-project.com/docs/getting-started/install/linux/">http://www.mono-project.com/docs/getting-started/install/linux/</a></li>
+<li><a href="http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts">http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts</a></li>
+<li><a href="http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3">http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3</a></li>
+<li><a href="http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p">http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p</a></li>
+<li><a href="https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied">https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied</a></li>
+<li><a href="https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/">https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">VirtualBox Share Host Folder Ubuntu Guest</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-17T10:41:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:41 am</span></time>
+        
+           | <a href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
+
+<p>Before sharing folder, ensure we have installed Guest Addition that shipped with VirtualBox. To do that :</p>
+
+<ol>
+<li>Go to  Device menu > Insert Guest CD Addition Images.</li>
+<li>If it automatically mounting and has popup dialog, just hit run otherwise we may have to manually mounting it.</li>
+</ol>
+
+
+<p> I usually restart my OS guest after installing this VirtualBox Guest Addition.</p>
+
+<p>The steps are :</p>
+
+<ul>
+<li>Go to Devices menu > Shared Folders > Shared Folder Settings</li>
+<li>Select folder path of Host to be shared to Guest OS</li>
+<li><p>Checked Make Permanent option if we want to make it permanent</p>
+
+<blockquote><p>On my sample, I shared folder from OS X Host /Volumes/MacintoshHDData/share</p></blockquote>
+
+<p> Till this step is enough for Windows guest. On Ubuntu guest, it need additional steps to make the shared folder accessible in guest.</p></li>
+<li><p>When we shared a Host&rsquo;s folder on Ubuntu guest, VirtualBox should create a folder on <code>/Media</code> just like the shared folder name with <code>sf_</code> prefix. In my case <code>/Media/sf_share</code>. If the folder does not exist, open terminal, create directory <code>/Media/sf_share</code> and give folder name</p>
+
+<pre><code>mkdir /Media/sf_share
+</code></pre></li>
+<li><p>VirtualBox with Ubuntu operating system guest, it added a group called <code>vboxsf</code>. Before we can access the shared folder we have to be a member of the group.</p>
+
+<pre><code class="bash">sudo add user [username] vboxsf
+</code></pre>
+
+<p> To verify what groups are username belongs to,</p>
+
+<pre><code class="bash">id [username]
+</code></pre></li>
+<li><p>Mount the shared folder</p>
+
+<pre><code class="bash">sudo mount -t vboxsf share /media/sf_share
+</code></pre></li>
+</ul>
+
+
+<p>Now we should be able to the shared folder via Nautilus (File Manager). To make it automatic mounting, ensure we checked option automatic mounting on shared folder setting dialog.</p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine">http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine</a></li>
+<li><a href="http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/">http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-11T23:15:18+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:15 pm</span></time>
+        
+           | <a href="/blog/2016/05/11/lambda-in-c-plus-plus/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/lambda.png">
+C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
+For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
+
+<figure class='code'><figcaption><span>C++11 Lambda Syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>[capture_block](parameters) mutable exception_specification -&gt; return_type {body}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li> <strong><code>capture_block</code></strong> is a comma-separated list of zero or more captures, optionally beginning with a capture-default. Capture list can be passed as follows (see below for the detailed description):
+<ol>
+<li><code>[a,&b]</code> where a is captured by value and b is captured by reference.</li>
+<li><code>[this]</code> captures the this pointer by value</li>
+<li><code>[&]</code> captures all automatic variables odr-used in the body of the lambda by reference</li>
+<li><code>[=]</code> captures all automatic variables odr-used in the body of the lambda by value</li>
+<li><code>[x]</code> captures only x by value and nothing else.</li>
+<li><code>[]</code> captures nothing</li>
+</ol>
+</li>
+<li>
+<strong><code>parameters</code></strong> is (optional) list of parameters for the lambda expression.
+</li>
+<li>
+<strong><code>mutable</code></strong> is (optional) if variables from the enclosing scope are captured by value, a copy of those variables will become available in the body of the lambda expression. Those copies are marked as const by default, meaning the lambda body cannot change the value of those copies. If the lambda expression is marked as mutable, those copies are not const and the body can modify those local copies.
+</li>
+<li>
+<strong><code>exception_specification</code></strong> is (optional) and can be used to specify which exceptions the body of the lambda expression can throw.
+</li>
+<li>
+<strong><code>return_type</code></strong> is Return type. If not present it's implied by the function return statements (or void if it doesn't return any value)
+</li>
+</ol>
+
+
+
+
+<h3>Lambda and Direct Invoke</h3>
+
+
+<p>The following snipped code is an example of lambda expression.</p>
+
+<figure class='code'><figcaption><span>example lambda and directly invoked</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hi &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;}(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The lambda expression above shows that it has a <code>const string&amp;</code> parameter and return a <code>string</code> type. To execute the lambda is by placing round brackets <code>()</code> and put object that will be passed to inside it. The <code>&ldquo;neutro&rdquo;</code> literal string will substitute <code>str</code> parameter. The output of the above code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Hi neutro
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>Lambda as Variable</h3>
+
+
+<p>Pointer to a lambda expression can be stored and executed through the function pointer. C++ provides <code>std::function</code> which is a STL template class that provides a very convenient wrapper to a simple function, to a functor or to a lambda expression. We can also use the C++11 <code>auto</code> keyword to make it easier.</p>
+
+<p>To make it clear the following code contains couples of various lambda expressions and store them in variables of type <code>auto</code> or its equivalent in <code>std::function</code> STL template class.</p>
+
+<figure class='code'><figcaption><span>lambda as variable</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 1&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda1</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda2</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda3 = [](void) -&gt; void { cout &lt;&lt;&quot;Hello lambda without parameter 2&quot; &lt;&lt; endl; };</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda3</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda4 = [](const string&amp; str) -&gt; string {return &quot;Hello from &quot; + str;};</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="n">string</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hello from &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lambda4</span><span class="p">(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The snipped code above shows how lambda expressions stored in variable of auto type or theirs equivalent in <code>std::function</code> type and how to invoke the lambda. <a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">Here</a> is a good article about <code>std::function</code>.</p>
+
+<h3>Lambda Capture Block</h3>
+
+
+<p>Lambda Capture Block basically describes how we want to capture variables from the enclosing scope. Capturing a variable means that the variable becomes available inside the body of the lambda. The detail variant of capture block has been described on previous section. The following code shows various scenario how to play with capture block.</p>
+
+<figure class='code'><figcaption><span>lambda capture block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="n">variableA</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableB</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableC</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Init Values : &quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableA : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="c1">//--------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 1 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span><span class="o">-&gt;</span> <span class="kt">int</span>     <span class="c1">//==&gt; [=] lambda has default access to variable is by value</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda1 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda1</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda1, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 2 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>      <span class="c1">//==&gt; [&amp;] lambda has default access to variable is by reference</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda2</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//-------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 3 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="o">*</span><span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda3 : &quot;</span><span class="o">&lt;&lt;*</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda3 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="o">*</span><span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">result3</span> <span class="o">=</span> <span class="n">lambda3</span><span class="p">(</span><span class="o">&amp;</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, result3 : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">result3</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 4 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableB</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [=, &amp;variableB, &amp;variableC] captures by value by default,</span>
+</span><span class='line'>                                             <span class="c1">// except variables variableB and variableC, which are captured by reference.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda4</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 5 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda5</span> <span class="o">=</span> <span class="p">[</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="k">mutable</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [variableC] captures only variableC by value and nothing else.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//should mark as mutable lambda, since Cannot assign to a variable captured by copy in a non-mutable lambda</span>
+</span><span class='line'>    <span class="c1">//variableB = variableB * 2; //ERROR : variableB not captured, since only capture specific variable that&#39;s variableC</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">///</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda5</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output of the sample code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Init Values :
+</span><span class='line'>variableA : 1
+</span><span class='line'>variableB : 1
+</span><span class='line'>variableC : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 1 ##---
+</span><span class='line'>param inside lambda1 : 2
+</span><span class='line'>After lamda1, variableA : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 2 ##---
+</span><span class='line'>param inside lambda2 : 2
+</span><span class='line'>variableB inside lambda2 : 2
+</span><span class='line'>After lamda2, variableA : 1
+</span><span class='line'>After lamda2, variableB : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 3 ##---
+</span><span class='line'>param inside lambda3 : 2
+</span><span class='line'>variableB inside lambda3 : 4
+</span><span class='line'>After lamda3, result3 : 2
+</span><span class='line'>After lamda3, variableA : 2
+</span><span class='line'>After lamda3, variableB : 4
+</span><span class='line'>
+</span><span class='line'>---## lamda 4 ##---
+</span><span class='line'>param inside lambda4 : 4
+</span><span class='line'>variableB inside lambda4 : 8
+</span><span class='line'>variableC inside lambda4 : 2
+</span><span class='line'>After lamda4, variableA : 2
+</span><span class='line'>After lamda4, variableB : 8
+</span><span class='line'>After lamda4, variableC : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 5 ##---
+</span><span class='line'>param inside lambda5 : 4
+</span><span class='line'>variableC inside lambda5 : 4
+</span><span class='line'>After lamda5, variableA : 2
+</span><span class='line'>After lamda5, variableC : 2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">Wrox Professional C++</a></li>
+<li><a href="http://en.cppreference.com/w/cpp/language/lambda">http://en.cppreference.com/w/cpp/language/lambda</a></li>
+<li><a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/</a></li>
+<li><a href="http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1">http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1</a></li>
+</ol></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/">Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-27T20:38:49+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:38 pm</span></time>
+        
+           | <a href="/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/post/2016-03-27-boost.png">
+<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
+
+<p>The other interesting points of <a href="http://www.boost.org/">Boost</a> are :</p>
+
+<ol>
+<li>Open source</li>
+<li>Cross platform</li>
+<li>Complement to STL rather than a replacement</li>
+<li>Many of <a href="http://www.boost.org/">Boost</a> developers are on the C++ standard committee</li>
+<li>Well documented</li>
+<li>Most of the Boost libraries are licensed under the <a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)#License">Boost Software License</a>, designed to allow <a href="http://www.boost.org/">Boost</a> to be used with both free and proprietary software projects</li>
+</ol>
+
+
+
+
+<h2>Installation Boost</h2>
+
+
+<p>Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</a> on various IDE, let&rsquo;s begin with <a href="http://www.boost.org/">Boost</a> installation. To be noted that on this post I run Xcode on OS X, <a href="http://www.codeblocks.org/">Code::Blocks</a>  on Linux (Ubuntu) and Visual Studio on Windows. The detail environments I use are :</p>
+
+<ol>
+<li>OS X 10.11.4 El Capitan</li>
+<li>Ubuntu 14.04.4 LTS</li>
+<li>Xcode Version 7.2</li>
+<li>Code::Blocks 13.12, gcc 4.8.4</li>
+<li>Visual Studio 2013</li>
+<li>Boost 1.60.0</li>
+</ol>
+
+
+
+
+<h4>OS X and Linux (Ubuntu)</h4>
+
+
+<p>There are several ways of <a href="http://www.boost.org/">Boost</a> installation. Instead of build from source code, we can use package manager such as <a href="https://www.macports.org/">MacPorts</a>, <a href="http://brew.sh/">Homebrew</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Packaging_Tool">Advance Package Tool</a>, etc. In this post we will build <a href="http://www.boost.org/">Boost</a> from source code. The installation steps (from source code) on OS X and Ubuntu are the similar. To make it consistent, I use the same installation path for OS X and Ubuntu that is <code>/usr/local/boost_1_60_0</code>. You can use different path if you want. The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it.</li>
+<li>Open terminal, navigate to the extracted directory</li>
+<li>Create directory on <code>/usr/local/boost_1_60_0</code>, and ensure IDE has access to the directory. On my case I don't need this step on OS X, but on ubuntu it does.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local/boost_1_60_0
+</span><span class='line'>sudo chmod <span class="m">777</span> -r boost_1_60_0
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Run command :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bootstrap.sh --prefix<span class="o">=</span>/usr/local/boost_1_60_0
+</span><span class='line'>./b2 install
+</span></code></pre></td></tr></table></div></figure>
+This last step quite take time. So you can have coffee while waiting for it :)
+</li>
+</ol>
+
+
+<p>Once the installation finish, we should have generated directory. They are <code>/usr/local/boost_1_60_0/include</code> contains header files and <code>/usr/local/boost_1_60_0/lib</code> contains libraries.</p>
+
+<h4>Windows</h4>
+
+
+<p>The <a href="http://www.boost.org/">Boost</a> installation step on Windows is also similar to the installation step on OS X and Ubuntu.
+The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it to C:\\boost_1_60_0 </li>
+<li>Open Visual Studio command prompt. I use Visual Studio 2013 x86 Native Tools Command Prompt native tool (I have not test using default Windows Command Prompt)
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>C:\<span class="p">&gt;</span> <span class="n">cd</span> C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span><span class="p">&gt;</span> <span class="n">bootstrap</span>.bat
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>&gt; .\b<span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+As on OS X and Ubuntu, the last step quite take time.
+</li>
+</ol>
+
+
+
+
+<h2>Configure <a href="http://www.boost.org/">Boost</a> on IDE(s)</h2>
+
+
+<p>Before create C++ projects on various IDE, let&rsquo;s create a simple C++ hello world code that use Boost libraries. To simplify the test, I grab sample code from <a href="http://stackoverflow.com/questions/999120/c-hello-world-boost-tee-example-program">here</a></p>
+
+<figure class='code'><figcaption><span>Hello World</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;fstream&gt;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#include &lt;boost/iostreams/tee.hpp&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;boost/iostreams/stream.hpp&gt;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">iostreams</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">typedef</span> <span class="n">tee_device</span><span class="o">&lt;</span><span class="n">ostream</span><span class="p">,</span> <span class="n">ofstream</span><span class="o">&gt;</span> <span class="n">TeeDevice</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">typedef</span> <span class="n">stream</span><span class="o">&lt;</span><span class="n">TeeDevice</span><span class="o">&gt;</span> <span class="n">TeeStream</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">ofstream</span> <span class="n">ofs</span><span class="p">(</span><span class="s">&quot;/Users/neutro/Workspace/cpp/sample.txt&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">TeeDevice</span> <span class="n">my_tee</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span> <span class="n">ofs</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">TeeStream</span> <span class="n">my_split</span><span class="p">(</span><span class="n">my_tee</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">my_split</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">my_split</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">my_split</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The snipped code above just print text and write it to a text file. We just want to ensure the IDE&rsquo;s compiler can compile and build the code that includes <a href="http://www.boost.org/">Boost</a> libraries.</p>
+
+<ul>
+  <li>
+    <h4>Xcode</h4>
+    To include Boost libraries on Xcode project :
+    <ol>
+    <li>Select Xcode project > Build Setting</li>
+    <li>Add <code>/usr/local/boost_1_60_0/include/</code> to the Header Search Paths</li>
+    <li>Add <code>/usr/local/boost_1_60_0/lib/</code> to the Library Search Paths</li>
+    </ol>
+
+    <img class="center" src="/images/post/2016-03-27-xcode.png">
+
+  </li>
+  <li>
+    <h4>Code::Blocks</h4>
+    To include Boost libraries on Code::Blocks project :
+    <ol>
+    <li>Right Click on Code::Blocks project > Build Option</li>
+    <li>
+    Select Compiler tab, add <code>/usr/local/boost_1_60_0/include/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks1.png">
+    </li>
+    <li>
+    Select Linker tab, add <code>/usr/local/boost_1_60_0/lib/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks2.png">
+    </li>
+    </ol>
+  </li>
+  <li>
+    <h4>Visual Studio</h4>
+    To include Boost libraries on Visual C++ project :
+    <ol>
+    <li>Right Click on VC++ project > Properties</li>
+    <li>Select VC++ Directories on the left pane</li>
+    <li>Add <code>C:\boost_1_60_0</code> on Include Directories item</li>
+    <li>Add <code>C:\boost_1_60_0\stage\lib</code> on Include Directories item</li>
+    <li>Click OK to close the dialog</li>
+    </ol>
+    <img class="center" src="/images/post/2016-03-27-vs.png">
+  </li>
+</ul>
+
+
+<p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
+
+<p>The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a></p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li>
+<a href="http://www.boost.org/">http://www.boost.org/</a>
+</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">Wikipedia</a>
+</li>
+</ol></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/">GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-12T15:08:34+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:08 pm</span></time>
+        
+           | <a href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/spring.png">
+Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
+
+<p><a href="https://spring.io/">Spring</a> is a popular framework in Java world. It&rsquo;s one of my favorite framework in Java. At the time of this blog post, I have just grabbed the source of it from <a href="https://github.com/spring-projects/spring-framework">github repository</a>. The source code is fantastic. Nice coding style, project structure, build tool and of course its documentations. While following the guidance to build and import to <a href="https://spring.io/tools">Spring Tool Suite</a>, I got an error on <code>spring-beans-groovy</code> project in <code>GroovyBeanDefinitionReader.java</code>. Navigating to the errors, STS seems try to find a class <code>GroovyDynamicElementReader</code> but not found.</p>
+
+<p><img class="center" src="/images/post/2016-03-12-pic01.png"></p>
+
+<p> Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally get a clue <code>GroovyDynamicElementReader.groovy</code>.</p>
+
+<p>Installing <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> seems solve the problem.</p>
+
+<p><img class="center" src="/images/post/2016-03-12-pic02.png"></p>
+
+<p>In case you have the same problem as what I got, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.</p>
+
+<h3>Reference</h3>
+
+
+<ol>
+<li>https://github.com/groovy/groovy-eclipse/wiki</li>
+<li>http://blog.csdn.net/zlx510tsde/article/details/46241675</li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/09/math-in-web/">Math in Web</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-09T21:41:47+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:41 pm</span></time>
+        
+           | <a href="/blog/2016/03/09/math-in-web/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There are several frameworks that can be used to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
+
+<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript frameworks that can render LaTeX expression to beautiful math equation in browser.</p>
+
+<p>The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
+To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code></p>
+
+<figure class='code'><figcaption><span>KaTeX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;div&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq1&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq2&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq3&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq4&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq5&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq6&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq7&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>KaTeX sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;c = \\pm\\sqrt{a^2 + b^2}&quot;</span><span class="p">,</span> <span class="nx">eq1</span><span class="p">);</span>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(a,b,c) = (a^2+b^2+c^2)^3&quot;</span><span class="p">,</span> <span class="nx">eq2</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx&quot;</span><span class="p">,</span> <span class="nx">eq3</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}&quot;</span><span class="p">,</span> <span class="nx">eq4</span><span class="p">);</span>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\oint \\vec{F} \\cdot d\\vec{s}=0&quot;</span><span class="p">,</span> <span class="nx">eq5</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)&quot;</span><span class="p">,</span> <span class="nx">eq6</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"/></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+
+
+
+
+<div>
+<p><span class="katex" id="eq1"></span></p>
+<p><span class="katex" id="eq2"></span></p>
+<p><span class="katex" id="eq3"></span></p>
+<p><span class="katex" id="eq4"></span></p>
+<p><span class="katex" id="eq5"></span></p>
+<p><span class="katex" id="eq6"></span></p>
+<p><span class="katex" id="eq7"></span></p>
+</div>
+
+
+
+
+<script>
+
+    katex.render("c = \\pm\\sqrt{a^2 + b^2}", eq1);
+    katex.render("f(a,b,c) = (a^2+b^2+c^2)^3", eq2);
+
+    katex.render("\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx", eq3);
+
+    katex.render("f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}", eq4);
+    katex.render("\\oint \\vec{F} \\cdot d\\vec{s}=0", eq5);
+
+    katex.render("\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)", eq6);
+</script>
+
+
+<p>The comparison between <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> can be found <a href="http://www.intmath.com/cg5/katex-mathjax-comparison.php">here</a>. At the time of writing this blog post, I got <a href="https://khan.github.io/KaTeX/">KaTeX</a> is faster than <a href="https://www.mathjax.org/">MathJax</a>. But <a href="https://khan.github.io/KaTeX/">KaTeX</a> can not render a few expressions that <a href="https://www.mathjax.org/">MathJax</a> can.</p>
+
+<p>The comparison results could be changed in the next. Since both of them are actively developed.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-08T23:10:44+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:10 pm</span></time>
+        
+           | <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/ios.png"></p>
+
+<p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
+
+<p>In this post, I will not write about how to build the app with Apache Cordova, I just want to focus on how to create ipa distribution package for in house enterprise distribution. The steps should be the same for app that is created with native. I also will not discuss about how to deploy to MDM.</p>
+
+<p>The first requirement is we have to be a member of <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a> which costs $299. The steps how to register is clearly explained in apple developer site.</p>
+
+<p>At the time of write this post, my development environment :</p>
+
+<ol type="1">
+<li> OS X El Capitan (10.11.3)</li>
+<li>Xcode (7.2)</li>
+<li>iphone 6 (iOS 9.2)</li>
+</ol>
+
+
+<p>Before we start create ipa package, ensure our code runs well as expected on iphone simulator.</p>
+
+<p>The steps of creating ipa package for distribution basically similar to deploying to real device for development as explained on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>.
+In this post, I will only capture the things that are difference between them.</p>
+
+<h2>Certificate</h2>
+
+
+<p>While creating certificate preparation in <a href="https://developer.apple.com/account/ios/certificate/create">Apple Developer</a> portal, showed its slightly difference from <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>
+<img class="center" src="/images/post/2016-03-09-pic01.png"></p>
+
+<p>In this case, I choose <code>In-House and Ad Hoc </code> distribution option instead of <code>iOS App Development</code>, since we plan to create ipa package for In House distribution. If we notice upon the above screenshot, in the <code>Production</code> section has option for <code>In-House and Ad Hoc </code> distribution. Meanwhile on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> has <code>App Store and Ad Hoc</code>. The difference because of the apple id I used on this post is enrolled as an <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a>, and on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> uses Individual Apple Developer Program. The detail difference between them and other developer license schema can found <a href="https://developer.apple.com/support/compare-memberships/">here</a>.</p>
+
+<p>The rest of preparing certificate installation for production is the same as <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">certificate installation for development</a>.</p>
+
+<h2>App IDs</h2>
+
+
+<p>The step of registering app <code>Bundle ID</code> is the same as <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">the previous post</a>. If we already registered for development, we should not do it again.</p>
+
+<h2>Provisioning Profiles</h2>
+
+
+<p>Creating provisioning also similar to the creation Provisioning for Development. Except at the wizard option we need to choose one of in the <code>Distribution</code> group instead of <code>Development</code> group. In this sample I select <code>In House</code>, since the ipa package we created will be deployed via MDM.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic02.png"></p>
+
+<p>The next step is opening Xcode and add apple id via Xcode <code>Proferences > Accounts</code> as I did on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">previous post</a>.
+Now we should get the similar picture as follow.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic03.png"></p>
+
+<p>Ensure <code>distribution profile</code> already downloaded. If not we can click download button on the list above of picture.</p>
+
+<p>The next thing is opening iOS project with Xcode and ensuring we select <code>Distribution Profile</code> we installed on <code>Code signing</code> section group both on <code>Project</code> and <code>Target</code>.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic04.png">
+<img class="center" src="/images/post/2016-03-09-pic05.png"></p>
+
+<p>The next step is select <code>Product</code> menu > <code>Archive</code>, then follow the wizard.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic06.png">
+<img class="center" src="/images/post/2016-03-09-pic07.png">
+<img class="center" src="/images/post/2016-03-09-pic08.png">
+<img class="center" src="/images/post/2016-03-09-pic09.png">
+<img class="center" src="/images/post/2016-03-09-pic10.png"></p>
+
+<p>When the wizard finish, by default Xcode will create ipa package for us on desktop.</p>
+
+<p>That&rsquo;s all my share and thanks for reading :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">Deploying iOS App to Real Device</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-08T12:35:31+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:35 pm</span></time>
+        
+           | <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/ios.png">
+While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>
+
+<p><p/>
+The are couple of things that we need to prepare to make our app be able to run on real devices.</p>
+
+<p><h2>Certificate</h2>
+Development certificate basically tells us that we are apple developers. To be it, our apple id has to be enrolled as an apple developer. Information about apple developer enrollment can be found at <a href="https://developer.apple.com/programs/enroll/">Apple Developer site</a>.</p>
+
+<p>Once our apple id enrolled as an apple developer, there are couple of steps for preparing development certificate. App need to be signed to be able to deployed to real devices. To do that:</p>
+
+<p><ol type="1"></p>
+
+<p><li>Go to <code>Launchpad</code> or <code>Spotlight Search</code>, type <code>Keychain Access</code> then open the app.
+</li></p>
+
+<p><li>At top menu, click <code>Keychain Access</code> > <code>Certificate Assistance</code> > <code>Request a Certificate from a Certificate Authority</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic01.png"></p>
+
+<p>Fill the <code>Email</code> and <code>Common Name</code>. The email should be <code>apple id email</code> then select <code>save to disk</code> and checked <code>Let me specify key pair information</code>. When we click continue, we should get save dialog</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic02.png"></p>
+
+<p>Select Key Size <code>2048 bits</code> and <code>RSA</code> algorithm, click continue then done.
+<img class="center" src="/images/post/2016-03-08-pic03.png"></p>
+
+<p>The certificate request that we create just saved to disk (desktop in my case).</p>
+
+<p></li></p>
+
+<p><li>
+Open <a href="https://developer.apple.com/membercenter/index.action">apple developer portal</a>, login using apple id that already enrolled as apple developer.
+<img class="center" src="/images/post/2016-03-08-pic04.png"></p>
+
+<p>click <code>Certificates, Identifiers and Profiles</code></p>
+
+<p></li>
+<li>
+Select <code>Sertificates</code> group > <code>All</code>
+<img class="center" src="/images/post/2016-03-08-pic05.png"></p>
+
+<p>On the right pane, select <code>add (+)</code> button, select type of certificate that we want to create. At this post we will create for development only. Not for production such as for deploy our app in app store nor internal store (in-house) like mobile device management.
+<img class="center" src="/images/post/2016-03-08-pic06.png"></p>
+
+<p>If everything already done on this page, scroll down > click <code>continue</code></p>
+
+<p>We may notice a information message that we have to ensure on our OS X development machine keychain installed <code>
+Worldwide Developer Relations Certificate Authority</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic07.png"></p>
+
+<p></li>
+<li>
+Follow the wizard, till we&rsquo;re asked to upload our certificate request that we already created on previous step.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic08.png"></p>
+
+<p></li>
+<li>
+After completed the wizard, we should be able to download the generated certificate and ready to install on development machine.
+<img class="center" src="/images/post/2016-03-08-pic09.png"></p>
+
+<p></li>
+<li>
+Download the <code>development certificate</code> > double click. The certificate should be installed on our <code>Keychain Access</code>
+<img class="center" src="/images/post/2016-03-08-pic10.png"></p>
+
+<p><code>
+NOTE :
+Please ignore the distribution certificate on my screenshot. It just another certificate for distribution which is out of scope of this post.
+</code>
+</li>
+</ol></p>
+
+<p><h2>Devices</h2>
+This part informs to the xcode that the device is belongs to me. So let me run my app on it. To register our devices, select <code>Devices</code> on the apple developer portal as we did for certificate section above.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic11.png"></p>
+
+<p>Click <code>add (+)</code>
+<img class="center" src="/images/post/2016-03-08-pic12.png"></p>
+
+<p>Enter <code>Name</code> and <code>UUID</code>. To get <code>UUID</code>, plug idevice to computer, itune will display it. If itune display <code>Serial Number</code> or <code>ECID</code> or <code>Product Type</code>,  click the label till <code>UUID</code> displayed. Just copy it and paste in the <code>UUID</code> text box above.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic13.png"></p>
+
+<p>Follow the wizard till finish. We should be able to get our idevices listed on the device list.
+<img class="center" src="/images/post/2016-03-08-pic14.png"></p>
+
+<p><h2>App IDs</h2>
+On Apple developer portal mentioned that an <code>App ID</code> is a string that defines both a keychain identity and a set of apps you are developing. Its primary use is as part of a provisioning profile, it specifies which apps are authorized by the profile to be signed and launched.</p>
+
+<p>To register <code>App ID</code>, click <code>Add (+)</code>. Fill <code>Name</code> and <code>Bundle ID</code>.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic15.png"></p>
+
+<p>In this sample, my application <code>Name</code> is <code>HelloWorld</code> and <code>Bundle ID</code> is <code>com.neutrofoton.helloworld</code></p>
+
+<p>Click continue till the wizard dialog finished.
+We can get list all of <code>App IDs</code> that we registered by clicking  the <code>App IDs</code> on the left menu panel</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic16.png"></p>
+
+<p><h2>Provisioning Profiles</h2>
+On Apple Developer portal Provisioning Profiles defined that it allows us to install apps onto our iOS devices. A provisioning profile includes signing certificates, device identifiers, and an App ID. Development provisioning profiles are used to build and install versions of our app during the development cycle, while distribution provisioning profiles are used to submit our apps to the App Store and distribute them to beta testers.</p>
+
+<p>To start create provisioning, click <code>add (+)</code> select <code>iOS App Development</code>. In this case I will create provisioning for test. For distribution we select on distribution group option as our need.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic17.png"></p>
+
+<p>Follow the wizard by selecting <code>App ID</code>, <code>Devices</code>, and <code>Certificates</code> that will be applied to the <code>Provisioning Profile</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic18.png">
+<img class="center" src="/images/post/2016-03-08-pic19.png">
+<img class="center" src="/images/post/2016-03-08-pic20.png">
+<img class="center" src="/images/post/2016-03-08-pic21.png">
+<img class="center" src="/images/post/2016-03-08-pic22.png"></p>
+
+<p>Now open <code>Xcode > Preferences </code> select <code>Accounts</code> tab. Add apple id that we use for login to apple developer portal.</p>
+
+<p>Select the apple id on the left pane > click <code>View Details</code> button.
+We should get the similar picture as below.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic23.png"></p>
+
+<p>If the profiles are not downloaded yet, we can click <code>Download</code> button that make Xcode do for us.</p>
+
+<p>To test provisioning we created, let&rsquo;s create simple application. At the time of write this post, my development environment :
+<ol type="1">
+<li> OS X El Capitan (10.11.3)</li>
+<li>Xcode (7.2)</li>
+<li>iphone 4s iOS 9.1</li>
+</ol></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic24.png">
+<img class="center" src="/images/post/2016-03-08-pic25.png"></p>
+
+<p>Ensure we have the same <code>Bundle Identifier</code> as we registered on <code>Provisioning Profile</code>. At this sample app, I just create a simple lable <code>Hello World Application</code> on storyboard.</p>
+
+<p>Now run the application by selecting <code>Device</code> instead of <code>Simulator</code>. We may get the following message while running on real device, just click <code>Allow</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic26.png"></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic27.png"></p>
+
+<p>The above picture shows that the Hello World app can be run on real device.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/3">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/index.html">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Me</h1>
+  <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
+  <p>
+    No many things to write about me here, except the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/">Configure PHP and Virtual Host macOS High Sierra</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/04/17/import-existing-git-repository-to-another/">Import Existing Git Repository to Another</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
+      </li>
+    
+  </ul>
+</section>
+<!--
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list">
+    
+    
+    <li><a href="/blog/categories/csharp/index.html">csharp ( 10 )</a></li>
+    
+    
+    <li><a href="/blog/categories/php/index.html">php ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/macos/index.html">macos ( 14 )</a></li>
+    
+    
+    <li><a href="/blog/categories/apache/index.html">apache ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/java/index.html">java ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mono/index.html">mono ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/aspnet/index.html">aspnet ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xcode/index.html">xcode ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xamarin/index.html">xamarin ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/octopress/index.html">octopress ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/spring/index.html">spring ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/code-block/index.html">code block ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/linux/index.html">linux ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/windows/index.html">windows ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/git/index.html">git ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/c/index.html">c ( 1 )</a></li>
+    
+  </ul>
+</section>
+-->
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/apache/' class='badge1' data-badge='5'>apache</a></li>
+<li class='category'><a href='/blog/categories/arduino/' class='badge1' data-badge='1'>arduino</a></li>
+<li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
+<li class='category'><a href='/blog/categories/c/' class='badge1' data-badge='1'>c</a></li>
+<li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
+<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
+<li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
+<li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
+<li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
+<li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='5'>linux</a></li>
+<li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>
+<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='1'>mathematic</a></li>
+<li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
+<li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
+<li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
+<li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
+<li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='4'>php</a></li>
+<li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
+<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='2'>visual studio</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='3'>windows</a></li>
+<li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
+<li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
+
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'neutrofoton',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos',
+            skip_repo: 'neutrofoton'+'.github.io'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section>
+  <h1>Site I Visit</h1>
+  <ul id="site_i_visit">
+
+      <li class="post">
+        <a href="http://www.cppreference.com">C++ Reference</a>
+      </li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2018 - neutro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'neutrofoton';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

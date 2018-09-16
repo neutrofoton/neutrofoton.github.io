@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Xcode | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/xcode/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2018-09-16T22:58:38+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
+    <updated>2016-03-27T20:38:49+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
+<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
+
+<p>The other interesting points of <a href="http://www.boost.org/">Boost</a> are :</p>
+
+<ol>
+<li>Open source</li>
+<li>Cross platform</li>
+<li>Complement to STL rather than a replacement</li>
+<li>Many of <a href="http://www.boost.org/">Boost</a> developers are on the C++ standard committee</li>
+<li>Well documented</li>
+<li>Most of the Boost libraries are licensed under the <a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)#License">Boost Software License</a>, designed to allow <a href="http://www.boost.org/">Boost</a> to be used with both free and proprietary software projects</li>
+</ol>
+
+
+
+
+<h2>Installation Boost</h2>
+
+
+<p>Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</a> on various IDE, let&rsquo;s begin with <a href="http://www.boost.org/">Boost</a> installation. To be noted that on this post I run Xcode on OS X, <a href="http://www.codeblocks.org/">Code::Blocks</a>  on Linux (Ubuntu) and Visual Studio on Windows. The detail environments I use are :</p>
+
+<ol>
+<li>OS X 10.11.4 El Capitan</li>
+<li>Ubuntu 14.04.4 LTS</li>
+<li>Xcode Version 7.2</li>
+<li>Code::Blocks 13.12, gcc 4.8.4</li>
+<li>Visual Studio 2013</li>
+<li>Boost 1.60.0</li>
+</ol>
+
+
+
+
+<h4>OS X and Linux (Ubuntu)</h4>
+
+
+<p>There are several ways of <a href="http://www.boost.org/">Boost</a> installation. Instead of build from source code, we can use package manager such as <a href="https://www.macports.org/">MacPorts</a>, <a href="http://brew.sh/">Homebrew</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Packaging_Tool">Advance Package Tool</a>, etc. In this post we will build <a href="http://www.boost.org/">Boost</a> from source code. The installation steps (from source code) on OS X and Ubuntu are the similar. To make it consistent, I use the same installation path for OS X and Ubuntu that is <code>/usr/local/boost_1_60_0</code>. You can use different path if you want. The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it.</li>
+<li>Open terminal, navigate to the extracted directory</li>
+<li>Create directory on <code>/usr/local/boost_1_60_0</code>, and ensure IDE has access to the directory. On my case I don't need this step on OS X, but on ubuntu it does.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local/boost_1_60_0
+</span><span class='line'>sudo chmod <span class="m">777</span> -r boost_1_60_0
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Run command :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bootstrap.sh --prefix<span class="o">=</span>/usr/local/boost_1_60_0
+</span><span class='line'>./b2 install
+</span></code></pre></td></tr></table></div></figure>
+This last step quite take time. So you can have coffee while waiting for it :)
+</li>
+</ol>
+
+
+<p>Once the installation finish, we should have generated directory. They are <code>/usr/local/boost_1_60_0/include</code> contains header files and <code>/usr/local/boost_1_60_0/lib</code> contains libraries.</p>
+
+<h4>Windows</h4>
+
+
+<p>The <a href="http://www.boost.org/">Boost</a> installation step on Windows is also similar to the installation step on OS X and Ubuntu.
+The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it to C:\\boost_1_60_0 </li>
+<li>Open Visual Studio command prompt. I use Visual Studio 2013 x86 Native Tools Command Prompt native tool (I have not test using default Windows Command Prompt)
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>C:\<span class="p">&gt;</span> <span class="n">cd</span> C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span><span class="p">&gt;</span> <span class="n">bootstrap</span>.bat
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>&gt; .\b<span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+As on OS X and Ubuntu, the last step quite take time.
+</li>
+</ol>
+
+
+
+
+<h2>Configure <a href="http://www.boost.org/">Boost</a> on IDE(s)</h2>
+
+
+<p>Before create C++ projects on various IDE, let&rsquo;s create a simple C++ hello world code that use Boost libraries. To simplify the test, I grab sample code from <a href="http://stackoverflow.com/questions/999120/c-hello-world-boost-tee-example-program">here</a> <br/>
+<figure class='code'><figcaption><span>Hello World</p></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">fstream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">boost</span><span class="o">/</span><span class="n">iostreams</span><span class="o">/</span><span class="n">tee</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">boost</span><span class="o">/</span><span class="n">iostreams</span><span class="o">/</span><span class="n">stream</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">iostreams</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">typedef</span> <span class="n">tee_device</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">ostream</span><span class="p">,</span> <span class="n">ofstream</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeDevice</span><span class="p">;</span>
+</span><span class='line'><span class="k">typedef</span> <span class="n">stream</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">TeeDevice</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeStream</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ofstream</span> <span class="nf">ofs</span><span class="p">(</span><span class="s">&quot;/Users/neutro/Workspace/cpp/sample.txt&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">TeeDevice</span> <span class="nf">my_tee</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span> <span class="n">ofs</span><span class="p">);</span>
+</span><span class='line'><span class="n">TeeStream</span> <span class="nf">my_split</span><span class="p">(</span><span class="n">my_tee</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_split</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_split</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
+</span><span class='line'><span class="n">my_split</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+The snipped code above just print text and write it to a text file. We just want to ensure the IDE&rsquo;s compiler can compile and build the code that includes <a href="http://www.boost.org/">Boost</a> libraries.</p>
+
+<ul>
+  <li>
+    <h4>Xcode</h4>
+    To include Boost libraries on Xcode project :
+    <ol>
+    <li>Select Xcode project > Build Setting</li>
+    <li>Add <code>/usr/local/boost_1_60_0/include/</code> to the Header Search Paths</li>
+    <li>Add <code>/usr/local/boost_1_60_0/lib/</code> to the Library Search Paths</li>
+    </ol>
+
+    <img class="center" src="/images/post/2016-03-27-xcode.png">
+
+  </li>
+  <li>
+    <h4>Code::Blocks</h4>
+    To include Boost libraries on Code::Blocks project :
+    <ol>
+    <li>Right Click on Code::Blocks project > Build Option</li>
+    <li>
+    Select Compiler tab, add <code>/usr/local/boost_1_60_0/include/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks1.png">
+    </li>
+    <li>
+    Select Linker tab, add <code>/usr/local/boost_1_60_0/lib/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks2.png">
+    </li>
+    </ol>
+  </li>
+  <li>
+    <h4>Visual Studio</h4>
+    To include Boost libraries on Visual C++ project :
+    <ol>
+    <li>Right Click on VC++ project > Properties</li>
+    <li>Select VC++ Directories on the left pane</li>
+    <li>Add <code>C:\boost_1_60_0</code> on Include Directories item</li>
+    <li>Add <code>C:\boost_1_60_0\stage\lib</code> on Include Directories item</li>
+    <li>Click OK to close the dialog</li>
+    </ol>
+    <img class="center" src="/images/post/2016-03-27-vs.png">
+  </li>
+</ul>
+
+
+<p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
+
+<p>The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a></p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li>
+<a href="http://www.boost.org/">http://www.boost.org/</a>
+</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">Wikipedia</a>
+</li>
+</ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Create iOS Ipa for In-House Distribution]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/"/>
+    <updated>2016-03-08T23:10:44+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/ios.png"></p>
+
+<p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
+
+<p>In this post, I will not write about how to build the app with Apache Cordova, I just want to focus on how to create ipa distribution package for in house enterprise distribution. The steps should be the same for app that is created with native. I also will not discuss about how to deploy to MDM.</p>
+
+<p>The first requirement is we have to be a member of <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a> which costs $299. The steps how to register is clearly explained in apple developer site.</p>
+
+<p>At the time of write this post, my development environment :</p>
+
+<ol type="1">
+<li> OS X El Capitan (10.11.3)</li>
+<li>Xcode (7.2)</li>
+<li>iphone 6 (iOS 9.2)</li>
+</ol>
+
+
+<p>Before we start create ipa package, ensure our code runs well as expected on iphone simulator.</p>
+
+<p>The steps of creating ipa package for distribution basically similar to deploying to real device for development as explained on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>.
+In this post, I will only capture the things that are difference between them.</p>
+
+<h2>Certificate</h2>
+
+
+<p>While creating certificate preparation in <a href="https://developer.apple.com/account/ios/certificate/create">Apple Developer</a> portal, showed its slightly difference from <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>
+<img class="center" src="/images/post/2016-03-09-pic01.png"></p>
+
+<p>In this case, I choose <code>In-House and Ad Hoc </code> distribution option instead of <code>iOS App Development</code>, since we plan to create ipa package for In House distribution. If we notice upon the above screenshot, in the <code>Production</code> section has option for <code>In-House and Ad Hoc </code> distribution. Meanwhile on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> has <code>App Store and Ad Hoc</code>. The difference because of the apple id I used on this post is enrolled as an <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a>, and on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> uses Individual Apple Developer Program. The detail difference between them and other developer license schema can found <a href="https://developer.apple.com/support/compare-memberships/">here</a>.</p>
+
+<p>The rest of preparing certificate installation for production is the same as <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">certificate installation for development</a>.</p>
+
+<h2>App IDs</h2>
+
+
+<p>The step of registering app <code>Bundle ID</code> is the same as <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">the previous post</a>. If we already registered for development, we should not do it again.</p>
+
+<h2>Provisioning Profiles</h2>
+
+
+<p>Creating provisioning also similar to the creation Provisioning for Development. Except at the wizard option we need to choose one of in the <code>Distribution</code> group instead of <code>Development</code> group. In this sample I select <code>In House</code>, since the ipa package we created will be deployed via MDM.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic02.png"></p>
+
+<p>The next step is opening Xcode and add apple id via Xcode <code>Proferences > Accounts</code> as I did on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">previous post</a>.
+Now we should get the similar picture as follow.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic03.png"></p>
+
+<p>Ensure <code>distribution profile</code> already downloaded. If not we can click download button on the list above of picture.</p>
+
+<p>The next thing is opening iOS project with Xcode and ensuring we select <code>Distribution Profile</code> we installed on <code>Code signing</code> section group both on <code>Project</code> and <code>Target</code>.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic04.png">
+<img class="center" src="/images/post/2016-03-09-pic05.png"></p>
+
+<p>The next step is select <code>Product</code> menu > <code>Archive</code>, then follow the wizard.</p>
+
+<p><img class="center" src="/images/post/2016-03-09-pic06.png">
+<img class="center" src="/images/post/2016-03-09-pic07.png">
+<img class="center" src="/images/post/2016-03-09-pic08.png">
+<img class="center" src="/images/post/2016-03-09-pic09.png">
+<img class="center" src="/images/post/2016-03-09-pic10.png"></p>
+
+<p>When the wizard finish, by default Xcode will create ipa package for us on desktop.</p>
+
+<p>That&rsquo;s all my share and thanks for reading :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploying iOS App to Real Device]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device/"/>
+    <updated>2016-03-08T12:35:31+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/08/deploying-ios-app-to-real-device</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/ios.png">
+While developing ios app, sometime we don&rsquo;t just testing run the app on ios simulator we also need to test the app on real device though.</p>
+
+<p><p/>
+The are couple of things that we need to prepare to make our app be able to run on real devices.</p>
+
+<p><h2>Certificate</h2>
+Development certificate basically tells us that we are apple developers. To be it, our apple id has to be enrolled as an apple developer. Information about apple developer enrollment can be found at <a href="https://developer.apple.com/programs/enroll/">Apple Developer site</a>.</p>
+
+<p>Once our apple id enrolled as an apple developer, there are couple of steps for preparing development certificate. App need to be signed to be able to deployed to real devices. To do that:</p>
+
+<p><ol type="1"></p>
+
+<p><li>Go to <code>Launchpad</code> or <code>Spotlight Search</code>, type <code>Keychain Access</code> then open the app.
+</li></p>
+
+<p><li>At top menu, click <code>Keychain Access</code> > <code>Certificate Assistance</code> > <code>Request a Certificate from a Certificate Authority</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic01.png"></p>
+
+<p>Fill the <code>Email</code> and <code>Common Name</code>. The email should be <code>apple id email</code> then select <code>save to disk</code> and checked <code>Let me specify key pair information</code>. When we click continue, we should get save dialog</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic02.png"></p>
+
+<p>Select Key Size <code>2048 bits</code> and <code>RSA</code> algorithm, click continue then done.
+<img class="center" src="/images/post/2016-03-08-pic03.png"></p>
+
+<p>The certificate request that we create just saved to disk (desktop in my case).</p>
+
+<p></li></p>
+
+<p><li>
+Open <a href="https://developer.apple.com/membercenter/index.action">apple developer portal</a>, login using apple id that already enrolled as apple developer.
+<img class="center" src="/images/post/2016-03-08-pic04.png"></p>
+
+<p>click <code>Certificates, Identifiers and Profiles</code></p>
+
+<p></li>
+<li>
+Select <code>Sertificates</code> group > <code>All</code>
+<img class="center" src="/images/post/2016-03-08-pic05.png"></p>
+
+<p>On the right pane, select <code>add (+)</code> button, select type of certificate that we want to create. At this post we will create for development only. Not for production such as for deploy our app in app store nor internal store (in-house) like mobile device management.
+<img class="center" src="/images/post/2016-03-08-pic06.png"></p>
+
+<p>If everything already done on this page, scroll down > click <code>continue</code></p>
+
+<p>We may notice a information message that we have to ensure on our OS X development machine keychain installed <code>
+Worldwide Developer Relations Certificate Authority</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic07.png"></p>
+
+<p></li>
+<li>
+Follow the wizard, till we&rsquo;re asked to upload our certificate request that we already created on previous step.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic08.png"></p>
+
+<p></li>
+<li>
+After completed the wizard, we should be able to download the generated certificate and ready to install on development machine.
+<img class="center" src="/images/post/2016-03-08-pic09.png"></p>
+
+<p></li>
+<li>
+Download the <code>development certificate</code> > double click. The certificate should be installed on our <code>Keychain Access</code>
+<img class="center" src="/images/post/2016-03-08-pic10.png"></p>
+
+<p><code>
+NOTE :
+Please ignore the distribution certificate on my screenshot. It just another certificate for distribution which is out of scope of this post.
+</code>
+</li>
+</ol></p>
+
+<p><h2>Devices</h2>
+This part informs to the xcode that the device is belongs to me. So let me run my app on it. To register our devices, select <code>Devices</code> on the apple developer portal as we did for certificate section above.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic11.png"></p>
+
+<p>Click <code>add (+)</code>
+<img class="center" src="/images/post/2016-03-08-pic12.png"></p>
+
+<p>Enter <code>Name</code> and <code>UUID</code>. To get <code>UUID</code>, plug idevice to computer, itune will display it. If itune display <code>Serial Number</code> or <code>ECID</code> or <code>Product Type</code>,  click the label till <code>UUID</code> displayed. Just copy it and paste in the <code>UUID</code> text box above.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic13.png"></p>
+
+<p>Follow the wizard till finish. We should be able to get our idevices listed on the device list.
+<img class="center" src="/images/post/2016-03-08-pic14.png"></p>
+
+<p><h2>App IDs</h2>
+On Apple developer portal mentioned that an <code>App ID</code> is a string that defines both a keychain identity and a set of apps you are developing. Its primary use is as part of a provisioning profile, it specifies which apps are authorized by the profile to be signed and launched.</p>
+
+<p>To register <code>App ID</code>, click <code>Add (+)</code>. Fill <code>Name</code> and <code>Bundle ID</code>.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic15.png"></p>
+
+<p>In this sample, my application <code>Name</code> is <code>HelloWorld</code> and <code>Bundle ID</code> is <code>com.neutrofoton.helloworld</code></p>
+
+<p>Click continue till the wizard dialog finished.
+We can get list all of <code>App IDs</code> that we registered by clicking  the <code>App IDs</code> on the left menu panel</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic16.png"></p>
+
+<p><h2>Provisioning Profiles</h2>
+On Apple Developer portal Provisioning Profiles defined that it allows us to install apps onto our iOS devices. A provisioning profile includes signing certificates, device identifiers, and an App ID. Development provisioning profiles are used to build and install versions of our app during the development cycle, while distribution provisioning profiles are used to submit our apps to the App Store and distribute them to beta testers.</p>
+
+<p>To start create provisioning, click <code>add (+)</code> select <code>iOS App Development</code>. In this case I will create provisioning for test. For distribution we select on distribution group option as our need.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic17.png"></p>
+
+<p>Follow the wizard by selecting <code>App ID</code>, <code>Devices</code>, and <code>Certificates</code> that will be applied to the <code>Provisioning Profile</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic18.png">
+<img class="center" src="/images/post/2016-03-08-pic19.png">
+<img class="center" src="/images/post/2016-03-08-pic20.png">
+<img class="center" src="/images/post/2016-03-08-pic21.png">
+<img class="center" src="/images/post/2016-03-08-pic22.png"></p>
+
+<p>Now open <code>Xcode > Preferences </code> select <code>Accounts</code> tab. Add apple id that we use for login to apple developer portal.</p>
+
+<p>Select the apple id on the left pane > click <code>View Details</code> button.
+We should get the similar picture as below.</p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic23.png"></p>
+
+<p>If the profiles are not downloaded yet, we can click <code>Download</code> button that make Xcode do for us.</p>
+
+<p>To test provisioning we created, let&rsquo;s create simple application. At the time of write this post, my development environment :
+<ol type="1">
+<li> OS X El Capitan (10.11.3)</li>
+<li>Xcode (7.2)</li>
+<li>iphone 4s iOS 9.1</li>
+</ol></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic24.png">
+<img class="center" src="/images/post/2016-03-08-pic25.png"></p>
+
+<p>Ensure we have the same <code>Bundle Identifier</code> as we registered on <code>Provisioning Profile</code>. At this sample app, I just create a simple lable <code>Hello World Application</code> on storyboard.</p>
+
+<p>Now run the application by selecting <code>Device</code> instead of <code>Simulator</code>. We may get the following message while running on real device, just click <code>Allow</code></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic26.png"></p>
+
+<p><img class="center" src="/images/post/2016-03-08-pic27.png"></p>
+
+<p>The above picture shows that the Hello World app can be run on real device.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode Failed to Download Use the Purchases Page to Try Again]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again/"/>
+    <updated>2013-09-24T14:56:27+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/09/24/xcode-failed-to-download-use-the-purchases-page-to-try-again</id>
+    <content type="html"><![CDATA[<p>The following day after the release of iOS 7, I started update my iphone 4s to get to know how exactly the ios 7 is. My iphone successfully updated even though it was quite annoying with slow internet connection :( .</p>
+
+<p>The next thing is updating my Xcode, since I got a notification to update my xcode from version 4.6.3 to version 5.0 via app store of version 1.2.2. My OSX version is 10.8.5.
+While updatig process, several times I got error message <code>Xcode failed to download use the purchases page to try again</code>, and my download prosess suddenly stopped. Googling on internet and asking forum got many different suggestion and solution. Thankfully one of them success that is by clearing appstore download cache.</p>
+
+<p>The steps to get things to work are quite simple.</p>
+
+<ol>
+<li>
+Keep the AppStore App open. Open terminal and type
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /private/var/folders/
+</span></code></pre></td></tr></table></div></figure>
+
+Once there, search for com.apple.appstore
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . <span class="p">|</span> grep com.apple.appstore
+</span></code></pre></td></tr></table></div></figure>
+You will find folder structure like this <code>./40/lhn22jn901zdw2bpf82hkggw0000gn/C/com.apple.appstore</code>
+
+</li>
+
+<li>
+Once inside the folder, open it in finder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>open .
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+While keeping AppStore open, remove this folder
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -rf *
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Now, go back to AppStore and click on Download again.
+</li>
+<li>
+If download/update disappear, close the appstore then reopen it.
+ </li>
+</ol>
+
+
+<p>That steps worked well to me. Good luck and have a nice day.</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://apple.stackexchange.com/questions/61646/xcode-failed-to-download-use-the-purchases-page-to-try-again/71202#71202</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

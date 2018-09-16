@@ -1,0 +1,862 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Lambda in C++ - neutrofoton</title>
+  <meta name="author" content="neutro">
+
+  
+  <meta name="description" content="C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+article img {
+  border: 0;
+}
+aside.sidebar img {
+  border-color: #e0e0e0;
+}
+article img, article video, article .flash-video{
+  box-shadow: rgba(255,255,255,0.15) 0 1px 4px;
+}
+</style>
+
+<!-- badge -->
+<style type="text/css">
+  .badge1 {
+  position:relative;
+  }
+  .badge1[data-badge]:after {
+  content: attr(data-badge);
+  position: absolute;
+  /*top: -10px;*/
+  right: -30px;
+  font-size: .7em;
+  background: #c57373;
+  color: white;
+  /* width: 18px; */
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 450%;
+  box-shadow: 0 0 1px #333;
+
+  padding: 2px;
+  }
+</style>
+
+  
+
+
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">neutrofoton</a></h1>
+  
+    <h2>Science, Technology and Life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="neutrofoton.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!--<li><a href="/about">About</a></li>-->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Lambda in C++</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-11T23:15:18+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:15 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="/images/logo/lambda.png">
+C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
+For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
+
+<figure class='code'><figcaption><span>C++11 Lambda Syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>[capture_block](parameters) mutable exception_specification -&gt; return_type {body}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li> <strong><code>capture_block</code></strong> is a comma-separated list of zero or more captures, optionally beginning with a capture-default. Capture list can be passed as follows (see below for the detailed description):
+<ol>
+<li><code>[a,&b]</code> where a is captured by value and b is captured by reference.</li>
+<li><code>[this]</code> captures the this pointer by value</li>
+<li><code>[&]</code> captures all automatic variables odr-used in the body of the lambda by reference</li>
+<li><code>[=]</code> captures all automatic variables odr-used in the body of the lambda by value</li>
+<li><code>[x]</code> captures only x by value and nothing else.</li>
+<li><code>[]</code> captures nothing</li>
+</ol>
+</li>
+<li>
+<strong><code>parameters</code></strong> is (optional) list of parameters for the lambda expression.
+</li>
+<li>
+<strong><code>mutable</code></strong> is (optional) if variables from the enclosing scope are captured by value, a copy of those variables will become available in the body of the lambda expression. Those copies are marked as const by default, meaning the lambda body cannot change the value of those copies. If the lambda expression is marked as mutable, those copies are not const and the body can modify those local copies.
+</li>
+<li>
+<strong><code>exception_specification</code></strong> is (optional) and can be used to specify which exceptions the body of the lambda expression can throw.
+</li>
+<li>
+<strong><code>return_type</code></strong> is Return type. If not present it's implied by the function return statements (or void if it doesn't return any value)
+</li>
+</ol>
+
+
+
+
+<h3>Lambda and Direct Invoke</h3>
+
+
+<p>The following snipped code is an example of lambda expression.</p>
+
+<figure class='code'><figcaption><span>example lambda and directly invoked</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hi &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;}(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The lambda expression above shows that it has a <code>const string&amp;</code> parameter and return a <code>string</code> type. To execute the lambda is by placing round brackets <code>()</code> and put object that will be passed to inside it. The <code>&ldquo;neutro&rdquo;</code> literal string will substitute <code>str</code> parameter. The output of the above code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Hi neutro
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>Lambda as Variable</h3>
+
+
+<p>Pointer to a lambda expression can be stored and executed through the function pointer. C++ provides <code>std::function</code> which is a STL template class that provides a very convenient wrapper to a simple function, to a functor or to a lambda expression. We can also use the C++11 <code>auto</code> keyword to make it easier.</p>
+
+<p>To make it clear the following code contains couples of various lambda expressions and store them in variables of type <code>auto</code> or its equivalent in <code>std::function</code> STL template class.</p>
+
+<figure class='code'><figcaption><span>lambda as variable</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 1&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda1</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda2</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda3 = [](void) -&gt; void { cout &lt;&lt;&quot;Hello lambda without parameter 2&quot; &lt;&lt; endl; };</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&quot;Hello lambda without parameter 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="n">lambda3</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//auto lambda4 = [](const string&amp; str) -&gt; string {return &quot;Hello from &quot; + str;};</span>
+</span><span class='line'><span class="n">function</span><span class="o">&lt;</span><span class="n">string</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="p">{</span><span class="k">return</span> <span class="s">&quot;Hello from &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">;};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lambda4</span><span class="p">(</span><span class="s">&quot;neutro&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The snipped code above shows how lambda expressions stored in variable of auto type or theirs equivalent in <code>std::function</code> type and how to invoke the lambda. <a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">Here</a> is a good article about <code>std::function</code>.</p>
+
+<h3>Lambda Capture Block</h3>
+
+
+<p>Lambda Capture Block basically describes how we want to capture variables from the enclosing scope. Capturing a variable means that the variable becomes available inside the body of the lambda. The detail variant of capture block has been described on previous section. The following code shows various scenario how to play with capture block.</p>
+
+<figure class='code'><figcaption><span>lambda capture block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="n">variableA</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableB</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">variableC</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Init Values : &quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableA : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="c1">//--------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 1 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda1</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span><span class="o">-&gt;</span> <span class="kt">int</span>     <span class="c1">//==&gt; [=] lambda has default access to variable is by value</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda1 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda1</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda1, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 2 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda2</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>      <span class="c1">//==&gt; [&amp;] lambda has default access to variable is by reference</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">param</span> <span class="o">=</span> <span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda2 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda2</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda2, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//-------------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 3 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="o">*</span><span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda3 : &quot;</span><span class="o">&lt;&lt;*</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda3 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="o">*</span><span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">result3</span> <span class="o">=</span> <span class="n">lambda3</span><span class="p">(</span><span class="o">&amp;</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, result3 : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">result3</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda3, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 4 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda4</span> <span class="o">=</span> <span class="p">[</span><span class="o">=</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableB</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [=, &amp;variableB, &amp;variableC] captures by value by default,</span>
+</span><span class='line'>                                             <span class="c1">// except variables variableB and variableC, which are captured by reference.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableB</span> <span class="o">=</span> <span class="n">variableB</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableB inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda4 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda4</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableB : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableB</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda4, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//--------------------------------</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---## lamda 5 ##---&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="k">auto</span> <span class="n">lambda5</span> <span class="o">=</span> <span class="p">[</span><span class="n">variableC</span><span class="p">](</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="k">mutable</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="c1">//==&gt; [variableC] captures only variableC by value and nothing else.</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">variableC</span> <span class="o">=</span> <span class="n">variableC</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//should mark as mutable lambda, since Cannot assign to a variable captured by copy in a non-mutable lambda</span>
+</span><span class='line'>    <span class="c1">//variableB = variableB * 2; //ERROR : variableB not captured, since only capture specific variable that&#39;s variableC</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">///</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;param inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;variableC inside lambda5 : &quot;</span><span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">param</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lambda5</span><span class="p">(</span><span class="n">variableA</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableA : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableA</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;After lamda5, variableC : &quot;</span> <span class="o">&lt;&lt;</span><span class="n">variableC</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output of the sample code is :</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Init Values :
+</span><span class='line'>variableA : 1
+</span><span class='line'>variableB : 1
+</span><span class='line'>variableC : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 1 ##---
+</span><span class='line'>param inside lambda1 : 2
+</span><span class='line'>After lamda1, variableA : 1
+</span><span class='line'>
+</span><span class='line'>---## lamda 2 ##---
+</span><span class='line'>param inside lambda2 : 2
+</span><span class='line'>variableB inside lambda2 : 2
+</span><span class='line'>After lamda2, variableA : 1
+</span><span class='line'>After lamda2, variableB : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 3 ##---
+</span><span class='line'>param inside lambda3 : 2
+</span><span class='line'>variableB inside lambda3 : 4
+</span><span class='line'>After lamda3, result3 : 2
+</span><span class='line'>After lamda3, variableA : 2
+</span><span class='line'>After lamda3, variableB : 4
+</span><span class='line'>
+</span><span class='line'>---## lamda 4 ##---
+</span><span class='line'>param inside lambda4 : 4
+</span><span class='line'>variableB inside lambda4 : 8
+</span><span class='line'>variableC inside lambda4 : 2
+</span><span class='line'>After lamda4, variableA : 2
+</span><span class='line'>After lamda4, variableB : 8
+</span><span class='line'>After lamda4, variableC : 2
+</span><span class='line'>
+</span><span class='line'>---## lamda 5 ##---
+</span><span class='line'>param inside lambda5 : 4
+</span><span class='line'>variableC inside lambda5 : 4
+</span><span class='line'>After lamda5, variableA : 2
+</span><span class='line'>After lamda5, variableC : 2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">Wrox Professional C++</a></li>
+<li><a href="http://en.cppreference.com/w/cpp/language/lambda">http://en.cppreference.com/w/cpp/language/lambda</a></li>
+<li><a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/</a></li>
+<li><a href="http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1">http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1</a></li>
+</ol></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      <a href="javascript:window.print()" class="print-button">Print</a>
+
+
+  
+
+<span class="byline author vcard">Posted by <span class="fn">neutro</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-05-11T23:15:18+07:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:15 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cpp/'>cpp</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/" title="Previous Post: Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio">&laquo; Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/" title="Next Post: VirtualBox Share Host Folder Ubuntu Guest">VirtualBox Share Host Folder Ubuntu Guest &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section id="comments">
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Me</h1>
+  <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
+  <p>
+    No many things to write about me here, except the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/">Configure PHP and Virtual Host macOS High Sierra</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/04/17/import-existing-git-repository-to-another/">Import Existing Git Repository to Another</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
+      </li>
+    
+  </ul>
+</section>
+<!--
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list">
+    
+    
+    <li><a href="/blog/categories/csharp/index.html">csharp ( 10 )</a></li>
+    
+    
+    <li><a href="/blog/categories/php/index.html">php ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/macos/index.html">macos ( 14 )</a></li>
+    
+    
+    <li><a href="/blog/categories/apache/index.html">apache ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/java/index.html">java ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mono/index.html">mono ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/aspnet/index.html">aspnet ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xcode/index.html">xcode ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xamarin/index.html">xamarin ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/octopress/index.html">octopress ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/spring/index.html">spring ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/code-block/index.html">code block ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/linux/index.html">linux ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/windows/index.html">windows ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/git/index.html">git ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/c/index.html">c ( 1 )</a></li>
+    
+  </ul>
+</section>
+-->
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/apache/' class='badge1' data-badge='5'>apache</a></li>
+<li class='category'><a href='/blog/categories/arduino/' class='badge1' data-badge='1'>arduino</a></li>
+<li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
+<li class='category'><a href='/blog/categories/c/' class='badge1' data-badge='1'>c</a></li>
+<li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
+<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
+<li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
+<li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
+<li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
+<li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='5'>linux</a></li>
+<li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>
+<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='1'>mathematic</a></li>
+<li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
+<li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
+<li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
+<li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
+<li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='4'>php</a></li>
+<li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
+<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='2'>visual studio</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='3'>windows</a></li>
+<li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
+<li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
+
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'neutrofoton',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos',
+            skip_repo: 'neutrofoton'+'.github.io'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section>
+  <h1>Site I Visit</h1>
+  <ul id="site_i_visit">
+
+      <li class="post">
+        <a href="http://www.cppreference.com">C++ Reference</a>
+      </li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2018 - neutro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'neutrofoton';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

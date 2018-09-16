@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mono | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/mono/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2018-09-16T22:58:38+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
+    <updated>2016-09-19T22:06:13+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
+    ServerAdmin admin@test.com
+    ServerName  neutro.local
+    ServerAlias neutrofoton.com *.neutrofoton.com
+
+    MonoServerPath neutro.local "/usr/bin/mod-mono-server4"
+    MonoDebug neutro.local true
+    MonoSetEnv neutro.local MONO_IOMAP=all
+    MonoApplications neutro.local "/:/var/www/vhosts/defaultsite/root"
+
+    MonoAutoApplication disabled
+    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+
+    DocumentRoot    /var/www/vhosts/defaultsite/root
+    DirectoryIndex  Default.aspx index.aspx index.html
+
+    &lt;Location "/"&gt;
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+    &lt;/Location&gt;
+
+    &lt;IfModule mod_deflate.c&gt;
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+    &lt;/IfModule&gt;
+
+    LogLevel    debug
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
+
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
+    ServerAdmin admin@test.com
+    ServerName  neutro.local
+    ServerAlias neutrofoton.com *.neutrofoton.com
+
+    MonoServerPath neutro.local "/usr/bin/mod-mono-server4"
+    MonoDebug neutro.local true
+    MonoSetEnv neutro.local MONO_IOMAP=all
+    MonoApplications neutro.local "/:/var/www/vhosts/defaultsite/root"
+
+    MonoAutoApplication disabled
+    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+
+    DocumentRoot    /var/www/vhosts/defaultsite/root
+    DirectoryIndex  Default.aspx index.aspx index.html
+
+    &lt;Location "/"&gt;
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+    &lt;/Location&gt;
+
+    Alias   /project1  "/home/neutro/Workspace/dotnet/project1"
+    MonoApplications project1 "/project1:/home/neutro/Workspace/dotnet/project1"
+    MonoServerPath project1 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project1"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project1
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    Alias   /project2  "/home/neutro/Workspace/dotnet/project2"
+    MonoApplications project2 "/project2:/home/neutro/Workspace/dotnet/project2"
+    MonoServerPath project2 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project2"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project2
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    &lt;IfModule mod_deflate.c&gt;
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+    &lt;/IfModule&gt;
+
+    LogLevel    debug
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In the new virtual host configuration we have:</p>
+
+<ol>
+<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
+<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
+</ol>
+
+
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
+
+<p>We need to give access to both folders and theirs file contents</p>
+
+<pre><code class="bash">$ find project1 -type d -exec chmod 755 {} \;
+$ find project1 -type f -exec chmod 644 {} \;
+
+$ find project2 -type d -exec chmod 755 {} \;
+$ find project2 -type f -exec chmod 644 {} \;
+</code></pre>
+
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+
+<pre><code class="xml">&lt;apps&gt;
+   &lt;web-application&gt;
+        &lt;name&gt;project1&lt;/name&gt;
+        &lt;vpath&gt;/project1&lt;/vpath&gt;
+        &lt;path&gt;/home/neutro/Workspace/dotnet/project1&lt;/path&gt;
+        &lt;vhost&gt;neutro.local&lt;/vhost&gt;
+    &lt;/web-application&gt;
+    &lt;web-application&gt;
+        &lt;name&gt;project2&lt;/name&gt;
+        &lt;vpath&gt;/project2&lt;/vpath&gt;
+        &lt;path&gt;/home/neutro/Workspace/dotnet/project2&lt;/path&gt;
+        &lt;vhost&gt;neutro.local&lt;/vhost&gt;
+    &lt;/web-application&gt;
+&lt;/apps&gt;
+</code></pre>
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono">http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mono Mod_mono Apache2 on Ubuntu]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/"/>
+    <updated>2016-09-18T08:34:23+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
+I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
+
+<p>The details environment I use :</p>
+
+<ol>
+<li>Ubuntu 14.04 LTS</li>
+<li>Mono JIT compiler version 4.4.2</li>
+<li>Apache 2.4.7</li>
+</ol>
+
+
+<h2>Install Mono, Apache 2, Mod Mono</h2>
+
+<p>To install Mono, the first step is add package repository to our system.</p>
+
+<pre><code class="bash">$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+
+$ echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+
+$ sudo apt-get update
+</code></pre>
+
+<p>To enable mod_mono installation on Ubuntu 13.10 or later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):</p>
+
+<pre><code class="bash">
+$ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
+</code></pre>
+
+<p>Then run package update to update and a package upgrade to upgrade existing packages to the latest available.</p>
+
+<pre><code class="bash">$ sudo apt-get update
+$ sudo apt-get upgrade
+</code></pre>
+
+<p>To install mono, run the following command</p>
+
+<pre><code class="bash install mono">$ sudo apt-get install mono-complete
+</code></pre>
+
+<p>If we do not have Apache 2 on our system, we need to install it first. Or we can check the existing version <code>apache2 -v</code></p>
+
+<pre><code class="bash install apache2">$ sudo apt-get install apache2
+</code></pre>
+
+<p>To be able to host ASP.NET application on apache, we need to install <code>mod_mono</code>. <code>mod_mono</code> is a module for the Apache HTTP Server that allows us to host ASP.NET pages and other assemblies on multiple platforms by using Mono.</p>
+
+<p>To install Mod Mono and its dependencies run the following command</p>
+
+<pre><code class="bash install mod_mono">$ sudo apt-get update &amp;&amp; sudo apt-get install libapache2-mod-mono
+$ apt-get install mono-apache-server4
+</code></pre>
+
+<p>Before going through the next step, the things than we can verify are :</p>
+
+<ol>
+<li><p>Ensuring Apache 2 running well at least by checking its version or start stop its service.</p>
+
+<pre><code class="` bash apache version"> $ apache2 -v
+</code></pre>
+
+<pre><code class="` bash start apache"> $ service apache2 start
+</code></pre>
+
+<pre><code class="` bash stop apache"> $ service apache2 stop
+</code></pre></li>
+<li><p>Checking mono version</p>
+
+<pre><code class="bash mono version">$ mono --version
+</code></pre></li>
+<li>Ensuring we have <code>/usr/bin/mod-mono-server4</code></li>
+</ol>
+
+
+<h2>Configuring Application Virtual Host</h2>
+
+<p>To configure virtual host application, the steps are</p>
+
+<ol>
+<li><p>Create a directory where the application physical files reside.
+In this sample I put my  application files in <code>/var/www/hellodotnet</code></p>
+
+<p>We needed to grant permissions to the login user so that the user could copy or create files to the <code>hellodotnet</code> directory.  For our purposes we made the current user the owner of the directory</p>
+
+<pre><code class="` bash application directory"> $ chown -R -v your_user_name /var/www/
+</code></pre></li>
+<li><p>Lets create a simple <code>/var/www/hellodotnet/index.aspx</code> file.</p>
+
+<pre><code class="` html index.aspx"> &lt;center&gt;mod_mono is working:&lt;%=System.DateTime.Now.ToString()%&gt;&lt;/center&gt;
+</code></pre></li>
+<li><p>Create a site configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code></p>
+
+<pre><code class="` xml site configuration">    &lt;VirtualHost *:81&gt;
+       ServerName hellodotnet
+       ServerAdmin hello@test-apache-config.com
+       DocumentRoot /var/www/hellodotnet
+       MonoServerPath hellodotnet "/usr/bin/mod-mono-server4"
+       MonoDebug hellodotnet true
+       MonoSetEnv hellodotnet MONO_IOMAP=all
+       MonoApplications hellodotnet "/:/var/www/hellodotnet"
+
+       ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+       AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+       &lt;Location "/"&gt;
+         Allow from all
+         Order allow,deny
+         MonoSetServerAlias hellodotnet
+         SetHandler mono
+         SetOutputFilter DEFLATE
+         SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+       &lt;/Location&gt;
+       &lt;IfModule mod_deflate.c&gt;
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+       &lt;/IfModule&gt;
+     &lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In this site I use port 81 instead of default 80.</p></li>
+<li><p>Since we use port 81, we need to register port 81 in <code>/etc/apache2/ports.conf</code> by simply add the following code</p>
+
+<pre><code class="` bash"> Listen 81
+</code></pre></li>
+<li><p>Enabling the site by running the following command from terminal</p>
+
+<pre><code class="` bash"> $ sudo a2ensite hellodotnet.conf
+</code></pre></li>
+<li>Restart apache</li>
+<li>Hit from browser : <a href="http://localhost:81">http://localhost:81</a>
+We should have the page displayed current date time.</li>
+</ol>
+
+
+<h2>Tips</h2>
+
+<ol>
+<li><p>If we get the page not displayed, we can see the message on the page displayed, HTML error code, or any clue on apache logs located in <code>/var/log/apache2</code></p></li>
+<li><p>If we get message access denied cannot access bin, simply change permission of the application site.</p>
+
+<pre><code class="` bash"> $ find hellodotnet -type d -exec chmod 755 {} \;
+ $ find hellodotnet -type f -exec chmod 644 {} \;
+</code></pre></li>
+<li><p>If getting message could not find <code>/etc/mono/registry</code>, simply create the directory.</p>
+
+<pre><code class="` bash"> $ sudo mkdir /etc/mono/registry
+</code></pre></li>
+<li><p>If getting <code>System.UnauthorizedAccessException</code> access to the path <code>/etc/mono/registry</code>, give access to it as its need, for example</p>
+
+<pre><code class="`` bash">  $ chmod uog+rw /etc/mono/registry
+</code></pre></li>
+</ol>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.mono-project.com/docs/getting-started/install/linux/">http://www.mono-project.com/docs/getting-started/install/linux/</a></li>
+<li><a href="http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts">http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts</a></li>
+<li><a href="http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3">http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3</a></li>
+<li><a href="http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p">http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p</a></li>
+<li><a href="https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied">https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied</a></li>
+<li><a href="https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/">https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.Net MVC 4 in Xamarin Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio/"/>
+    <updated>2013-11-23T15:15:03+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2013/11/23/asp-dot-net-mvc-4-in-xamarin-studio</id>
+    <content type="html"><![CDATA[<p><a href="http://xamarin.com/studio">Xamarin Studio</a> is a great Mono IDE (Integrated Development Environment) in OS X area. At the time of writing this article, the version of Xamarin studio and mono framework I use are :
+<code>
+Xamarin Studio
+Version 4.2.1 (build 1)
+Runtime:
+Mono 3.2.5 ((no/964e8f0)
+GTK+ 2.24.20 theme: Raleigh
+GTK# (2.12.0.0)
+Package version: 302050000
+</code></p>
+
+<p>Xamarin Studio includes with ASP.NET MVC 2 and 3 project template. While trying to create ASP.NET MVC 3 project, I got couples of errors such as authorization access etc. The good news is even though there is no project template for ASP.NET MVC 4, we still can convert our ASP.NET MVC 3 to run as ASP.NET MVC 4. The steps are :</p>
+
+<ol type="1">
+<li>
+Create an ASP.NET MVC 3 project either with aspx or razor view engine
+</li>
+<li>
+Run the project via Xamarin studio menu (Run > Run With > Mono Soft Debugger for ASP.NET. While running the project, we may got an error message :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.UnauthorizedAccessException
+</span><span class='line'>Access to the path &quot;/Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry&quot; is denied.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>......
+</span></code></pre></td></tr></table></div></figure>
+To solve the error, run the following command in terminal :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span><span class='line'>sudo chmod g+rwx /Library/Frameworks/Mono.framework/Versions/3.2.5/etc/mono/registry
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Re-run again the ASP.NET MVC project. We may get another error message.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.IO.FileNotFoundException
+</span><span class='line'>Could not load file or assembly &#39;System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&#39; or one of its dependencies. The system cannot find the file specified.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): mscorlib.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+To solve the error message, just use NuGet package manager, search for “ASP.NET MVC 4″ and add reference to it and its dependencies.
+
+</li>
+<li>
+Re-run the ASP.NET MVC again. Now we may get another error message as following :
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>System.InvalidOperationException
+</span><span class='line'>Conflicting versions of ASP.NET Web Pages detected: specified version is &quot;1.0.0.0&quot;, but the version in bin is &quot;2.0.0.0&quot;. To continue, remove files from the application&#39;s bin directory or remove the version specification in web.config.
+</span><span class='line'>
+</span><span class='line'>Description: HTTP 500.Error processing request.
+</span><span class='line'>Details: Non-web exception. Exception origin (name of application or object): System.Web.WebPages.Deployment.
+</span><span class='line'>Exception stack trace:
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+As the error message, we need to make our ASP.NET Web Pages version to 2.0.0.0 in web.config. So just open web.config and change webpages:Version to 2.0.0.0. as follow :
+
+<figure class='code'><figcaption><span>web.config</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">&quot;webpages:Version&quot;</span> <span class="na">value=</span><span class="s">&quot;2.0.0.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/add&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>
+Change assembly version declared in root <code>web.config</code> and <code>/View/web.config</code> of the following
+
+<table style="width:80%">
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td>assembly</td>
+    <td>from</td>
+    <td>to</td>
+  </tr>
+  <tr>
+    <td colspan="3"> <hr/> </td>
+  </tr>
+  <tr>
+    <td><code>System.Web.WebPages.Razor</code></td>
+    <td>1.0.0.0</td>
+    <td>2.0.0.0</td>
+  </tr>
+  <tr>
+    <td><code>System.Web.Mvc</code></td>
+    <td>3.0.0.0</td>
+    <td>4.0.0.0</td>
+  </tr>
+</table>
+
+</li>
+</ol>
+
+
+<p>Now re-run the project again via Xamarin Studio and our project should run well as expected.</p>
+
+<h4>References</h4>
+
+
+<p><ol type="1">
+<li> <a href="http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html">http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html</a>
+</li>
+<ol></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mono on OS X 10.8 Mountain Lion]]></title>
+    <link href="http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/"/>
+    <updated>2012-09-19T12:54:14+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion</id>
+    <content type="html"><![CDATA[<p>In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;)</p>
+
+<p>First of all let’s download <a href="http://www.go-mono.com/mono-downloads/download.html">Mono SDK and MonoDevelop</a>. The order installation is Mono SDK first then MonoDevelop. The installation of Mono SDK and MonoDevelop should be easy by following the installation wizard.</p>
+
+<p>When the installation finish, open terminal :</p>
+
+<pre><code class="bash mono version">mono -V
+</code></pre>
+
+<p>We should get info about the version of mono installed in our machine.</p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic0.png"></p>
+
+<p>Try to create an ASP.NET Web Application project by selecting menu :
+<code>File > New > Solution</code>. Select <code>C# > ASP.NET > Web Application</code></p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic1.png"></p>
+
+<p>Click <code>Run > Run With > Mono Soft Debugger for ASP.NET</code></p>
+
+<p><img class="center" src="/images/post/2012-09-19-pic2.png"></p>
+
+<h2>ASP.NET on Apache Web Server</h2>
+
+
+<p>To run ASP.Net on Apache web server, we need <a href="http://www.mono-project.com/Mod_mono">Mod mono</a> module. It is an Apache 2.0/2.2 module that provides ASP.Net support for Apache web server. The steps installation are :</p>
+
+<ol type="1">
+<li>Install Apache web server. The steps for OS X Mountain Lion can be found in my previous post
+</li>
+
+<li>Install Xcode, OS X development tool. It’s free and can be downloaded via App Store. We need it to compile mod mono installation source
+</li>
+
+<li>Download Mod mono source installation here. At the time of write this article I use <code>mod_mono-2.10.tar.bz2</code>
+</li>
+
+<li>Install mod mono module. Open terminal
+
+<figure class='code'><figcaption><span>mod mono installation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir ~/modmono
+</span><span class='line'>cp ~/Downloads/mod_mono-2.10.tar.bz2 ~/modmono
+</span><span class='line'><span class="nb">cd</span> ~/modmono
+</span><span class='line'>tar xzf mod_mono-2.10.tar.bz2
+</span><span class='line'><span class="nb">cd </span>mod_mono-2.10
+</span><span class='line'>./configure
+</span><span class='line'>make
+</span><span class='line'>sudo make install
+</span><span class='line'>sudo cp /etc/apache2/mod_mono.conf /etc/apache2/other
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Add <code>mod_mono.conf</code> reference in <code>httpd.conf</code>
+<figure class='code'><figcaption><span>edit httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/httpd.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following code at the end of <code>httpd.conf</code>
+<figure class='code'><figcaption><span>httpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Include /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Create a web directory with the path<code> ~/Projects/Mono/TestMonoApache/TestMonoApache/ </code>
+
+In that directory create an <code>index.aspx</code> file
+<figure class='code'><figcaption><span>index.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;center&gt;</span>mod_mono is working:<span class="nt">&lt;%=</span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span><span class="nt">%&gt;&lt;/center&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>Add an Apache configuration file for mono.
+<figure class='code'><figcaption><span>edit mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo vi /etc/apache2/mod_mono.conf
+</span></code></pre></td></tr></table></div></figure>
+Add the following line at the end of <code>mod_mono.conf</code>
+<figure class='code'><figcaption><span>mod_mono.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>Alias /testmono &quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Directory</span> <span class="err">&quot;/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    Options Indexes FollowSymLinks MultiViews
+</span><span class='line'>    AllowOverride None
+</span><span class='line'>
+</span><span class='line'>    Order allow,deny
+</span><span class='line'>    Allow from all
+</span><span class='line'><span class="nt">&lt;/Directory&gt;</span>
+</span><span class='line'>AddMonoApplications default &quot;/testmonoapache:/Users/username/Projects/Mono/TestMonoApache/TestMonoApache/&quot;
+</span><span class='line'><span class="nt">&lt;Location</span> <span class="err">/testmonoapache</span><span class="nt">&gt;</span>
+</span><span class='line'> SetHandler mono
+</span><span class='line'><span class="nt">&lt;/Location&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>Restart apache server with command :
+<figure class='code'><figcaption><span>restart apache</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /usr/sbin/apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li> Open browser and hit <code>http://localhost/testmonoapache/index.aspx</code>
+<img class="center" src="/images/post/2012-09-19-pic3.png">
+</li>
+
+</ol>
+
+
+<p>Cool, now our apache web server can receive request for asp.net page. Thanks for reading and see you in the next post :)</p>
+
+<h4>References</h4>
+
+
+<ol type="1">
+  <li>http://www.mono-project.com/Mod_mono</li>
+  <li>http://blog.coultard.com/2012/04/developing-using-c-and-mono-on-mac.html</li>
+  <li>http://www.ienablemuch.com/2010/10/aspnet-on-mac-os-x-snow-leopard-at-one.html</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

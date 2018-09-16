@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://neutrofoton.github.io/"/>
+  <updated>2018-09-16T22:58:38+07:00</updated>
+  <id>http://neutrofoton.github.io/</id>
+  <author>
+    <name><![CDATA[neutro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu Server Does Not Recognize VirtualBox Adapter]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/"/>
+    <updated>2016-10-12T21:25:24+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter</id>
+    <content type="html"><![CDATA[<p>As we know, VirtualBox provides several adapters that we can add and be used by OS guest.
+At the time of writing this post, I have an OS X (host) and Ubuntu Server 16.04.1 LTS (guest). The needs are, I want to be able to remote my Ubuntu from OS X terminal. I also want my Ubuntu guest can connect to internet. I have configured two network adapters for the guest (NAT and host-only).</p>
+
+<p>When I run
+<code>bash
+$ ifconfig
+</code>
+The first/default adapter (NAT) <code>enp0s3</code> is recognized without any problems by the guest. But not the second one (host-only). To make the second adapter visible, I have to run  a command</p>
+
+<pre><code class="bash">$ sudo dhclient
+$ ifconfig
+</code></pre>
+
+<p>Now I got both adapters <code>enp0s3</code> (NAT) and <code>enp0s8</code> (host-only) visible on terminal. And now I can ping and run ssh from host (OS X) to guest (Ubuntu server).</p>
+
+<p>In order to make it permanent, we need to edit <code>/etc/network/interfaces</code> with the following lines</p>
+
+<pre><code># The second network interface
+auto enp0s8
+iface enp0s8 inet dhcp
+</code></pre>
+
+<p>Then restart the network service by running</p>
+
+<pre><code class="bash">$ sudo /etc/init.d/networking restart
+</code></pre>
+
+<p>That&rsquo;s my note for now and thanks for reading.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
+    <updated>2016-09-19T22:06:13+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
+    ServerAdmin admin@test.com
+    ServerName  neutro.local
+    ServerAlias neutrofoton.com *.neutrofoton.com
+
+    MonoServerPath neutro.local "/usr/bin/mod-mono-server4"
+    MonoDebug neutro.local true
+    MonoSetEnv neutro.local MONO_IOMAP=all
+    MonoApplications neutro.local "/:/var/www/vhosts/defaultsite/root"
+
+    MonoAutoApplication disabled
+    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+
+    DocumentRoot    /var/www/vhosts/defaultsite/root
+    DirectoryIndex  Default.aspx index.aspx index.html
+
+    &lt;Location "/"&gt;
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+    &lt;/Location&gt;
+
+    &lt;IfModule mod_deflate.c&gt;
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+    &lt;/IfModule&gt;
+
+    LogLevel    debug
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
+
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
+    ServerAdmin admin@test.com
+    ServerName  neutro.local
+    ServerAlias neutrofoton.com *.neutrofoton.com
+
+    MonoServerPath neutro.local "/usr/bin/mod-mono-server4"
+    MonoDebug neutro.local true
+    MonoSetEnv neutro.local MONO_IOMAP=all
+    MonoApplications neutro.local "/:/var/www/vhosts/defaultsite/root"
+
+    MonoAutoApplication disabled
+    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+
+    DocumentRoot    /var/www/vhosts/defaultsite/root
+    DirectoryIndex  Default.aspx index.aspx index.html
+
+    &lt;Location "/"&gt;
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+    &lt;/Location&gt;
+
+    Alias   /project1  "/home/neutro/Workspace/dotnet/project1"
+    MonoApplications project1 "/project1:/home/neutro/Workspace/dotnet/project1"
+    MonoServerPath project1 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project1"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project1
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    Alias   /project2  "/home/neutro/Workspace/dotnet/project2"
+    MonoApplications project2 "/project2:/home/neutro/Workspace/dotnet/project2"
+    MonoServerPath project2 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project2"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project2
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    &lt;IfModule mod_deflate.c&gt;
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+    &lt;/IfModule&gt;
+
+    LogLevel    debug
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In the new virtual host configuration we have:</p>
+
+<ol>
+<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
+<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
+</ol>
+
+
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
+
+<p>We need to give access to both folders and theirs file contents</p>
+
+<pre><code class="bash">$ find project1 -type d -exec chmod 755 {} \;
+$ find project1 -type f -exec chmod 644 {} \;
+
+$ find project2 -type d -exec chmod 755 {} \;
+$ find project2 -type f -exec chmod 644 {} \;
+</code></pre>
+
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+
+<pre><code class="xml">&lt;apps&gt;
+   &lt;web-application&gt;
+        &lt;name&gt;project1&lt;/name&gt;
+        &lt;vpath&gt;/project1&lt;/vpath&gt;
+        &lt;path&gt;/home/neutro/Workspace/dotnet/project1&lt;/path&gt;
+        &lt;vhost&gt;neutro.local&lt;/vhost&gt;
+    &lt;/web-application&gt;
+    &lt;web-application&gt;
+        &lt;name&gt;project2&lt;/name&gt;
+        &lt;vpath&gt;/project2&lt;/vpath&gt;
+        &lt;path&gt;/home/neutro/Workspace/dotnet/project2&lt;/path&gt;
+        &lt;vhost&gt;neutro.local&lt;/vhost&gt;
+    &lt;/web-application&gt;
+&lt;/apps&gt;
+</code></pre>
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono">http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mono Mod_mono Apache2 on Ubuntu]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/"/>
+    <updated>2016-09-18T08:34:23+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
+I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
+
+<p>The details environment I use :</p>
+
+<ol>
+<li>Ubuntu 14.04 LTS</li>
+<li>Mono JIT compiler version 4.4.2</li>
+<li>Apache 2.4.7</li>
+</ol>
+
+
+<h2>Install Mono, Apache 2, Mod Mono</h2>
+
+<p>To install Mono, the first step is add package repository to our system.</p>
+
+<pre><code class="bash">$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+
+$ echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+
+$ sudo apt-get update
+</code></pre>
+
+<p>To enable mod_mono installation on Ubuntu 13.10 or later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):</p>
+
+<pre><code class="bash">
+$ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
+</code></pre>
+
+<p>Then run package update to update and a package upgrade to upgrade existing packages to the latest available.</p>
+
+<pre><code class="bash">$ sudo apt-get update
+$ sudo apt-get upgrade
+</code></pre>
+
+<p>To install mono, run the following command</p>
+
+<pre><code class="bash install mono">$ sudo apt-get install mono-complete
+</code></pre>
+
+<p>If we do not have Apache 2 on our system, we need to install it first. Or we can check the existing version <code>apache2 -v</code></p>
+
+<pre><code class="bash install apache2">$ sudo apt-get install apache2
+</code></pre>
+
+<p>To be able to host ASP.NET application on apache, we need to install <code>mod_mono</code>. <code>mod_mono</code> is a module for the Apache HTTP Server that allows us to host ASP.NET pages and other assemblies on multiple platforms by using Mono.</p>
+
+<p>To install Mod Mono and its dependencies run the following command</p>
+
+<pre><code class="bash install mod_mono">$ sudo apt-get update &amp;&amp; sudo apt-get install libapache2-mod-mono
+$ apt-get install mono-apache-server4
+</code></pre>
+
+<p>Before going through the next step, the things than we can verify are :</p>
+
+<ol>
+<li><p>Ensuring Apache 2 running well at least by checking its version or start stop its service.</p>
+
+<pre><code class="` bash apache version"> $ apache2 -v
+</code></pre>
+
+<pre><code class="` bash start apache"> $ service apache2 start
+</code></pre>
+
+<pre><code class="` bash stop apache"> $ service apache2 stop
+</code></pre></li>
+<li><p>Checking mono version</p>
+
+<pre><code class="bash mono version">$ mono --version
+</code></pre></li>
+<li>Ensuring we have <code>/usr/bin/mod-mono-server4</code></li>
+</ol>
+
+
+<h2>Configuring Application Virtual Host</h2>
+
+<p>To configure virtual host application, the steps are</p>
+
+<ol>
+<li><p>Create a directory where the application physical files reside.
+In this sample I put my  application files in <code>/var/www/hellodotnet</code></p>
+
+<p>We needed to grant permissions to the login user so that the user could copy or create files to the <code>hellodotnet</code> directory.  For our purposes we made the current user the owner of the directory</p>
+
+<pre><code class="` bash application directory"> $ chown -R -v your_user_name /var/www/
+</code></pre></li>
+<li><p>Lets create a simple <code>/var/www/hellodotnet/index.aspx</code> file.</p>
+
+<pre><code class="` html index.aspx"> &lt;center&gt;mod_mono is working:&lt;%=System.DateTime.Now.ToString()%&gt;&lt;/center&gt;
+</code></pre></li>
+<li><p>Create a site configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code></p>
+
+<pre><code class="` xml site configuration">    &lt;VirtualHost *:81&gt;
+       ServerName hellodotnet
+       ServerAdmin hello@test-apache-config.com
+       DocumentRoot /var/www/hellodotnet
+       MonoServerPath hellodotnet "/usr/bin/mod-mono-server4"
+       MonoDebug hellodotnet true
+       MonoSetEnv hellodotnet MONO_IOMAP=all
+       MonoApplications hellodotnet "/:/var/www/hellodotnet"
+
+       ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+       AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+       &lt;Location "/"&gt;
+         Allow from all
+         Order allow,deny
+         MonoSetServerAlias hellodotnet
+         SetHandler mono
+         SetOutputFilter DEFLATE
+         SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+       &lt;/Location&gt;
+       &lt;IfModule mod_deflate.c&gt;
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+       &lt;/IfModule&gt;
+     &lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In this site I use port 81 instead of default 80.</p></li>
+<li><p>Since we use port 81, we need to register port 81 in <code>/etc/apache2/ports.conf</code> by simply add the following code</p>
+
+<pre><code class="` bash"> Listen 81
+</code></pre></li>
+<li><p>Enabling the site by running the following command from terminal</p>
+
+<pre><code class="` bash"> $ sudo a2ensite hellodotnet.conf
+</code></pre></li>
+<li>Restart apache</li>
+<li>Hit from browser : <a href="http://localhost:81">http://localhost:81</a>
+We should have the page displayed current date time.</li>
+</ol>
+
+
+<h2>Tips</h2>
+
+<ol>
+<li><p>If we get the page not displayed, we can see the message on the page displayed, HTML error code, or any clue on apache logs located in <code>/var/log/apache2</code></p></li>
+<li><p>If we get message access denied cannot access bin, simply change permission of the application site.</p>
+
+<pre><code class="` bash"> $ find hellodotnet -type d -exec chmod 755 {} \;
+ $ find hellodotnet -type f -exec chmod 644 {} \;
+</code></pre></li>
+<li><p>If getting message could not find <code>/etc/mono/registry</code>, simply create the directory.</p>
+
+<pre><code class="` bash"> $ sudo mkdir /etc/mono/registry
+</code></pre></li>
+<li><p>If getting <code>System.UnauthorizedAccessException</code> access to the path <code>/etc/mono/registry</code>, give access to it as its need, for example</p>
+
+<pre><code class="`` bash">  $ chmod uog+rw /etc/mono/registry
+</code></pre></li>
+</ol>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.mono-project.com/docs/getting-started/install/linux/">http://www.mono-project.com/docs/getting-started/install/linux/</a></li>
+<li><a href="http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts">http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts</a></li>
+<li><a href="http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3">http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3</a></li>
+<li><a href="http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p">http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p</a></li>
+<li><a href="https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied">https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied</a></li>
+<li><a href="https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/">https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VirtualBox Share Host Folder Ubuntu Guest]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest/"/>
+    <updated>2016-09-17T10:41:13+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/09/17/virtualbox-share-host-folder-ubuntu-guest</id>
+    <content type="html"><![CDATA[<p><a href="https://www.virtualbox.org/">VM VirtualBox</a> is one of free popular <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> for x86 computer from Oracle. I use it as part of my development environment, since occasionally I need several different Operating Systems for development and software testing  or deployment testing. When we work with VirtualBox we often need to share folder between host and guest operating system.</p>
+
+<p>Before sharing folder, ensure we have installed Guest Addition that shipped with VirtualBox. To do that :</p>
+
+<ol>
+<li>Go to  Device menu > Insert Guest CD Addition Images.</li>
+<li>If it automatically mounting and has popup dialog, just hit run otherwise we may have to manually mounting it.</li>
+</ol>
+
+
+<p> I usually restart my OS guest after installing this VirtualBox Guest Addition.</p>
+
+<p>The steps are :</p>
+
+<ul>
+<li>Go to Devices menu > Shared Folders > Shared Folder Settings</li>
+<li>Select folder path of Host to be shared to Guest OS</li>
+<li><p>Checked Make Permanent option if we want to make it permanent</p>
+
+<blockquote><p>On my sample, I shared folder from OS X Host /Volumes/MacintoshHDData/share</p></blockquote>
+
+<p> Till this step is enough for Windows guest. On Ubuntu guest, it need additional steps to make the shared folder accessible in guest.</p></li>
+<li><p>When we shared a Host&rsquo;s folder on Ubuntu guest, VirtualBox should create a folder on <code>/Media</code> just like the shared folder name with <code>sf_</code> prefix. In my case <code>/Media/sf_share</code>. If the folder does not exist, open terminal, create directory <code>/Media/sf_share</code> and give folder name</p>
+
+<pre><code>mkdir /Media/sf_share
+</code></pre></li>
+<li><p>VirtualBox with Ubuntu operating system guest, it added a group called <code>vboxsf</code>. Before we can access the shared folder we have to be a member of the group.</p>
+
+<pre><code class="bash">sudo add user [username] vboxsf
+</code></pre>
+
+<p> To verify what groups are username belongs to,</p>
+
+<pre><code class="bash">id [username]
+</code></pre></li>
+<li><p>Mount the shared folder</p>
+
+<pre><code class="bash">sudo mount -t vboxsf share /media/sf_share
+</code></pre></li>
+</ul>
+
+
+<p>Now we should be able to the shared folder via Nautilus (File Manager). To make it automatic mounting, ensure we checked option automatic mounting on shared folder setting dialog.</p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine">http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine</a></li>
+<li><a href="http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/">http://www.howtogeek.com/187703/how-to-access-folders-on-your-host-machine-from-an-ubuntu-virtual-machine-in-virtualbox/</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/"/>
+    <updated>2016-03-27T20:38:49+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/post/2016-03-27-boost.png">
+<a href="http://www.boost.org/">Boost</a> is a set of libraries for the C++ programming language that provide support for tasks and structures such as linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions, and unit testing. It contains over eighty individual libraries.<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">[2]</a></p>
+
+<p>The other interesting points of <a href="http://www.boost.org/">Boost</a> are :</p>
+
+<ol>
+<li>Open source</li>
+<li>Cross platform</li>
+<li>Complement to STL rather than a replacement</li>
+<li>Many of <a href="http://www.boost.org/">Boost</a> developers are on the C++ standard committee</li>
+<li>Well documented</li>
+<li>Most of the Boost libraries are licensed under the <a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)#License">Boost Software License</a>, designed to allow <a href="http://www.boost.org/">Boost</a> to be used with both free and proprietary software projects</li>
+</ol>
+
+
+
+
+<h2>Installation Boost</h2>
+
+
+<p>Before jumping into steps of configuring <a href="http://www.boost.org/">Boost</a> on various IDE, let&rsquo;s begin with <a href="http://www.boost.org/">Boost</a> installation. To be noted that on this post I run Xcode on OS X, <a href="http://www.codeblocks.org/">Code::Blocks</a>  on Linux (Ubuntu) and Visual Studio on Windows. The detail environments I use are :</p>
+
+<ol>
+<li>OS X 10.11.4 El Capitan</li>
+<li>Ubuntu 14.04.4 LTS</li>
+<li>Xcode Version 7.2</li>
+<li>Code::Blocks 13.12, gcc 4.8.4</li>
+<li>Visual Studio 2013</li>
+<li>Boost 1.60.0</li>
+</ol>
+
+
+
+
+<h4>OS X and Linux (Ubuntu)</h4>
+
+
+<p>There are several ways of <a href="http://www.boost.org/">Boost</a> installation. Instead of build from source code, we can use package manager such as <a href="https://www.macports.org/">MacPorts</a>, <a href="http://brew.sh/">Homebrew</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Packaging_Tool">Advance Package Tool</a>, etc. In this post we will build <a href="http://www.boost.org/">Boost</a> from source code. The installation steps (from source code) on OS X and Ubuntu are the similar. To make it consistent, I use the same installation path for OS X and Ubuntu that is <code>/usr/local/boost_1_60_0</code>. You can use different path if you want. The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it.</li>
+<li>Open terminal, navigate to the extracted directory</li>
+<li>Create directory on <code>/usr/local/boost_1_60_0</code>, and ensure IDE has access to the directory. On my case I don't need this step on OS X, but on ubuntu it does.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir /usr/local/boost_1_60_0
+</span><span class='line'>sudo chmod <span class="m">777</span> -r boost_1_60_0
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+Run command :
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bootstrap.sh --prefix<span class="o">=</span>/usr/local/boost_1_60_0
+</span><span class='line'>./b2 install
+</span></code></pre></td></tr></table></div></figure>
+This last step quite take time. So you can have coffee while waiting for it :)
+</li>
+</ol>
+
+
+<p>Once the installation finish, we should have generated directory. They are <code>/usr/local/boost_1_60_0/include</code> contains header files and <code>/usr/local/boost_1_60_0/lib</code> contains libraries.</p>
+
+<h4>Windows</h4>
+
+
+<p>The <a href="http://www.boost.org/">Boost</a> installation step on Windows is also similar to the installation step on OS X and Ubuntu.
+The steps are :</p>
+
+<ol>
+<li>Download boost library from <a href="boost.org">Boost website</a></li>
+<li>Extract it to C:\\boost_1_60_0 </li>
+<li>Open Visual Studio command prompt. I use Visual Studio 2013 x86 Native Tools Command Prompt native tool (I have not test using default Windows Command Prompt)
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>C:\<span class="p">&gt;</span> <span class="n">cd</span> C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span><span class="p">&gt;</span> <span class="n">bootstrap</span>.bat
+</span><span class='line'>C:\boost_<span class="m">1</span>_<span class="m">60</span>_<span class="m">0</span>&gt; .\b<span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+As on OS X and Ubuntu, the last step quite take time.
+</li>
+</ol>
+
+
+
+
+<h2>Configure <a href="http://www.boost.org/">Boost</a> on IDE(s)</h2>
+
+
+<p>Before create C++ projects on various IDE, let&rsquo;s create a simple C++ hello world code that use Boost libraries. To simplify the test, I grab sample code from <a href="http://stackoverflow.com/questions/999120/c-hello-world-boost-tee-example-program">here</a> <br/>
+<figure class='code'><figcaption><span>Hello World</p></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">fstream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">boost</span><span class="o">/</span><span class="n">iostreams</span><span class="o">/</span><span class="n">tee</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">boost</span><span class="o">/</span><span class="n">iostreams</span><span class="o">/</span><span class="n">stream</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">iostreams</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">typedef</span> <span class="n">tee_device</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">ostream</span><span class="p">,</span> <span class="n">ofstream</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeDevice</span><span class="p">;</span>
+</span><span class='line'><span class="k">typedef</span> <span class="n">stream</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">TeeDevice</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">TeeStream</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ofstream</span> <span class="nf">ofs</span><span class="p">(</span><span class="s">&quot;/Users/neutro/Workspace/cpp/sample.txt&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">TeeDevice</span> <span class="nf">my_tee</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span> <span class="n">ofs</span><span class="p">);</span>
+</span><span class='line'><span class="n">TeeStream</span> <span class="nf">my_split</span><span class="p">(</span><span class="n">my_tee</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_split</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_split</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
+</span><span class='line'><span class="n">my_split</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+The snipped code above just print text and write it to a text file. We just want to ensure the IDE&rsquo;s compiler can compile and build the code that includes <a href="http://www.boost.org/">Boost</a> libraries.</p>
+
+<ul>
+  <li>
+    <h4>Xcode</h4>
+    To include Boost libraries on Xcode project :
+    <ol>
+    <li>Select Xcode project > Build Setting</li>
+    <li>Add <code>/usr/local/boost_1_60_0/include/</code> to the Header Search Paths</li>
+    <li>Add <code>/usr/local/boost_1_60_0/lib/</code> to the Library Search Paths</li>
+    </ol>
+
+    <img class="center" src="/images/post/2016-03-27-xcode.png">
+
+  </li>
+  <li>
+    <h4>Code::Blocks</h4>
+    To include Boost libraries on Code::Blocks project :
+    <ol>
+    <li>Right Click on Code::Blocks project > Build Option</li>
+    <li>
+    Select Compiler tab, add <code>/usr/local/boost_1_60_0/include/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks1.png">
+    </li>
+    <li>
+    Select Linker tab, add <code>/usr/local/boost_1_60_0/lib/</code>
+    <img class="center" src="/images/post/2016-03-27-codeblocks2.png">
+    </li>
+    </ol>
+  </li>
+  <li>
+    <h4>Visual Studio</h4>
+    To include Boost libraries on Visual C++ project :
+    <ol>
+    <li>Right Click on VC++ project > Properties</li>
+    <li>Select VC++ Directories on the left pane</li>
+    <li>Add <code>C:\boost_1_60_0</code> on Include Directories item</li>
+    <li>Add <code>C:\boost_1_60_0\stage\lib</code> on Include Directories item</li>
+    <li>Click OK to close the dialog</li>
+    </ol>
+    <img class="center" src="/images/post/2016-03-27-vs.png">
+  </li>
+</ul>
+
+
+<p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
+
+<p>The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a></p>
+
+<p><h4>Reference<h4>
+<ol type="1">
+<li>
+<a href="http://www.boost.org/">http://www.boost.org/</a>
+</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Boost_(C%2B%2B_libraries)">Wikipedia</a>
+</li>
+</ol></p>
+]]></content>
+  </entry>
+  
+</feed>
