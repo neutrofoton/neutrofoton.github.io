@@ -3,7 +3,7 @@ layout: post
 title: "Install MySQL on OS X 10.8 Mountain Lion"
 date: 2012-08-09 11:23:09 +0800
 comments: true
-categories: [osx, mysql]
+categories: [macos, mysql]
 ---
 To install mysql the first thing that we need to do is download mysql installer on the <a href="http://dev.mysql.com/downloads/mysql/">mysql website</a>. In that web site we can see several versions of mysql. We will use Mac OS X ver. 10.6 (x86, 64-bit), DMG Archive. When we open the <code>mysql-5.5.27-osx10.6-x86_64.dmg</code> file, we will find 3 package installers.
 

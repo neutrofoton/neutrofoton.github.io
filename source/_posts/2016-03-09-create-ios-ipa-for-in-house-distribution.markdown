@@ -3,7 +3,7 @@ layout: post
 title: "Create iOS ipa for In-House Distribution"
 date: 2016-03-09 00:10:44 +0800
 comments: true
-categories: [osx, ios, xcode]
+categories: [macos, ios, xcode]
 ---
 
 {% img left /images/logo/ios.png %}

@@ -3,7 +3,7 @@ layout: post
 title: "WinMerge and DiffMerge as git diff merge tool"
 date: 2017-05-10 10:01:23 +0700
 comments: true
-categories: [git, osx, windows]
+categories: [git, macos, windows]
 ---
 
 {% img left /images/logo/git.png %}

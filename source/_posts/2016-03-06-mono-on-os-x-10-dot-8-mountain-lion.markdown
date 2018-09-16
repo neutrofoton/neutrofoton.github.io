@@ -3,7 +3,7 @@ layout: post
 title: "Mono on OS X 10.8 Mountain Lion"
 date: 2012-09-19 13:54:14 +0800
 comments: true
-categories: [osx, csharp, mono]
+categories: [macos, csharp, mono]
 ---
 In this post I will write about setup and configure mono on OS X. I need mono on my Mac since C# is one of my favorite programming language ;)
 

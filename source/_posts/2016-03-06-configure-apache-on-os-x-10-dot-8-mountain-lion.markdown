@@ -3,7 +3,7 @@ layout: post
 title: "Configure Apache on OS X 10.8 Mountain Lion"
 date: 2012-08-08 10:47:05 +0800
 comments: true
-categories: [osx, apache]
+categories: [macos, apache]
 ---
 After installing Mountain Lion on my Macbook, I decided to prepare and set up software development tools in it. One of it is activate web sharing feature which can be found at System Preferences > Sharing on previous version. I was very suprise that apple seems remove it from the list.
 

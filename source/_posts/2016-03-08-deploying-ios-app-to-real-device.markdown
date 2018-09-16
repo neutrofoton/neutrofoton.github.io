@@ -3,7 +3,7 @@ layout: post
 title: "Deploying iOS app to Real Device"
 date: 2016-03-08 13:35:31 +0800
 comments: true
-categories: [osx, ios, xcode]
+categories: [macos, ios, xcode]
 ---
 
 {% img left /images/logo/ios.png %}

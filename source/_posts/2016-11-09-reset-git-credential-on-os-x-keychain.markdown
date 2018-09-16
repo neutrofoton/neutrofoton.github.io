@@ -3,7 +3,7 @@ layout: post
 title: "Reset Git Credential on OS X Keychain"
 date: 2016-11-09 12:40:34 +0700
 comments: true
-categories: [osx,git]
+categories: [macos,git]
 ---
 
 {% img left /images/logo/git.png %}
