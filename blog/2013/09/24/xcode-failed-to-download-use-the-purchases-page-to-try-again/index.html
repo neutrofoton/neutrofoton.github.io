@@ -36,10 +36,40 @@ article img {
 aside.sidebar img {
   border-color: #e0e0e0;
 }
+article img, article video, article .flash-video{
+  box-shadow: rgba(255,255,255,0.15) 0 1px 4px;
+}
+</style>
+
+<!-- badge -->
+<style type="text/css">
+  .badge1 {
+  position:relative;
+  }
+  .badge1[data-badge]:after {
+  content: attr(data-badge);
+  position: absolute;
+  /*top: -10px;*/
+  right: -30px;
+  font-size: .7em;
+  background: #c57373;
+  color: white;
+  /* width: 18px; */
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 450%;
+  box-shadow: 0 0 1px #333;
+
+  padding: 2px;
+  }
 </style>
 
   
 
+
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
 </head>
 
 <body   >
@@ -170,7 +200,7 @@ If download/update disappear, close the appstore then reopen it.
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/osx/'>osx</a>, <a class='category' href='/blog/categories/xcode/'>xcode</a>
+    <a class='category' href='/blog/categories/macos/'>macos</a>, <a class='category' href='/blog/categories/xcode/'>xcode</a>
   
 </span>
 
@@ -213,7 +243,7 @@ If download/update disappear, close the appstore then reopen it.
   <h1>Me</h1>
   <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
   <p>
-    There are no many things to write about me here. Just the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+    No many things to write about me here, except the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
   </p>
 </section>
 <section>
@@ -221,56 +251,60 @@ If download/update disappear, close the appstore then reopen it.
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/05/11/lambda-in-c-plus-plus/">Lambda in C++</a>
+        <a href="/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/">Configure PHP and Virtual Host macOS High Sierra</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/27/configure-boost-c-plus-plus-on-xcode/">Configure Boost (C++ Libraries) on Xcode, Code::Blocks and Visual Studio</a>
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/">GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS</a>
+        <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/09/math-in-web/">Math in Web</a>
+        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a>
+        <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">Deploying iOS App to Real Device</a>
+        <a href="/blog/2017/04/17/import-existing-git-repository-to-another/">Import Existing Git Repository to Another</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/07/from-wordpress-to-octopress/">From WordPress to Octopress</a>
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
       </li>
     
   </ul>
 </section>
+<!--
 <section>
   <h1>Categories</h1>
   <ul id="category-list">
     
     
-    <li><a href="/blog/categories/csharp/index.html">csharp ( 8 )</a></li>
+    <li><a href="/blog/categories/csharp/index.html">csharp ( 10 )</a></li>
     
     
-    <li><a href="/blog/categories/php/index.html">php ( 3 )</a></li>
+    <li><a href="/blog/categories/php/index.html">php ( 4 )</a></li>
     
     
-    <li><a href="/blog/categories/osx/index.html">osx ( 10 )</a></li>
+    <li><a href="/blog/categories/macos/index.html">macos ( 14 )</a></li>
     
     
-    <li><a href="/blog/categories/apache/index.html">apache ( 2 )</a></li>
+    <li><a href="/blog/categories/apache/index.html">apache ( 5 )</a></li>
     
     
     <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
     
     
     <li><a href="/blog/categories/java/index.html">java ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mono/index.html">mono ( 4 )</a></li>
     
     
     <li><a href="/blog/categories/aspnet/index.html">aspnet ( 1 )</a></li>
@@ -306,23 +340,106 @@ If download/update disappear, close the appstore then reopen it.
     <li><a href="/blog/categories/code-block/index.html">code block ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 1 )</a></li>
+    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/linux/index.html">linux ( 1 )</a></li>
+    <li><a href="/blog/categories/linux/index.html">linux ( 5 )</a></li>
     
     
-    <li><a href="/blog/categories/windows/index.html">windows ( 1 )</a></li>
+    <li><a href="/blog/categories/windows/index.html">windows ( 3 )</a></li>
     
     
-    <li><a href="/blog/categories/c++/index.html">c++ ( 2 )</a></li>
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/git/index.html">git ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/c/index.html">c ( 1 )</a></li>
     
   </ul>
+</section>
+-->
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/apache/' class='badge1' data-badge='5'>apache</a></li>
+<li class='category'><a href='/blog/categories/arduino/' class='badge1' data-badge='1'>arduino</a></li>
+<li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
+<li class='category'><a href='/blog/categories/c/' class='badge1' data-badge='1'>c</a></li>
+<li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
+<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
+<li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
+<li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
+<li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
+<li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='5'>linux</a></li>
+<li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>
+<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='1'>mathematic</a></li>
+<li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
+<li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
+<li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
+<li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
+<li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='4'>php</a></li>
+<li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
+<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='2'>visual studio</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='3'>windows</a></li>
+<li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
+<li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
+
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'neutrofoton',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos',
+            skip_repo: 'neutrofoton'+'.github.io'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
 
 
 
+<section>
+  <h1>Site I Visit</h1>
+  <ul id="site_i_visit">
+
+      <li class="post">
+        <a href="http://www.cppreference.com">C++ Reference</a>
+      </li>
+
+  </ul>
+</section>
 
   
 </aside>
@@ -331,7 +448,7 @@ If download/update disappear, close the appstore then reopen it.
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - neutro -
+  Copyright &copy; 2018 - neutro -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

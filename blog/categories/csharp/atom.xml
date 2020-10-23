@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Csharp | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/csharp/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-05-12T08:02:18+07:00</updated>
+  <updated>2018-09-16T23:35:55+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,337 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mono Multiple Application on a Virtual Host]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/"/>
+    <updated>2016-09-19T22:06:13+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
+    ServerAdmin admin@test.com
+    ServerName  neutro.local
+    ServerAlias neutrofoton.com *.neutrofoton.com
+
+    MonoServerPath neutro.local "/usr/bin/mod-mono-server4"
+    MonoDebug neutro.local true
+    MonoSetEnv neutro.local MONO_IOMAP=all
+    MonoApplications neutro.local "/:/var/www/vhosts/defaultsite/root"
+
+    MonoAutoApplication disabled
+    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+
+    DocumentRoot    /var/www/vhosts/defaultsite/root
+    DirectoryIndex  Default.aspx index.aspx index.html
+
+    &lt;Location "/"&gt;
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+    &lt;/Location&gt;
+
+    &lt;IfModule mod_deflate.c&gt;
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+    &lt;/IfModule&gt;
+
+    LogLevel    debug
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
+
+<pre><code class="xml">
+&lt;VirtualHost *:99&gt;
+    ServerAdmin admin@test.com
+    ServerName  neutro.local
+    ServerAlias neutrofoton.com *.neutrofoton.com
+
+    MonoServerPath neutro.local "/usr/bin/mod-mono-server4"
+    MonoDebug neutro.local true
+    MonoSetEnv neutro.local MONO_IOMAP=all
+    MonoApplications neutro.local "/:/var/www/vhosts/defaultsite/root"
+
+    MonoAutoApplication disabled
+    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+
+    DocumentRoot    /var/www/vhosts/defaultsite/root
+    DirectoryIndex  Default.aspx index.aspx index.html
+
+    &lt;Location "/"&gt;
+      Allow from all
+      Order allow,deny
+    MonoSetServerAlias neutro.local
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+    &lt;/Location&gt;
+
+    Alias   /project1  "/home/neutro/Workspace/dotnet/project1"
+    MonoApplications project1 "/project1:/home/neutro/Workspace/dotnet/project1"
+    MonoServerPath project1 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project1"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project1
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    Alias   /project2  "/home/neutro/Workspace/dotnet/project2"
+    MonoApplications project2 "/project2:/home/neutro/Workspace/dotnet/project2"
+    MonoServerPath project2 "/usr/bin/mod-mono-server4"
+    &lt;Location "/project2"&gt;
+      Allow from all
+      Order allow,deny
+      MonoSetServerAlias project2
+      SetHandler mono
+      SetOutputFilter DEFLATE
+      SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+      Require all granted
+    &lt;/Location&gt;
+
+    &lt;IfModule mod_deflate.c&gt;
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+    &lt;/IfModule&gt;
+
+    LogLevel    debug
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In the new virtual host configuration we have:</p>
+
+<ol>
+<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
+<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
+</ol>
+
+
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
+
+<p>We need to give access to both folders and theirs file contents</p>
+
+<pre><code class="bash">$ find project1 -type d -exec chmod 755 {} \;
+$ find project1 -type f -exec chmod 644 {} \;
+
+$ find project2 -type d -exec chmod 755 {} \;
+$ find project2 -type f -exec chmod 644 {} \;
+</code></pre>
+
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+
+<pre><code class="xml">&lt;apps&gt;
+   &lt;web-application&gt;
+        &lt;name&gt;project1&lt;/name&gt;
+        &lt;vpath&gt;/project1&lt;/vpath&gt;
+        &lt;path&gt;/home/neutro/Workspace/dotnet/project1&lt;/path&gt;
+        &lt;vhost&gt;neutro.local&lt;/vhost&gt;
+    &lt;/web-application&gt;
+    &lt;web-application&gt;
+        &lt;name&gt;project2&lt;/name&gt;
+        &lt;vpath&gt;/project2&lt;/vpath&gt;
+        &lt;path&gt;/home/neutro/Workspace/dotnet/project2&lt;/path&gt;
+        &lt;vhost&gt;neutro.local&lt;/vhost&gt;
+    &lt;/web-application&gt;
+&lt;/apps&gt;
+</code></pre>
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono">http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mono Mod_mono Apache2 on Ubuntu]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/"/>
+    <updated>2016-09-18T08:34:23+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/mono.png">
+I used to write a post about install and configure Mono on OS X Mountain Lion. On this post I want to summary what I did the similar things on Ubuntu.</p>
+
+<p>The details environment I use :</p>
+
+<ol>
+<li>Ubuntu 14.04 LTS</li>
+<li>Mono JIT compiler version 4.4.2</li>
+<li>Apache 2.4.7</li>
+</ol>
+
+
+<h2>Install Mono, Apache 2, Mod Mono</h2>
+
+<p>To install Mono, the first step is add package repository to our system.</p>
+
+<pre><code class="bash">$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+
+$ echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+
+$ sudo apt-get update
+</code></pre>
+
+<p>To enable mod_mono installation on Ubuntu 13.10 or later, and Debian 8.0 and later (and their derivatives), we need to add a second repository to our system, in addition to the generic Debian/Ubuntu repository above (if you don’t use sudo, be sure to switch to root):</p>
+
+<pre><code class="bash">
+$ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
+</code></pre>
+
+<p>Then run package update to update and a package upgrade to upgrade existing packages to the latest available.</p>
+
+<pre><code class="bash">$ sudo apt-get update
+$ sudo apt-get upgrade
+</code></pre>
+
+<p>To install mono, run the following command</p>
+
+<pre><code class="bash install mono">$ sudo apt-get install mono-complete
+</code></pre>
+
+<p>If we do not have Apache 2 on our system, we need to install it first. Or we can check the existing version <code>apache2 -v</code></p>
+
+<pre><code class="bash install apache2">$ sudo apt-get install apache2
+</code></pre>
+
+<p>To be able to host ASP.NET application on apache, we need to install <code>mod_mono</code>. <code>mod_mono</code> is a module for the Apache HTTP Server that allows us to host ASP.NET pages and other assemblies on multiple platforms by using Mono.</p>
+
+<p>To install Mod Mono and its dependencies run the following command</p>
+
+<pre><code class="bash install mod_mono">$ sudo apt-get update &amp;&amp; sudo apt-get install libapache2-mod-mono
+$ apt-get install mono-apache-server4
+</code></pre>
+
+<p>Before going through the next step, the things than we can verify are :</p>
+
+<ol>
+<li><p>Ensuring Apache 2 running well at least by checking its version or start stop its service.</p>
+
+<pre><code class="` bash apache version"> $ apache2 -v
+</code></pre>
+
+<pre><code class="` bash start apache"> $ service apache2 start
+</code></pre>
+
+<pre><code class="` bash stop apache"> $ service apache2 stop
+</code></pre></li>
+<li><p>Checking mono version</p>
+
+<pre><code class="bash mono version">$ mono --version
+</code></pre></li>
+<li>Ensuring we have <code>/usr/bin/mod-mono-server4</code></li>
+</ol>
+
+
+<h2>Configuring Application Virtual Host</h2>
+
+<p>To configure virtual host application, the steps are</p>
+
+<ol>
+<li><p>Create a directory where the application physical files reside.
+In this sample I put my  application files in <code>/var/www/hellodotnet</code></p>
+
+<p>We needed to grant permissions to the login user so that the user could copy or create files to the <code>hellodotnet</code> directory.  For our purposes we made the current user the owner of the directory</p>
+
+<pre><code class="` bash application directory"> $ chown -R -v your_user_name /var/www/
+</code></pre></li>
+<li><p>Lets create a simple <code>/var/www/hellodotnet/index.aspx</code> file.</p>
+
+<pre><code class="` html index.aspx"> &lt;center&gt;mod_mono is working:&lt;%=System.DateTime.Now.ToString()%&gt;&lt;/center&gt;
+</code></pre></li>
+<li><p>Create a site configuration <code>/etc/apache2/sites-available/hellodotnet.conf</code></p>
+
+<pre><code class="` xml site configuration">    &lt;VirtualHost *:81&gt;
+       ServerName hellodotnet
+       ServerAdmin hello@test-apache-config.com
+       DocumentRoot /var/www/hellodotnet
+       MonoServerPath hellodotnet "/usr/bin/mod-mono-server4"
+       MonoDebug hellodotnet true
+       MonoSetEnv hellodotnet MONO_IOMAP=all
+       MonoApplications hellodotnet "/:/var/www/hellodotnet"
+
+       ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+       AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+       &lt;Location "/"&gt;
+         Allow from all
+         Order allow,deny
+         MonoSetServerAlias hellodotnet
+         SetHandler mono
+         SetOutputFilter DEFLATE
+         SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png)$" no-gzip dont-vary
+       &lt;/Location&gt;
+       &lt;IfModule mod_deflate.c&gt;
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+       &lt;/IfModule&gt;
+     &lt;/VirtualHost&gt;
+</code></pre>
+
+<p>In this site I use port 81 instead of default 80.</p></li>
+<li><p>Since we use port 81, we need to register port 81 in <code>/etc/apache2/ports.conf</code> by simply add the following code</p>
+
+<pre><code class="` bash"> Listen 81
+</code></pre></li>
+<li><p>Enabling the site by running the following command from terminal</p>
+
+<pre><code class="` bash"> $ sudo a2ensite hellodotnet.conf
+</code></pre></li>
+<li>Restart apache</li>
+<li>Hit from browser : <a href="http://localhost:81">http://localhost:81</a>
+We should have the page displayed current date time.</li>
+</ol>
+
+
+<h2>Tips</h2>
+
+<ol>
+<li><p>If we get the page not displayed, we can see the message on the page displayed, HTML error code, or any clue on apache logs located in <code>/var/log/apache2</code></p></li>
+<li><p>If we get message access denied cannot access bin, simply change permission of the application site.</p>
+
+<pre><code class="` bash"> $ find hellodotnet -type d -exec chmod 755 {} \;
+ $ find hellodotnet -type f -exec chmod 644 {} \;
+</code></pre></li>
+<li><p>If getting message could not find <code>/etc/mono/registry</code>, simply create the directory.</p>
+
+<pre><code class="` bash"> $ sudo mkdir /etc/mono/registry
+</code></pre></li>
+<li><p>If getting <code>System.UnauthorizedAccessException</code> access to the path <code>/etc/mono/registry</code>, give access to it as its need, for example</p>
+
+<pre><code class="`` bash">  $ chmod uog+rw /etc/mono/registry
+</code></pre></li>
+</ol>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://www.mono-project.com/docs/getting-started/install/linux/">http://www.mono-project.com/docs/getting-started/install/linux/</a></li>
+<li><a href="http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts">http://stackoverflow.com/questions/34290004/how-to-install-configure-mod-mono-on-ubuntu-14-04-3-lts</a></li>
+<li><a href="http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3">http://www.bloomspire.com/blog/2015/3/9/how-to-host-aspnet-applications-on-linux-p3</a></li>
+<li><a href="http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p">http://superuser.com/questions/882594/permission-denied-because-search-permissions-are-missing-on-a-component-of-the-p</a></li>
+<li><a href="https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied">https://www.codementor.io/tips/7134438372/access-to-the-path-etc-mono-registry-is-denied</a></li>
+<li><a href="https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/">https://retkomma.wordpress.com/2011/10/01/registry-settings-in-mono-on-linux/</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Extract C# Exception]]></title>
@@ -329,174 +660,6 @@ Change assembly version declared in root <code>web.config</code> and <code>/View
 <li> <a href="http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html">http://curtis.schlak.com/2013/09/29/setup-asp-net-mvc-4-on-monodevelop.html</a>
 </li>
 <ol></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Generic Singleton Pattern in C#]]></title>
-    <link href="http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number/"/>
-    <updated>2013-08-29T14:27:41+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-c-number</id>
-    <content type="html"><![CDATA[<p>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects. The term comes from the mathematical concept of a singleton.<a href="http://en.wikipedia.org/wiki/Singleton_pattern">[1]</a></p>
-
-<p>Honestly in my daily coding activity, sometimes I need to implement singleton pattern. Jon wrote a good singleton article in C# <a href="http://www.yoda.arachsys.com/csharp/singleton.html">here</a>. Another case I want to implement singleton pattern in generic way. I convert what has been wrotten by Jon into generic.</p>
-
-<pre><code class="c# generic singleton">/// &lt;summary&gt;
-    /// Generic class which makes non singleton class to be singleton.
-    /// Calling singleton instance of class should be Singleton&lt;T&gt;.Instance, otherwise the returned class is not singleton one.    ///
-    /// &lt;/summary&gt;
-    /// &lt;typeparam name="T"&gt;Genric class type to be singletonized&lt;/typeparam&gt;
-    public sealed class Singleton&lt;T&gt; where T : class, new()
-    {
-        /// &lt;summary&gt;
-        /// Private constuctor to avoid this class instantiated
-        /// &lt;/summary&gt;
-        Singleton()
-        {
-        }
-
-        /// &lt;summary&gt;
-        /// Property to get access to singleton instance
-        /// &lt;/summary&gt;
-        public static T Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        /// &lt;summary&gt;
-        /// Private nested class which acts as singleton class instantiator. This class should not be accessible outside &lt;see cref="Singleton&lt;T&gt;"/&gt;
-        /// &lt;/summary&gt;
-        class Nested
-        {
-            /// &lt;summary&gt;
-            /// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
-            /// &lt;/summary&gt;
-            static Nested()
-            {
-            }
-
-            /// &lt;summary&gt;
-            /// Static instance variable
-            /// &lt;/summary&gt;
-            internal static readonly T instance = new T()
-        }
-    }
-</code></pre>
-
-<p>The following snipped code is a sample how to use the generic singleton class.
-<figure class='code'><figcaption><span>sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">Processor</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">get</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">set</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">void</span> <span class="n">Execute</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">class</span> <span class="nc">void</span> <span class="n">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">Processor</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>From the sample above is shown that we can make a non singleton class to be singleton at runtime. But we can still create a non singleton instance as we need. That’s really nice flexible thing.</p>
-
-<h3>Reference</h3>
-
-
-<p>[1] <a href="http://en.wikipedia.org/wiki/Singleton_pattern">http://en.wikipedia.org/wiki/Singleton_pattern</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ASP.NET Session State in Database]]></title>
-    <link href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/"/>
-    <updated>2013-07-22T14:12:34+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database</id>
-    <content type="html"><![CDATA[<p>At some point we need to store information when dealing with web application.
-Storing information in web application can be implemented in some ways such as session and cookies.</p>
-
-<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
-
-<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
-
-<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
-First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
-
-<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
-
-<pre><code class="vctreestatus aspnet_regsql">C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
-</code></pre>
-
-<pre><code class="vctreestatus generate session state database">C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
-</code></pre>
-
-<p>The command will create database, tables and store procedures.
-In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
-
-<pre><code class="xml session state configuration">&lt;system.web&gt;
-    &lt;sessionstate mode="SQLServer" allowcustomsqldatabase="true" sqlconnectionstring="Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}" cookieless="false" timeout="20"&gt;
-
-  &lt;/sessionstate&gt;
-&lt;/system.web&gt;
-</code></pre>
-
-<p>To test our session storage, just create simple aspx page.</p>
-
-<pre><code class="aspx-cs sample.aspx">&lt;asp:button id="btnAddSession" runat="server" text="Add Session" onclick="btnAddSession_Click"/&gt;
-
-&lt;asp:button id="btnRemoveSession" runat="server" text="Remove Session" onclick="btnRemoveSession_Click"/&gt;
-
-&lt;br&gt;
-&lt;asp:label id="ctlLblSessionDisplay" runat="server" text=""&gt;&lt;/asp:label&gt;
-</code></pre>
-
-<pre><code class="c# sample.aspx.cs">protected void Page_Load(object sender, EventArgs e)
-{
-    if (Session[Constant.SessionKey] != null)
-        ctlLblSessionDisplay.Text = Session[Constant.SessionKey].ToString();
-    else
-        ctlLblSessionDisplay.Text = "NO Session";
-}
-
-protected void btnAddSession_Click(object sender, EventArgs e)
-{
-    Session.Add(Constant.SessionKey, "Hello");
-}
-
-protected void btnRemoveSession_Click(object sender, EventArgs e)
-{
-    Session.Remove(Constant.SessionKey);
-}
-</code></pre>
 ]]></content>
   </entry>
   

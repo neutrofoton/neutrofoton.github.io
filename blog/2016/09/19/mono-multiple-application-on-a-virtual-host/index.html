@@ -1,0 +1,717 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Mono Multiple Application on a Virtual Host - neutrofoton</title>
+  <meta name="author" content="neutro">
+
+  
+  <meta name="description" content="On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+article img {
+  border: 0;
+}
+aside.sidebar img {
+  border-color: #e0e0e0;
+}
+article img, article video, article .flash-video{
+  box-shadow: rgba(255,255,255,0.15) 0 1px 4px;
+}
+</style>
+
+<!-- badge -->
+<style type="text/css">
+  .badge1 {
+  position:relative;
+  }
+  .badge1[data-badge]:after {
+  content: attr(data-badge);
+  position: absolute;
+  /*top: -10px;*/
+  right: -30px;
+  font-size: .7em;
+  background: #c57373;
+  color: white;
+  /* width: 18px; */
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 450%;
+  box-shadow: 0 0 1px #333;
+
+  padding: 2px;
+  }
+</style>
+
+  
+
+
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">neutrofoton</a></h1>
+  
+    <h2>Science, Technology and Life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="neutrofoton.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!--<li><a href="/about">About</a></li>-->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Mono Multiple Application on a Virtual Host</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-19T22:06:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:06 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="/images/logo/mono.png">
+On my previous post I wrote how to configure application virtual host. We can have multiple application in a virtual host like multiple application in a web site on IIS. To do that, the steps are the same as I did on my previous post. Let&rsquo;s say we have a scenario, having a site config as the sample on previous article, an application port 99, default document root <code>/var/www/vhosts/defaultsite/root</code>. The detail virtual host config as follow</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
+</span><span class='line'>    ServerAdmin admin@test.com
+</span><span class='line'>    ServerName  neutro.local
+</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
+</span><span class='line'>
+</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    MonoDebug neutro.local true
+</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
+</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
+</span><span class='line'>
+</span><span class='line'>    MonoAutoApplication disabled
+</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+</span><span class='line'>
+</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
+</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>    MonoSetServerAlias neutro.local
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
+</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    LogLevel    debug
+</span><span class='line'>
+</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The steps to enable site config is the same as privious post. To make virtual host have multiple applications, we have to modify the site config file as follow. In this sample, we are going to add 2 applications to this virtual host</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">*:99</span><span class="nt">&gt;</span>
+</span><span class='line'>    ServerAdmin admin@test.com
+</span><span class='line'>    ServerName  neutro.local
+</span><span class='line'>    ServerAlias neutrofoton.com *.neutrofoton.com
+</span><span class='line'>
+</span><span class='line'>    MonoServerPath neutro.local &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    MonoDebug neutro.local true
+</span><span class='line'>    MonoSetEnv neutro.local MONO_IOMAP=all
+</span><span class='line'>    MonoApplications neutro.local &quot;/:/var/www/vhosts/defaultsite/root&quot;
+</span><span class='line'>
+</span><span class='line'>    MonoAutoApplication disabled
+</span><span class='line'>    AddHandler  mono    .aspx .ascx .asax .ashx .config .cs .asmx .axd
+</span><span class='line'>
+</span><span class='line'>    DocumentRoot    /var/www/vhosts/defaultsite/root
+</span><span class='line'>    DirectoryIndex  Default.aspx index.aspx index.html
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>    MonoSetServerAlias neutro.local
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    Alias   /project1  &quot;/home/neutro/Workspace/dotnet/project1&quot;
+</span><span class='line'>    MonoApplications project1 &quot;/project1:/home/neutro/Workspace/dotnet/project1&quot;
+</span><span class='line'>    MonoServerPath project1 &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>      MonoSetServerAlias project1
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>      Require all granted
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    Alias   /project2  &quot;/home/neutro/Workspace/dotnet/project2&quot;
+</span><span class='line'>    MonoApplications project2 &quot;/project2:/home/neutro/Workspace/dotnet/project2&quot;
+</span><span class='line'>    MonoServerPath project2 &quot;/usr/bin/mod-mono-server4&quot;
+</span><span class='line'>    <span class="nt">&lt;Location</span> <span class="err">&quot;/project2&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      Allow from all
+</span><span class='line'>      Order allow,deny
+</span><span class='line'>      MonoSetServerAlias project2
+</span><span class='line'>      SetHandler mono
+</span><span class='line'>      SetOutputFilter DEFLATE
+</span><span class='line'>      SetEnvIfNoCase Request_URI &quot;\.(?:gif|jpe?g|png)$&quot; no-gzip dont-vary
+</span><span class='line'>      Require all granted
+</span><span class='line'>    <span class="nt">&lt;/Location&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;IfModule</span> <span class="err">mod_deflate.c</span><span class="nt">&gt;</span>
+</span><span class='line'>      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript
+</span><span class='line'>    <span class="nt">&lt;/IfModule&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    LogLevel    debug
+</span><span class='line'>
+</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the new virtual host configuration we have:</p>
+
+<ol>
+<li><code>/project1</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project1</code></li>
+<li><code>/project2</code>, with physical application&rsquo;s files in <code>/home/neutro/Workspace/dotnet/project2</code></li>
+</ol>
+
+
+<p>Let&rsquo;s assume we have a simple <code>index.aspx</code> file in <code>/home/neutro/Workspace/dotnet/project1</code> and <code>/home/neutro/Workspace/dotnet/project2</code></p>
+
+<p>We need to give access to both folders and theirs file contents</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>find project1 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project1 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>find project2 -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+</span><span class='line'><span class="nv">$ </span>find project2 -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After modifying the config file and give access to the application directories, we need to register the applications in <code>/etc/mono-server4/debian.webapp</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;apps&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;web-application&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project1<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project1<span class="nt">&lt;/vpath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project1<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;web-application&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;name&gt;</span>project2<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vpath&gt;</span>/project2<span class="nt">&lt;/vpath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/home/neutro/Workspace/dotnet/project2<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;vhost&gt;</span>neutro.local<span class="nt">&lt;/vhost&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/web-application&gt;</span>
+</span><span class='line'><span class="nt">&lt;/apps&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The final step is restart apache, and now we should be able to open in browser <a href="http://localhost:99/project1">http://localhost:99/project1</a> or <a href="http://localhost:99/project2.">http://localhost:99/project2.</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono">http://stackoverflow.com/questions/19279286/fail-to-start-a-mono-site-with-apache2-404-error-with-mod-mono</a></li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      <a href="javascript:window.print()" class="print-button">Print</a>
+
+
+  
+
+<span class="byline author vcard">Posted by <span class="fn">neutro</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-09-19T22:06:13+07:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:06 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/apache/'>apache</a>, <a class='category' href='/blog/categories/csharp/'>csharp</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/mono/'>mono</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/09/18/mono-mod-mono-apache2-on-ubuntu/" title="Previous Post: Mono mod_mono Apache2 on Ubuntu">&laquo; Mono mod_mono Apache2 on Ubuntu</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/10/12/ubuntu-server-does-not-recognize-virtualbox-adapter/" title="Next Post: Ubuntu Server Does Not Recognize VirtualBox Adapter">Ubuntu Server Does Not Recognize VirtualBox Adapter &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section id="comments">
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Me</h1>
+  <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
+  <p>
+    No many things to write about me here, except the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/">Configure PHP and Virtual Host macOS High Sierra</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/04/17/import-existing-git-repository-to-another/">Import Existing Git Repository to Another</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a>
+      </li>
+    
+  </ul>
+</section>
+<!--
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list">
+    
+    
+    <li><a href="/blog/categories/csharp/index.html">csharp ( 10 )</a></li>
+    
+    
+    <li><a href="/blog/categories/php/index.html">php ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/macos/index.html">macos ( 14 )</a></li>
+    
+    
+    <li><a href="/blog/categories/apache/index.html">apache ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/java/index.html">java ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mono/index.html">mono ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/aspnet/index.html">aspnet ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xcode/index.html">xcode ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xamarin/index.html">xamarin ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/octopress/index.html">octopress ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/spring/index.html">spring ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/code-block/index.html">code block ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/linux/index.html">linux ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/windows/index.html">windows ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/git/index.html">git ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/c/index.html">c ( 1 )</a></li>
+    
+  </ul>
+</section>
+-->
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/apache/' class='badge1' data-badge='5'>apache</a></li>
+<li class='category'><a href='/blog/categories/arduino/' class='badge1' data-badge='1'>arduino</a></li>
+<li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
+<li class='category'><a href='/blog/categories/c/' class='badge1' data-badge='1'>c</a></li>
+<li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
+<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
+<li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
+<li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
+<li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
+<li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='5'>linux</a></li>
+<li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>
+<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='1'>mathematic</a></li>
+<li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
+<li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
+<li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
+<li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
+<li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='4'>php</a></li>
+<li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
+<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='2'>visual studio</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='3'>windows</a></li>
+<li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
+<li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
+
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'neutrofoton',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos',
+            skip_repo: 'neutrofoton'+'.github.io'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section>
+  <h1>Site I Visit</h1>
+  <ul id="site_i_visit">
+
+      <li class="post">
+        <a href="http://www.cppreference.com">C++ Reference</a>
+      </li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2018 - neutro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'neutrofoton';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2016/09/19/mono-multiple-application-on-a-virtual-host/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

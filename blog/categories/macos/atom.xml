@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: C++ | neutrofoton]]></title>
-  <link href="http://neutrofoton.github.io/blog/categories/c-plus-plus/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Macos | neutrofoton]]></title>
+  <link href="http://neutrofoton.github.io/blog/categories/macos/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2016-05-12T08:02:18+07:00</updated>
+  <updated>2018-09-16T23:35:55+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -14,249 +14,343 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Lambda in C++]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus/"/>
-    <updated>2016-05-11T23:15:18+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/05/11/lambda-in-c-plus-plus</id>
-    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/lambda.png">
-C++11 adds a new feature called lambda expressions. This allows us to write anonymous functions inline, removing the need to write a separate function or to write a function object, and makes code easier to understand.
-For those who are familiar with C# lambda expression, C++ lambda expression is similar. But lambda in C++ has slightly different syntax.</p>
+    <title type="html"><![CDATA[Configure PHP and Virtual Host macOS High Sierra]]></title>
+    <link href="http://neutrofoton.github.io/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/"/>
+    <updated>2018-09-16T08:48:43+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra</id>
+    <content type="html"><![CDATA[<p>Apache is pre installed on macOS High Sierra. We just need to run its service with the following command to activate it.</p>
 
-<pre><code class="text C++11 Lambda Syntax">[capture_block](parameters) mutable exception_specification -&gt; return_type {body}
+<pre><code class="bash">$ sudo apachectl start
 </code></pre>
 
+<p>Then we just open <code><a href="http://localhost">http://localhost</a></code> via browser. Apache will display a default HTML page come with it.</p>
+
+<h2>Activating PHP Module</h2>
+
+<p>High Sierra also comes with PHP 7. So we don&rsquo;t need to install it manually. To activate PHP module</p>
+
 <ol>
-<li> <strong><code>capture_block</code></strong> is a comma-separated list of zero or more captures, optionally beginning with a capture-default. Capture list can be passed as follows (see below for the detailed description):
-<ol>
-<li><code>[a,&b]</code> where a is captured by value and b is captured by reference.</li>
-<li><code>[this]</code> captures the this pointer by value</li>
-<li><code>[&]</code> captures all automatic variables odr-used in the body of the lambda by reference</li>
-<li><code>[=]</code> captures all automatic variables odr-used in the body of the lambda by value</li>
-<li><code>[x]</code> captures only x by value and nothing else.</li>
-<li><code>[]</code> captures nothing</li>
-</ol>
-</li>
-<li>
-<strong><code>parameters</code></strong> is (optional) list of parameters for the lambda expression.
-</li>
-<li>
-<strong><code>mutable</code></strong> is (optional) if variables from the enclosing scope are captured by value, a copy of those variables will become available in the body of the lambda expression. Those copies are marked as const by default, meaning the lambda body cannot change the value of those copies. If the lambda expression is marked as mutable, those copies are not const and the body can modify those local copies.
-</li>
-<li>
-<strong><code>exception_specification</code></strong> is (optional) and can be used to specify which exceptions the body of the lambda expression can throw.
-</li>
-<li>
-<strong><code>return_type</code></strong> is Return type. If not present it's implied by the function return statements (or void if it doesn't return any value)
-</li>
+<li>Edit <code>/etc/apache2/httpd.conf</code></li>
+<li>Uncomment / remove remark of
+<code>#LoadModule php7_module libexec/apache2/libphp7.so</code></li>
+<li>Save it and restart apache using
+ <code>bash
+     $ sudo apachectl restart
+</code></li>
 </ol>
 
 
+<p>After applying the steps above, the php module should be activated and ready to use. In this post we will test it after configuring virtual host.</p>
 
+<h2>Configuring Virtual Host</h2>
 
-<h3>Lambda and Direct Invoke</h3>
+<p>The steps of configuring apache virtual host are :</p>
 
+<ol>
+<li><p>Enabling virtual host configuration in apache config by editing
+<code>/etc/apache2/httpd.conf</code>.</p>
 
-<p>The following snipped code is an example of lambda expression.</p>
+<pre><code class="` bash"> $ sudo nano /etc/apache2/httpd.conf
+</code></pre></li>
+<li><p>Uncomment the section
+ <code>Include /private/etc/apache2/extra/httpd-vhosts.conf</code>, then save it.</p></li>
+<li><p>Create site directory.
+ As an example in this post, let&rsquo;s create a <code>Site</code> folder in home directory called </code>/Users/USERNAME/Sites</code>. Our website sample directory will be put in it, let&rsquo;s create a directory called </code>/Users/USERNAME/Sites/neutro.io</code> and create an <code>/Users/USERNAME/Sites/neutro.io/index.php</code> with simple PHP syntax.</p>
 
-<pre><code class="cpp example lambda and directly invoked">
-string result = [](const string&amp; str) -&gt; string {return "Hi " + str;}("neutro");
-cout &lt;&lt; result &lt;&lt; endl;
+<pre><code class="php"> &lt;?php
+ phpinfo();
+ ?&gt;
+</code></pre></li>
+<li><p>Create virtual host configuration by editing the virtual host config</p>
+
+<pre><code class="bash"> $ sudo nano /etc/apache2/extra/httpd-vhosts.conf
 </code></pre>
 
-<p>The lambda expression above shows that it has a <code>const string&amp;</code> parameter and return a <code>string</code> type. To execute the lambda is by placing round brackets <code>()</code> and put object that will be passed to inside it. The <code>&ldquo;neutro&rdquo;</code> literal string will substitute <code>str</code> parameter. The output of the above code is :</p>
+<p> The following code is an example of virtual host with domain name <code>neutro.io</code></p>
 
-<pre><code class="text output">Hi neutro
+<pre><code class="` xml"> &lt;VirtualHost *:80&gt;
+     ServerName neutro.io
+     ServerAlias www.neutro.io
+     DocumentRoot "/Users/neutro/Sites/neutro.io"
+
+ &lt;Directory /Users/neutro/Sites/neutro.io&gt;
+         Options Indexes FollowSymLinks
+         #Options All Indexes FollowSymLinks
+         AllowOverride None
+         Require all granted
+ &lt;/Directory&gt;
+
+
+     ErrorLog "/private/var/log/apache2/neutro.io-error_log"
+     CustomLog "/private/var/log/apache2/neutro.io-access_log" common
+     ServerAdmin web@neutro.io
+ &lt;/VirtualHost&gt;
 </code></pre>
 
-<h3>Lambda as Variable</h3>
+<p> In this example, we create a <code>neutro.io</code> virtual host that refers to <code>/Users/neutro/Sites/neutro.io</code> as physical directory.</p></li>
+<li><p>Register domain for localhost</p>
 
+<p>Since we use <code>neutro.io</code> as domain for localhost, we need to add the domain and <code>www</code> alias to resolve to the localhost address by editing</p>
 
-<p>Pointer to a lambda expression can be stored and executed through the function pointer. C++ provides <code>std::function</code> which is a STL template class that provides a very convenient wrapper to a simple function, to a functor or to a lambda expression. We can also use the C++11 <code>auto</code> keyword to make it easier.</p>
-
-<p>To make it clear the following code contains couples of various lambda expressions and store them in variables of type <code>auto</code> or its equivalent in <code>std::function</code> STL template class.</p>
-
-<pre><code class="cpp lambda as variable">    auto lambda1 = [] { cout &lt;&lt;"Hello lambda without parameter 1" &lt;&lt; endl; };
-    lambda1();
-
-    auto lambda2 = [](void) { cout &lt;&lt;"Hello lambda without parameter 2" &lt;&lt; endl; };
-    lambda2();
-
-    //auto lambda3 = [](void) -&gt; void { cout &lt;&lt;"Hello lambda without parameter 2" &lt;&lt; endl; };
-    function&lt;void()&gt; lambda3 = [](void) -&gt; void { cout &lt;&lt;"Hello lambda without parameter 2" &lt;&lt; endl; };
-    lambda3();
-
-    //auto lambda4 = [](const string&amp; str) -&gt; string {return "Hello from " + str;};
-    function&lt;string(const string&amp;)&gt; lambda4 = [](const string&amp; str) -&gt; string {return "Hello from " + str;};
-
-    string result = lambda4("neutro");
-
-    cout &lt;&lt; result &lt;&lt; endl;
+<pre><code class="bash">    $ sudo nano /etc/hosts
 </code></pre>
 
-<p>The snipped code above shows how lambda expressions stored in variable of auto type or theirs equivalent in <code>std::function</code> type and how to invoke the lambda. <a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">Here</a> is a good article about <code>std::function</code>.</p>
+<p>and add the following line</p>
 
-<h3>Lambda Capture Block</h3>
+<pre><code>    127.0.0.1   neutro.io   www.neutro.io
+</code></pre></li>
+<li><p>Restart apache</p>
 
-
-<p>Lambda Capture Block basically describes how we want to capture variables from the enclosing scope. Capturing a variable means that the variable becomes available inside the body of the lambda. The detail variant of capture block has been described on previous section. The following code shows various scenario how to play with capture block.</p>
-
-<pre><code class="cpp lambda capture block">int variableA = 1;
-int variableB = 1;
-int variableC = 1;
-
-cout &lt;&lt; "Init Values : "&lt;&lt;endl;
-cout &lt;&lt; "variableA : "&lt;&lt;variableA &lt;&lt;endl;
-cout &lt;&lt; "variableB : "&lt;&lt;variableB &lt;&lt;endl;
-cout &lt;&lt; "variableC : "&lt;&lt;variableC &lt;&lt;endl;
-
-cout &lt;&lt; endl;
-//--------------------------------------
-cout &lt;&lt; "---## lamda 1 ##---"&lt;&lt;endl;
-auto lambda1 = [=](int param)-&gt; int     //==&gt; [=] lambda has default access to variable is by value
-            {
-                param = param * 2;
-
-                cout &lt;&lt; "param inside lambda1 : "&lt;&lt;param &lt;&lt; endl;
-                return param;
-            };
-
-lambda1(variableA);
-cout &lt;&lt; "After lamda1, variableA : " &lt;&lt;variableA &lt;&lt;endl;
-
-cout&lt;&lt;endl;
-
-//--------------------------------------------
-cout &lt;&lt; "---## lamda 2 ##---"&lt;&lt;endl;
-auto lambda2 = [&amp;](int param) -&gt; int      //==&gt; [&amp;] lambda has default access to variable is by reference
-            {
-                param = param * 2;
-                variableB = variableB * 2;
-
-                cout &lt;&lt; "param inside lambda2 : "&lt;&lt;param &lt;&lt; endl;
-                cout &lt;&lt; "variableB inside lambda2 : "&lt;&lt;variableB &lt;&lt; endl;
-
-                return param;
-            };
-
-lambda2(variableA);
-cout &lt;&lt; "After lamda2, variableA : " &lt;&lt;variableA &lt;&lt;endl;
-cout &lt;&lt; "After lamda2, variableB : " &lt;&lt;variableB &lt;&lt;endl;
-
-cout&lt;&lt;endl;
-
-//-------------------------------------
-cout &lt;&lt; "---## lamda 3 ##---"&lt;&lt;endl;
-auto lambda3 = [&amp;](int* param) -&gt; int
-{
-    *param = (*param) * 2;
-    variableB = variableB * 2;
-
-    cout &lt;&lt; "param inside lambda3 : "&lt;&lt;*param &lt;&lt; endl;
-    cout &lt;&lt; "variableB inside lambda3 : "&lt;&lt;variableB &lt;&lt; endl;
-
-    return *param;
-};
-
-int result3 = lambda3(&amp;variableA);
-cout &lt;&lt; "After lamda3, result3 : " &lt;&lt;result3 &lt;&lt;endl;
-cout &lt;&lt; "After lamda3, variableA : " &lt;&lt;variableA &lt;&lt;endl;
-cout &lt;&lt; "After lamda3, variableB : " &lt;&lt;variableB &lt;&lt;endl;
-
-cout&lt;&lt;endl;
+<pre><code class="` bash"> $ sudo apachectl restart
+</code></pre></li>
+</ol>
 
 
-//--------------------------------
-cout &lt;&lt; "---## lamda 4 ##---"&lt;&lt;endl;
-auto lambda4 = [=, &amp;variableB, &amp;variableC](int param) -&gt; int //==&gt; [=, &amp;variableB, &amp;variableC] captures by value by default,
-                                             // except variables variableB and variableC, which are captured by reference.
-{
-    param = (param) * 2;
-    variableB = variableB * 2;
-    variableC = variableC * 2;
+<p>When we open in browser <code><a href="http://neutro.io">http://neutro.io</a></code>, we should get a page that display PHP info.</p>
 
-    cout &lt;&lt; "param inside lambda4 : "&lt;&lt;param &lt;&lt; endl;
-    cout &lt;&lt; "variableB inside lambda4 : "&lt;&lt;variableB &lt;&lt; endl;
-    cout &lt;&lt; "variableC inside lambda4 : "&lt;&lt;variableC &lt;&lt; endl;
+<h2>Losing Default Localhost</h2>
 
-    return param;
-};
+<p>After configuring the virtual host, we may lose the previous default localhost that points to <code>/Library/WebServer/Documents/</code> directory. We may get a 403 Forbidden Error when visiting <code><a href="http://localhost">http://localhost</a></code>. To get around this, we need to add in a vhost for localhost and declare this vhost before any of the others. The following code is our new Virtual host after adding config for localhost.</p>
 
-lambda4(variableA);
+<pre><code class="xml">&lt;VirtualHost *:80&gt;
+    ServerName localhost
+    DocumentRoot /Library/WebServer/Documents/
+&lt;/VirtualHost&gt;
 
-cout &lt;&lt; "After lamda4, variableA : " &lt;&lt;variableA &lt;&lt;endl;
-cout &lt;&lt; "After lamda4, variableB : " &lt;&lt;variableB &lt;&lt;endl;
-cout &lt;&lt; "After lamda4, variableC : " &lt;&lt;variableC &lt;&lt;endl;
+&lt;VirtualHost *:80&gt;
+    ServerName neutro.io
+    ServerAlias www.neutro.io
+    DocumentRoot "/Users/neutro/Sites/neutro.io"
 
-cout &lt;&lt; endl;
+   &lt;Directory /Users/neutro/Sites/neutro.io&gt;
+        Options Indexes FollowSymLinks
+        #Options All Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+   &lt;/Directory&gt;
 
-//--------------------------------
-cout &lt;&lt; "---## lamda 5 ##---"&lt;&lt;endl;
-auto lambda5 = [variableC](int param) mutable -&gt; int //==&gt; [variableC] captures only variableC by value and nothing else.
-{
-    param = (param) * 2;
 
-    variableC = variableC * 2; //should mark as mutable lambda, since Cannot assign to a variable captured by copy in a non-mutable lambda
-    //variableB = variableB * 2; //ERROR : variableB not captured, since only capture specific variable that's variableC
-
-    ///
-    cout &lt;&lt; "param inside lambda5 : "&lt;&lt;param &lt;&lt; endl;
-    cout &lt;&lt; "variableC inside lambda5 : "&lt;&lt;variableC &lt;&lt; endl;
-
-    return param;
-};
-
-lambda5(variableA);
-
-cout &lt;&lt; "After lamda5, variableA : " &lt;&lt;variableA &lt;&lt;endl;
-cout &lt;&lt; "After lamda5, variableC : " &lt;&lt;variableC &lt;&lt;endl;
+    ErrorLog "/private/var/log/apache2/neutro.io-error_log"
+    CustomLog "/private/var/log/apache2/neutro.io-access_log" common
+    ServerAdmin web@neutro.io
+&lt;/VirtualHost&gt;
 </code></pre>
 
-<p>The output of the sample code is :</p>
+<p>Restart apache and open <code><a href="http://localhost">http://localhost</a></code> in browser.</p>
 
-<pre><code class="text output">Init Values :
-variableA : 1
-variableB : 1
-variableC : 1
+<h2>References</h2>
 
----## lamda 1 ##---
-param inside lambda1 : 2
-After lamda1, variableA : 1
+<ol>
+<li><a href="https://websitebeaver.com/set-up-localhost-on-macos-high-sierra-apache-mysql-and-php-7-with-sslhttps">https://websitebeaver.com/set-up-localhost-on-macos-high-sierra-apache-mysql-and-php-7-with-sslhttps</a></li>
+<li><a href="https://coolestguidesontheplanet.com/set-up-virtual-hosts-in-apache-on-macos-high-sierra-10-13/">https://coolestguidesontheplanet.com/set-up-virtual-hosts-in-apache-on-macos-high-sierra-10-13/</a></li>
+</ol>
 
----## lamda 2 ##---
-param inside lambda2 : 2
-variableB inside lambda2 : 2
-After lamda2, variableA : 1
-After lamda2, variableB : 2
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PPTP on macOS]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos/"/>
+    <updated>2017-11-22T06:59:38+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/11/22/pptp-on-macos</id>
+    <content type="html"><![CDATA[<p>One day I need to connect my macOS to a network of client of the company I work for via <a href="https://en.wikipedia.org/wiki/Point-to-Point_Tunneling_Protocol">Point-to-Point Tunneling Protocol (PPTP)</a> VPN. Unfortunately <a href="https://support.apple.com/en-us/HT206844">Apple removed PPTP support on macOS Sierra</a>, so I had to find an alternative for that. Some of them I found are third parties application that need a one time buying or annual subscription. In fact, Apple just remove the user interface option for PPTP VPN, meanwhile the libraries of it are still available on Sierre.</p>
 
----## lamda 3 ##---
-param inside lambda3 : 2
-variableB inside lambda3 : 4
-After lamda3, result3 : 2
-After lamda3, variableA : 2
-After lamda3, variableB : 4
+<p>Since the libraries of PPTP are still available on Sierra, theoritically we should be able to call the libraries via terminal. Finally I found 3 blogs that write about PPTP protocol on macos and I put them in a reference section in this blog. Basically the three of them use the same technique that&rsquo;s write a script contains configuration of PPTP that&rsquo;s put in <code>/etc/ppp/peers/</code> and call it via <code>pppd</code> command via terminal.</p>
 
----## lamda 4 ##---
-param inside lambda4 : 4
-variableB inside lambda4 : 8
-variableC inside lambda4 : 2
-After lamda4, variableA : 2
-After lamda4, variableB : 8
-After lamda4, variableC : 2
+<p>First of all create a file called <code>/etc/ppp/peers/pptpvpn-client1</code></p>
 
----## lamda 5 ##---
-param inside lambda5 : 4
-variableC inside lambda5 : 4
-After lamda5, variableA : 2
-After lamda5, variableC : 2
+<pre><code class="bash">$ sudo /etc/ppp/peers/pptpvpn-client1
 </code></pre>
 
-<p><h4>Reference<h4>
-<ol type="1">
-<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">Wrox Professional C++</a></li>
-<li><a href="http://en.cppreference.com/w/cpp/language/lambda">http://en.cppreference.com/w/cpp/language/lambda</a></li>
-<li><a href="https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/">https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/</a></li>
-<li><a href="http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1">http://www.drdobbs.com/cpp/lambdas-in-c11/240168241?pgno=1</a></li>
-</ol></p>
+<p>Fill the <code>pptpvpn-client1</code> that contains configuration that pppd daemon will refer to connect.</p>
+
+<pre><code class="bash /etc/ppp/peers/pptpvpn-client1">
+plugin PPTP.ppp
+noauth
+# logfile /tmp/ppp.log
+remoteaddress "xxx.xxx.xxx.xxx"
+user "xxxxxx"
+password "xxxxxxxx"
+redialcount 1
+redialtimer 5
+idle 1800
+# mru 1368
+# mtu 1368
+receive-all
+novj 0:0
+ipcp-accept-local
+ipcp-accept-remote
+# noauth
+refuse-eap
+refuse-pap
+refuse-chap-md5
+hide-password
+mppe-stateless
+mppe-128
+# require-mppe-128
+looplocal
+nodetach
+# ms-dns 8.8.8.8
+usepeerdns
+# ipparam gwvpn
+defaultroute
+debug
+</code></pre>
+
+<p>Then open terminal and call
+<code>bash
+$ sudo pppd call pptpvpn-client1
+</code></p>
+
+<p>If you cannot connect with the configuration code I use, you can check the error messages displayed in terminal. May be some configuration items do not match with the vpn server setting you connect to.</p>
+
+<p>If the you got no any error messages and connection established with your VPN network you can open a new tab on the terminal and try to ping to an ip address in the VPN local network.</p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="https://smallhacks.wordpress.com/2016/12/20/pptp-on-osx-sierra/">https://smallhacks.wordpress.com/2016/12/20/pptp-on-osx-sierra/</a></li>
+<li><a href="https://malucelli.net/2017/05/16/pptp-vpn-on-macos-sierra/">https://malucelli.net/2017/05/16/pptp-vpn-on-macos-sierra/</a></li>
+<li><a href="https://www.cts-llc.net/2017/02/21/pptp-on-osx-just-one-last-time.html">https://www.cts-llc.net/2017/02/21/pptp-on-osx-just-one-last-time.html</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WinMerge and DiffMerge as Git Diff Merge Tool]]></title>
+    <link href="http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/"/>
+    <updated>2017-05-10T10:01:23+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
+On software development while working with source control, it&rsquo;s inevitable sometime we get our code conflicts with other, since we work in a team. There are many diff and merge tools out there and some of them can be integrated with with Git. In this post I just want to note what I did in my development machine (Windows 7 and macOS Sierra)</p>
+
+<h2>DiffMerge on macOS</h2>
+
+<p>For my macOS development machine I use <a href="http://www.sourcegear.com/diffmerge/">DiffMerge</a>. Actually DiffMerge is not only available for macOS, but also for Windows and Linux. So we can use it as Git diff merge tool as well on Windows and Linux. To configure Git to use DiffMerge can be done by running the following command via terminal.</p>
+
+<pre><code class="bash">
+$ git config --global mergetool.prompt false
+$ git config --global mergetool.keepBackup false
+$ git config --global mergetool.keepTemporaries false
+
+$ git config --global diff.tool diffmerge
+$ git config --global difftool.diffmerge.cmd 'diffmerge "$LOCAL" "$REMOTE"'
+
+$ git config --global merge.tool diffmerge
+$ git config --global mergetool.diffmerge.cmd 'diffmerge --merge --result="$MERGED" "$LOCAL" "$(if test -f "$BASE"; then echo "$BASE"; else echo "$LOCAL"; fi)" "$REMOTE"'
+$ git config --global mergetool.diffmerge.trustExitCode true
+</code></pre>
+
+<p>The command will add the following config code in global <code>.gitconfig</code></p>
+
+<pre><code>[mergetool]
+  prompt = false
+  keepBackup = false
+  keepTemporaries = false
+
+[diff]
+    tool = diffmerge
+
+[difftool "diffmerge"]
+    cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
+
+[merge]
+    tool = diffmerge
+
+[mergetool "diffmerge"]
+    cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
+    trustExitCode = true
+</code></pre>
+
+<p>We can also directly edit the <code>.gitconfig</code> and manually add the config code.</p>
+
+<h2>WinMerge 2.x on Windows</h2>
+
+<p><a href="http://winmerge.org/">WinMerge</a> is an open source differencing and merging tool for Windows. It can compare both folders and files, presenting differences in a visual text format that is easy to understand and handle.
+At the time of writing this blog post, WinMerge 3 is still in progress of development and no release yet. WinMerge 3 will be modern compare/synchronization tool. It will be based on Qt library and cross-platform. You can use the same tool in Windows and in Linux.
+So for now and so on in this blog post, WinMerge term means WinMerge 2.x.</p>
+
+<p>After installing WinMerge, to configure it as diff and merge tool of Git is by adding /editing the following config setting to <code>C:\Users\{UserName}\.gitconfig</code></p>
+
+<pre><code class="bash">
+[mergetool]
+  prompt = false
+  keepBackup = false
+  keepTemporaries = false
+
+[merge]
+  tool = winmerge
+
+[mergetool "winmerge"]
+  name = WinMerge
+  trustExitCode = true
+  cmd = "/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe" -u -e -dl \"Local\" -dr \"Remote\" $LOCAL $REMOTE $MERGED
+
+[diff]
+  tool = winmerge
+
+[difftool "winmerge"]
+  name = WinMerge
+  trustExitCode = true
+  cmd = "/c/Program\\ Files\\ \\(x86\\)/WinMerge/WinMergeU.exe" -u -e $LOCAL $REMOTE
+</code></pre>
+
+<p>The config above also can be configured by Git bash shell with <code>&ndash;global</code> parameter instead of manual edit via text editor.</p>
+
+<p>Now, whenever you want it to launch diffs just use difftool[1]:</p>
+
+<pre><code class="bash"># diff the local file.m against the checked-in version
+$ git difftool file.m
+
+# diff the local file.m against the version in some-feature-branch
+$ git difftool some-feature-branch file.m
+
+# diff the file.m from the Build-54 tag to the Build-55 tag
+$ git difftool Build-54..Build-55 file.m
+</code></pre>
+
+<p>To resolve merge conflicts
+<code>
+$ git mergetool
+</code></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/">http://twobitlabs.com/2011/08/install-diffmerge-git-mac-os-x/</a></li>
+<li><a href="http://winmerge.org/">http://winmerge.org/</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Reset Git Credential on OS X Keychain]]></title>
+    <link href="http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain/"/>
+    <updated>2016-11-09T12:40:34+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2016/11/09/reset-git-credential-on-os-x-keychain</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/images/logo/git.png">
+This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past.</p>
+
+<p>I got a condition which I have just changed my git password. Surely I cannot pull or push since my local credential was not valid anymore. When I run <code>git config &ndash;list</code>, I believe my git password stored on OS X Keychain. The simple way I do was running a command via terminal :</p>
+
+<pre><code class="bash">$ git config credential.helper osxkeychain
+</code></pre>
+
+<p>I was then prompted to input my username and password. By inputing my username and new password everything back to normal.</p>
+
+<p>If you want it to apply globally just append parameter <code> &ndash;global </code> to the command.
+<code>bash
+$ git config --global credential.helper osxkeychain
+</code></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/20195304/how-to-update-password-for-git">http://stackoverflow.com/questions/20195304/how-to-update-password-for-git</a></li>
+</ol>
+
 ]]></content>
   </entry>
   
@@ -468,6 +562,8 @@ The snipped code above just print text and write it to a text file. We just want
 
 
 <p>The last is rebuild the above code on selected IDE. We should not got any errors once the IDE can detect the <a href="http://www.boost.org/">Boost</a> directory path.</p>
+
+<p>The sample of this article can be downloaded <a href="https://github.com/neutrofoton/SimpleBoost">here</a></p>
 
 <p><h4>Reference<h4>
 <ol type="1">
