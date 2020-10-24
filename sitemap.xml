@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://neutrofoton.github.io/blog/2020/10/23/pptp-on-ubuntu/</loc>
+<lastmod>2020-10-23T12:31:07+07:00</lastmod>
+</url>
+<url>
 <loc>http://neutrofoton.github.io/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/</loc>
 <lastmod>2018-09-16T08:48:43+07:00</lastmod>
 </url>
@@ -153,10 +157,10 @@
 <lastmod>2012-08-03T18:29:08+07:00</lastmod>
 </url>
 <url>
-<loc>http://neutrofoton.github.io/blog/archives/</loc>
+<loc>http://neutrofoton.github.io/</loc>
 </url>
 <url>
-<loc>http://neutrofoton.github.io/</loc>
+<loc>http://neutrofoton.github.io/blog/archives/</loc>
 </url>
 <url>
 <loc>http://neutrofoton.github.io/about/</loc>

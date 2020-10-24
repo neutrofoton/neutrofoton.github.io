@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ASP.NET Session State in Database - neutrofoton</title>
+  <title>PPTP on Ubuntu - neutrofoton</title>
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="At some point we need to store information when dealing with web application.
-Storing information in web application can be implemented in some ways &hellip;">
+  <meta name="description" content="Previously, I have posted how to connect macOS to VPN server through PPTP protocol. This post decribed how to do the same thing for Ubuntu. I used &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ Storing information in web application can be implemented in some ways &hellip;"
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/">
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2020/10/23/pptp-on-ubuntu/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
@@ -108,7 +107,7 @@ article img, article video, article .flash-video{
   
   <header>
     
-      <h1 class="entry-title">ASP.NET Session State in Database</h1>
+      <h1 class="entry-title">PPTP on Ubuntu</h1>
     
     
       <p class="meta">
@@ -117,7 +116,7 @@ article img, article video, article .flash-video{
 
 
 
-<time class='entry-date' datetime='2013-07-22T14:12:34+07:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>2:12 pm</span></time>
+<time class='entry-date' datetime='2020-10-23T12:31:07+07:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2020</span></span> <span class='time'>12:31 pm</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
@@ -127,66 +126,25 @@ article img, article video, article .flash-video{
   </header>
 
 
-<div class="entry-content"><p>At some point we need to store information when dealing with web application.
-Storing information in web application can be implemented in some ways such as session and cookies.</p>
+<div class="entry-content"><p>Previously, I have posted how to connect <a href="blog/2017/11/22/pptp-on-macos/"/>macOS to VPN server through PPTP protocol</a>. This post decribed how to do the same thing for Ubuntu. I used Ubuntu 18.04.3 LTS for testing.</p>
 
-<p>Dealing with session case, previously I never got a situation where I should store the session state in persistance way till I got a condition implementing this way.</p>
+<p>The first step is installing PPTP client for Ubuntu.</p>
 
-<p>The scenario is we want to implement load balancer to our applications and services (web service, wcf) that hosted in IIS. The aim of this enhancement basically to improve availability and scalability of existing in house application without doing huge refactoring.</p>
-
-<p>In this post I just want to share the short steps I did during researching implementing session state on a database.
-First of all open command prompt and navigate to .NET framework installation path. In this case, my installation path is <code>C:\Windows\Microsoft.NET\Framework64\v4.0.30319></code></p>
-
-<p>We will use a tool called <code>aspnet_regsql.exe</code> that shipped with .NET framework installation to generate database that will be used to store session state. To display detail argument needed by this tool we can use the following command:</p>
-
-<figure class='code'><figcaption><span>aspnet_regsql</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe /?
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get -y install pptp-linux
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>Create VPN configuration file</p>
 
-
-<figure class='code'><figcaption><span>generate session state database</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vctreestatus'><span class='line'>C:\Windows\Microsoft.NET\Framework64\v4.0.30319&gt;aspnet_regsql.exe -ssadd -d {databaseName} -S {server\instance} -sstype c -U {username} -P {password}
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo nano /etc/ppp/peers/myPPTP
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The command will create database, tables and store procedures.
-In web.config, don’t forget to add session state configuration by pointing the generated database.</p>
+<p>paste the following script</p>
 
-<figure class='code'><figcaption><span>session state configuration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;system.web&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;sessionstate</span> <span class="na">mode=</span><span class="s">&quot;SQLServer&quot;</span> <span class="na">allowcustomsqldatabase=</span><span class="s">&quot;true&quot;</span> <span class="na">sqlconnectionstring=</span><span class="s">&quot;Data Source={server\instance};Initial Catalog={databaseName}; user={username}; password={password}&quot;</span> <span class="na">cookieless=</span><span class="s">&quot;false&quot;</span> <span class="na">timeout=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">&lt;/sessionstate&gt;</span>
-</span><span class='line'><span class="nt">&lt;/system.web&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To test our session storage, just create simple aspx page.</p>
-
-<figure class='code'><figcaption><span>sample.aspx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='aspx-cs'><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnAddSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Add Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnAddSession_Click&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;asp:button</span> <span class="na">id=</span><span class="s">&quot;btnRemoveSession&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;Remove Session&quot;</span> <span class="na">onclick=</span><span class="s">&quot;btnRemoveSession_Click&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;br&gt;</span>
-</span><span class='line'><span class="nt">&lt;asp:label</span> <span class="na">id=</span><span class="s">&quot;ctlLblSessionDisplay&quot;</span> <span class="na">runat=</span><span class="s">&quot;server&quot;</span> <span class="na">text=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;/asp:label&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>sample.aspx.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -203,24 +161,55 @@ In web.config, don’t forget to add session state configuration by pointing the
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">Page_Load</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">]</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">Session</span><span class="p">[</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>        <span class="n">ctlLblSessionDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">&quot;NO Session&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnAddSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">,</span> <span class="s">&quot;Hello&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">protected</span> <span class="k">void</span> <span class="nf">btnRemoveSession_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">Session</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">Constant</span><span class="p">.</span><span class="n">SessionKey</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pty <span class="s2">&quot;pptp IP_ADDRESS --nolaunchpppd --debug&quot;</span>
+</span><span class='line'>name USERNAME
+</span><span class='line'>password PASSWORD
+</span><span class='line'>remotename PPTP
+</span><span class='line'>require-mppe-128
+</span><span class='line'>require-mschap-v2
+</span><span class='line'>refuse-eap
+</span><span class='line'>refuse-pap
+</span><span class='line'>refuse-chap
+</span><span class='line'>refuse-mschap
+</span><span class='line'>noauth
+</span><span class='line'>debug
+</span><span class='line'>persist
+</span><span class='line'>maxfail 0
+</span><span class='line'>defaultroute
+</span><span class='line'>replacedefaultroute
+</span><span class='line'>usepeerdns
 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then save and exit the file. Before executing VPN connection, change the file security attribute.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod <span class="m">600</span>  /etc/ppp/peers/myPPTP
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To connect to the VPN server, type the following command.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pon myPPTP
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To disconnect from the VPN server, run the following command.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>poff myPPTP
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you fail connect to the VPN server, please check the firewall configuration.</p>
+
+<h1>References</h1>
+
+<ol>
+<li><a href="https://support.strongvpn.com/hc/en-us/articles/360003513553-PPTP-Setup-Debian-Ubuntu-Command-Line">https://support.strongvpn.com/hc/en-us/articles/360003513553-PPTP-Setup-Debian-Ubuntu-Command-Line</a></li>
+<li><a href="https://www.networkinghowtos.com/howto/connect-to-a-pptp-vpn-server-from-ubuntu-linux/">https://www.networkinghowtos.com/howto/connect-to-a-pptp-vpn-server-from-ubuntu-linux/</a></li>
+</ol>
 
 </div>
 
@@ -239,12 +228,12 @@ In web.config, don’t forget to add session state configuration by pointing the
 
 
 
-<time class='entry-date' datetime='2013-07-22T14:12:34+07:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>2:12 pm</span></time>
+<time class='entry-date' datetime='2020-10-23T12:31:07+07:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2020</span></span> <span class='time'>12:31 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/aspnet/'>aspnet</a>, <a class='category' href='/blog/categories/csharp/'>csharp</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>
   
 </span>
 
@@ -253,7 +242,7 @@ In web.config, don’t forget to add session state configuration by pointing the
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2020/10/23/pptp-on-ubuntu/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2020/10/23/pptp-on-ubuntu/" >Tweet</a>
   
   
   
@@ -264,10 +253,8 @@ In web.config, don’t forget to add session state configuration by pointing the
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/09/19/mono-on-os-x-10-dot-8-mountain-lion/" title="Previous Post: Mono on OS X 10.8 Mountain Lion">&laquo; Mono on OS X 10.8 Mountain Lion</a>
+        <a class="basic-alignment left" href="/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/" title="Previous Post: Configure PHP and Virtual Host macOS High Sierra">&laquo; Configure PHP and Virtual Host macOS High Sierra</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/08/29/generic-singleton-pattern-in-c-number/" title="Next Post: Generic Singleton Pattern in C#">Generic Singleton Pattern in C# &raquo;</a>
       
     </p>
   </footer>
@@ -504,8 +491,8 @@ In web.config, don’t forget to add session state configuration by pointing the
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/';
-        var disqus_url = 'http://neutrofoton.github.io/blog/2013/07/22/asp-dot-net-session-state-in-database/';
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2020/10/23/pptp-on-ubuntu/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2020/10/23/pptp-on-ubuntu/';
         var disqus_script = 'embed.js';
       
     (function () {
