@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="Previously, I have posted how to connect macOS to VPN server through PPTP protocol. This post decribed how to do the same thing for Ubuntu. I used &hellip;">
+  <meta name="description" content="Sometime we get into a condition in which we need to create POJO classes from an existing database. It could take time if the database has many &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +104,180 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/">Generate POJO and Hibernate Mapping Using Hibernate Tools</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2020-11-30T18:13:54+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2020</span></span> <span class='time'>6:13 pm</span></time>
+        
+           | <a href="/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sometime we get into a condition in which we need to create POJO classes from an existing database. It could  take time if the database has many tables. Instead of manually create them, we could use <a href="https://docs.jboss.org/tools/4.1.0.Final/en/hibernatetools/html_single/index.html">Hibernate Tool</a>. Hibernate Tools is an eclipse plugin that can be installed from the eclipse marketplace.</p>
+
+<p>In this post, we use Spring Tool Suite (STS) 4 instead of directly use the eclipse version of the IDE. Meanwhile the database we use is PostgreSQL. It should be applicable to any other database.</p>
+
+<p>The steps of using Hibernate Tools is summarized as follow.
+I append many screenshots on this post in order the steps are easier to follow.</p>
+
+<h4>Step 1 : Install Hibernate Tools plugin</h4>
+
+<p>To install Hibernate Tools plugin, go to menu <code> Help > Eclipse Marketplace </code>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig01.png"></p>
+
+<p>Enter <code>Hibernate Tools</code> in the search field.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig02.png"></p>
+
+<p>Follow the installation step until the installation success and finish. Eclipse will show us a pop up message to restart it once the installation finished.</p>
+
+<h4>Step 2 : Create Java Maven project</h4>
+
+<p>Before building a connection to the database, we will create a maven project that contains a hibernate configuration file and where the generated code will be placed. The following figures show the maven project configuration setting.</p>
+
+<p>First, ensure we are in the <code>Java persepective</code> mode. From the menu <code>File > New > Other&hellip;</code> select <code>Maven Project</code> as the following figure.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig03.png"></p>
+
+<p>Select the checked box of <code>Create a simple project</code> then press <code>Next</code>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig04.png"></p>
+
+<p>Fill the <code>Group Id</code> and <code>Artifact Id</code>. Select <code>jar</code> for the <code>Packaging</code> option, then click <code>Finish</code></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig05.png"></p>
+
+<p>Create a namespace in the maven project where the generated code will be placed.
+<img class="center" src="/images/post/2020-11-30-fig06.png"></p>
+
+<p>The project structure should look like the following picture.
+<img class="center" src="/images/post/2020-11-30-fig07.png"></p>
+
+<p>Once the project skeleton constructued, edit the <code>pom.xml</code> by adding dependencies of the hibernate and database driver. The latest jar version could be found in <a href="https://mvnrepository.com/">Maven Repository</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>io.neutrofoton.lab<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>hibernatereverse<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>0.0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>org.hibernate<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>hibernate-core<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;version&gt;</span>5.4.24.Final<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>org.postgresql<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>postgresql<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;version&gt;</span>42.2.18<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>      
+</span><span class='line'>  
+</span><span class='line'> <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Step 3 : Create Hibernate configuration</h4>
+
+<p>Before creating Hibernate configuration file, we need to switch to <code>Hibernate perspective</code> in the eclipse by opening menu <code>Window > Perspective > Open Perspective > Other&hellip;</code>. Then select <code>Hibernate</code> on the perspective list.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig08.png"></p>
+
+<p>Once we are in the <code>Hibernate perspective</code>, we can create Hibernate configuration from menu <code>File > Hibernate Configuration File (*.cfg.xml)</code></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig09.png"></p>
+
+<p>Placed the configuration file in the directory <code>src/main/java</code>, then click <code>Next</code>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig10.png"></p>
+
+<p>On the next dialog wizard, fill the configuration item according to our database specification. The database specification items to fill are database dialect, database driver, connection URL, default schema (if we want to generate for a specific schema, otherwise left it empty if we want to generate for all), username and password. On the dialog wizard, ensure to select the check box of <code>Create a console configuration</code> option.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig11.png"></p>
+
+<p>In the <code>Hibernate Configurations</code> pane, the hibernate configuration that has been created should be listed in it. If the created hibernate configuration is not listed, press the <code>Refresh or Rebuild configuration</code> button in the top right corner of the pane. The generated Hibernate configuration should look like the following figure. We could expand the Database element on the Hibernate configuration to ensure we have a valid database connection.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig12.png"></p>
+
+<h4>Step 4 : Run Hibernate code generation</h4>
+
+<p>To run Hibernate code generation, ensure we select the active <code>Hibernate Configuration</code> in the Hibernate configuration pane. Then, open the menu of <code>Run > Hibernate Code Generation Configuration&hellip;</code></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig13.png"></p>
+
+<p>In the <code>Hibernate Code Generation Configuration</code>, fill the package where the domain class will be in.
+<img class="center" src="/images/post/2020-11-30-fig14.png"></p>
+
+<p>In the <code>Exporter</code> tab, select <code>Use Java 5 syntax</code> and <code>Generate EJB3 annotations</code>. In the exporter list option, we can select items in the list that we need. In this post we only select <code>Domain code</code> that has annotation as Hibernate mapping. Finally click <code>Apply</code> and <code>Run</code> to generate the domain code.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig15.png"></p>
+
+<h3>NOTES:</h3>
+
+<p>If the annotation does not generated in the domain class, open the <code>Hibernate Configuration</code> and edit it. Then change the <code>Hibernate Version</code> to <code>5.2</code>. Finally run again as we have done on <strong>step 4</strong>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig16.png"></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig17.png"></p>
+
+<h1>References</h1>
+
+<ol>
+<li><a href="https://docs.jboss.org/tools/4.1.0.Final/en/hibernatetools/html_single/index.html">https://docs.jboss.org/tools/4.1.0.Final/en/hibernatetools/html_single/index.html</a></li>
+<li><a href="https://stackoverflow.com/questions/50837574/annotation-not-created-when-generating-hibernate-mapping-files">https://stackoverflow.com/questions/50837574/annotation-not-created-when-generating-hibernate-mapping-files</a></li>
+<li><a href="https://www.youtube.com/watch?v=KO_IdJbSJkI&amp;ab_channel=CodeJava">https://www.youtube.com/watch?v=KO_IdJbSJkI&amp;ab_channel=CodeJava</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2132,458 +2306,6 @@ To ensure that the commits appear as performed by USERNAME, we can configure the
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-12-29T14:52:23+07:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:52 pm</span></time>
-        
-           | <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/images/logo/cpp.png"></p>
-
-<p><code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
-
-<p>The template class definition of <code>priority_queue</code> is as follow</p>
-
-<figure class='code'><figcaption><span>template definition</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">template</span> <span class="o">&lt;</span>
-</span><span class='line'>   <span class="k">class</span> <span class="nc">Type</span><span class="p">,</span>
-</span><span class='line'>   <span class="k">class</span> <span class="nc">Container</span><span class="o">=</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span>
-</span><span class='line'>   <span class="k">class</span> <span class="nc">Compare</span><span class="o">=</span><span class="n">less</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Container</span><span class="o">::</span><span class="n">value_type</span><span class="o">&gt;</span> <span class="o">&gt;</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">priority_queue</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A user-provided compare can be supplied to change the ordering, e.g. using <code>std::greater<T></code> would cause the smallest element to appear as the top(). We also can create custom comparator for our need.</p>
-
-<p>Many samples available on net about <code>priority_queue</code> with default compare parameter. In this article let&rsquo;s create samples by specifying the compare parameter template.</p>
-
-<figure class='code'><figcaption><span>priority_queue with std::greater</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="c1">//helper function displays sorted data</span>
-</span><span class='line'><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
-</span><span class='line'><span class="kt">void</span> <span class="n">printQueue</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">q</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">q</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>        <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">void</span> <span class="n">SamplePriorityQueue</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">greater</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="nl">n</span> <span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
-</span><span class='line'>        <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">printQueue</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The code above uses <code>std::greater</code> as a compare parameter template.</p>
-
-<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>0
-</span><span class='line'>1
-</span><span class='line'>2
-</span><span class='line'>3
-</span><span class='line'>4
-</span><span class='line'>5
-</span><span class='line'>6
-</span><span class='line'>7
-</span><span class='line'>8
-</span><span class='line'>9
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Beside the <code>std::less</code> or <code>std::greater</code>, we can create our custom comparator with lamda or custom class or struct.</p>
-
-<figure class='code'><figcaption><span>lamda as compare parameter</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SamplePriorityQueueWithLamda</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// using lambda to compare elements.</span>
-</span><span class='line'>    <span class="k">auto</span> <span class="n">compare</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">lhs</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rhs</span><span class="p">)</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="k">return</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">;</span>
-</span><span class='line'>                <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">decltype</span><span class="p">(</span><span class="n">compare</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">(</span><span class="n">compare</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="nl">n</span> <span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
-</span><span class='line'>        <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">printQueue</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To use the custom comparator, we just need to pass it as the third parameter of <code>priority_queue</code> template</p>
-
-<figure class='code'><figcaption><span>custom comparator</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">struct</span> <span class="n">CustomCompare</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>sample with custom comparator</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SamplePriorityQueueWithCustomComparator</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">CustomCompare</span> <span class="o">&gt;</span> <span class="n">pq</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">printQueue</span><span class="p">(</span><span class="n">pq</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The data stored in <code>priority_queue</code> is not limited to basic data type.
-We can store object in it. Let&rsquo;s create a sample of it.
-Let&rsquo;s say we have a <code>Person</code> class.</p>
-
-<figure class='code'><figcaption><span>Person.hpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#ifndef Person_hpp</span>
-</span><span class='line'><span class="cp">#define Person_hpp</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;string&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">Person</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">Person</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">age</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="o">~</span><span class="n">Person</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">string</span> <span class="n">getName</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">getAge</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">friend</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">friend</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="o">&gt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">private</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#endif </span><span class="cm">/* Person_hpp */</span><span class="cp"></span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Person.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &quot;Person.hpp&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">bool</span> <span class="k">operator</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">bool</span> <span class="k">operator</span> <span class="o">&gt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Person</span><span class="o">::</span><span class="n">Person</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Person</span><span class="o">::</span><span class="n">Person</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span><span class="n">name</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">age</span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Person</span><span class="o">::~</span><span class="n">Person</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">string</span> <span class="n">Person</span><span class="o">::</span><span class="n">getName</span><span class="p">()</span> <span class="k">const</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">Person</span><span class="o">::</span><span class="n">getAge</span><span class="p">()</span> <span class="k">const</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">age</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On the <code>Person</code> class, we have friend overloading methods, right angle bracket and left angle bracket. The methods act as comparation operator. The operator overloading is needed if we want to use <code>std::less</code> or <code>std::greater</code>.</p>
-
-<figure class='code'><figcaption><span>sample priority_queue stores object</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SamplePriorityQueueStoreObject</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personVector</span> <span class="o">=</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 1&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
-</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 2&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span>
-</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 3&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span>
-</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 4&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
-</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 5&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;======== Less Priority Queue ======= &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">less</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;::</span><span class="n">value_type</span><span class="o">&gt;&gt;</span> <span class="n">pqueue_less</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//fill pqueue_less</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">personVector</span><span class="p">.</span><span class="n">cbegin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">personVector</span><span class="p">.</span><span class="n">cend</span><span class="p">();</span> <span class="n">it</span><span class="o">++</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">pqueue_less</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//iterate,display and pop</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">pqueue_less</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">Person</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pqueue_less</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
-</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; : &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">pqueue_less</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;======== Greater Priority Queue ======= &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">greater</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;::</span><span class="n">value_type</span><span class="o">&gt;&gt;</span> <span class="n">pqueue_greater</span><span class="p">;</span>
-</span><span class='line'>    <span class="c1">//fill pqueue_greater</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">personVector</span><span class="p">.</span><span class="n">cbegin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">personVector</span><span class="p">.</span><span class="n">cend</span><span class="p">();</span> <span class="n">it</span><span class="o">++</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">pqueue_greater</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//iterate,display and pop</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">pqueue_greater</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">Person</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pqueue_greater</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
-</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; : &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">pqueue_greater</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>References</h2>
-
-<ol>
-<li><a href="http://en.cppreference.com/w/cpp/container/priority_queue">http://en.cppreference.com/w/cpp/container/priority_queue</a></li>
-<li><a href="https://support.microsoft.com/en-us/kb/837697">https://support.microsoft.com/en-us/kb/837697</a></li>
-<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html</a></li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2604,6 +2326,10 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/">Generate POJO and Hibernate Mapping Using Hibernate Tools</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2020/10/23/pptp-on-ubuntu/">PPTP on Ubuntu</a>
@@ -2629,10 +2355,6 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
         <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2017/04/17/import-existing-git-repository-to-another/">Import Existing Git Repository to Another</a>
-      </li>
-    
   </ul>
 </section>
 <!--
@@ -2656,7 +2378,7 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
     <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/java/index.html">java ( 4 )</a></li>
+    <li><a href="/blog/categories/java/index.html">java ( 5 )</a></li>
     
     
     <li><a href="/blog/categories/mono/index.html">mono ( 4 )</a></li>
@@ -2668,7 +2390,7 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
     <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 2 )</a></li>
+    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 3 )</a></li>
     
     
     <li><a href="/blog/categories/xcode/index.html">xcode ( 4 )</a></li>
@@ -2731,10 +2453,10 @@ Let&rsquo;s say we have a <code>Person</code> class.</p>
 <li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
 <li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
 <li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
-<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='3'>eclipse</a></li>
 <li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
 <li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
-<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='5'>java</a></li>
 <li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
 <li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='6'>linux</a></li>
 <li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>

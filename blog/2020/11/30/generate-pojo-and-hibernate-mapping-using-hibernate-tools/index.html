@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Generate POJO and Hibernate Mapping Using Hibernate Tools - neutrofoton</title>
+  <meta name="author" content="neutro">
+
+  
+  <meta name="description" content="Sometime we get into a condition in which we need to create POJO classes from an existing database. It could take time if the database has many &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://neutrofoton.github.io/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="neutrofoton" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+article img {
+  border: 0;
+}
+aside.sidebar img {
+  border-color: #e0e0e0;
+}
+article img, article video, article .flash-video{
+  box-shadow: rgba(255,255,255,0.15) 0 1px 4px;
+}
+</style>
+
+<!-- badge -->
+<style type="text/css">
+  .badge1 {
+  position:relative;
+  }
+  .badge1[data-badge]:after {
+  content: attr(data-badge);
+  position: absolute;
+  /*top: -10px;*/
+  right: -30px;
+  font-size: .7em;
+  background: #c57373;
+  color: white;
+  /* width: 18px; */
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 450%;
+  box-shadow: 0 0 1px #333;
+
+  padding: 2px;
+  }
+</style>
+
+  
+
+
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">neutrofoton</a></h1>
+  
+    <h2>Science, Technology and Life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="neutrofoton.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!--<li><a href="/about">About</a></li>-->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Generate POJO and Hibernate Mapping Using Hibernate Tools</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2020-11-30T18:13:54+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2020</span></span> <span class='time'>6:13 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Sometime we get into a condition in which we need to create POJO classes from an existing database. It could  take time if the database has many tables. Instead of manually create them, we could use <a href="https://docs.jboss.org/tools/4.1.0.Final/en/hibernatetools/html_single/index.html">Hibernate Tool</a>. Hibernate Tools is an eclipse plugin that can be installed from the eclipse marketplace.</p>
+
+<p>In this post, we use Spring Tool Suite (STS) 4 instead of directly use the eclipse version of the IDE. Meanwhile the database we use is PostgreSQL. It should be applicable to any other database.</p>
+
+<p>The steps of using Hibernate Tools is summarized as follow.
+I append many screenshots on this post in order the steps are easier to follow.</p>
+
+<h4>Step 1 : Install Hibernate Tools plugin</h4>
+
+<p>To install Hibernate Tools plugin, go to menu <code> Help > Eclipse Marketplace </code>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig01.png"></p>
+
+<p>Enter <code>Hibernate Tools</code> in the search field.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig02.png"></p>
+
+<p>Follow the installation step until the installation success and finish. Eclipse will show us a pop up message to restart it once the installation finished.</p>
+
+<h4>Step 2 : Create Java Maven project</h4>
+
+<p>Before building a connection to the database, we will create a maven project that contains a hibernate configuration file and where the generated code will be placed. The following figures show the maven project configuration setting.</p>
+
+<p>First, ensure we are in the <code>Java persepective</code> mode. From the menu <code>File > New > Other&hellip;</code> select <code>Maven Project</code> as the following figure.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig03.png"></p>
+
+<p>Select the checked box of <code>Create a simple project</code> then press <code>Next</code>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig04.png"></p>
+
+<p>Fill the <code>Group Id</code> and <code>Artifact Id</code>. Select <code>jar</code> for the <code>Packaging</code> option, then click <code>Finish</code></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig05.png"></p>
+
+<p>Create a namespace in the maven project where the generated code will be placed.
+<img class="center" src="/images/post/2020-11-30-fig06.png"></p>
+
+<p>The project structure should look like the following picture.
+<img class="center" src="/images/post/2020-11-30-fig07.png"></p>
+
+<p>Once the project skeleton constructued, edit the <code>pom.xml</code> by adding dependencies of the hibernate and database driver. The latest jar version could be found in <a href="https://mvnrepository.com/">Maven Repository</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>io.neutrofoton.lab<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>hibernatereverse<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>0.0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>org.hibernate<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>hibernate-core<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;version&gt;</span>5.4.24.Final<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>org.postgresql<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>postgresql<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;version&gt;</span>42.2.18<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>      
+</span><span class='line'>  
+</span><span class='line'> <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Step 3 : Create Hibernate configuration</h4>
+
+<p>Before creating Hibernate configuration file, we need to switch to <code>Hibernate perspective</code> in the eclipse by opening menu <code>Window > Perspective > Open Perspective > Other&hellip;</code>. Then select <code>Hibernate</code> on the perspective list.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig08.png"></p>
+
+<p>Once we are in the <code>Hibernate perspective</code>, we can create Hibernate configuration from menu <code>File > Hibernate Configuration File (*.cfg.xml)</code></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig09.png"></p>
+
+<p>Placed the configuration file in the directory <code>src/main/java</code>, then click <code>Next</code>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig10.png"></p>
+
+<p>On the next dialog wizard, fill the configuration item according to our database specification. The database specification items to fill are database dialect, database driver, connection URL, default schema (if we want to generate for a specific schema, otherwise left it empty if we want to generate for all), username and password. On the dialog wizard, ensure to select the check box of <code>Create a console configuration</code> option.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig11.png"></p>
+
+<p>In the <code>Hibernate Configurations</code> pane, the hibernate configuration that has been created should be listed in it. If the created hibernate configuration is not listed, press the <code>Refresh or Rebuild configuration</code> button in the top right corner of the pane. The generated Hibernate configuration should look like the following figure. We could expand the Database element on the Hibernate configuration to ensure we have a valid database connection.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig12.png"></p>
+
+<h4>Step 4 : Run Hibernate code generation</h4>
+
+<p>To run Hibernate code generation, ensure we select the active <code>Hibernate Configuration</code> in the Hibernate configuration pane. Then, open the menu of <code>Run > Hibernate Code Generation Configuration&hellip;</code></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig13.png"></p>
+
+<p>In the <code>Hibernate Code Generation Configuration</code>, fill the package where the domain class will be in.
+<img class="center" src="/images/post/2020-11-30-fig14.png"></p>
+
+<p>In the <code>Exporter</code> tab, select <code>Use Java 5 syntax</code> and <code>Generate EJB3 annotations</code>. In the exporter list option, we can select items in the list that we need. In this post we only select <code>Domain code</code> that has annotation as Hibernate mapping. Finally click <code>Apply</code> and <code>Run</code> to generate the domain code.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig15.png"></p>
+
+<h3>NOTES:</h3>
+
+<p>If the annotation does not generated in the domain class, open the <code>Hibernate Configuration</code> and edit it. Then change the <code>Hibernate Version</code> to <code>5.2</code>. Finally run again as we have done on <strong>step 4</strong>.</p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig16.png"></p>
+
+<p><img class="center" src="/images/post/2020-11-30-fig17.png"></p>
+
+<h1>References</h1>
+
+<ol>
+<li><a href="https://docs.jboss.org/tools/4.1.0.Final/en/hibernatetools/html_single/index.html">https://docs.jboss.org/tools/4.1.0.Final/en/hibernatetools/html_single/index.html</a></li>
+<li><a href="https://stackoverflow.com/questions/50837574/annotation-not-created-when-generating-hibernate-mapping-files">https://stackoverflow.com/questions/50837574/annotation-not-created-when-generating-hibernate-mapping-files</a></li>
+<li><a href="https://www.youtube.com/watch?v=KO_IdJbSJkI&amp;ab_channel=CodeJava">https://www.youtube.com/watch?v=KO_IdJbSJkI&amp;ab_channel=CodeJava</a></li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      <a href="javascript:window.print()" class="print-button">Print</a>
+
+
+  
+
+<span class="byline author vcard">Posted by <span class="fn">neutro</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2020-11-30T18:13:54+07:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2020</span></span> <span class='time'>6:13 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/eclipse/'>eclipse</a>, <a class='category' href='/blog/categories/java/'>java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://neutrofoton.github.io/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/" data-via="" data-counturl="http://neutrofoton.github.io/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2020/10/23/pptp-on-ubuntu/" title="Previous Post: PPTP on Ubuntu">&laquo; PPTP on Ubuntu</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section id="comments">
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Me</h1>
+  <img class="left" src="/images/me.png" alt="Drawing" style="width: 100px;height:100px"/>
+  <p>
+    No many things to write about me here, except the one who enjoy feeding koi fish and have interest in computer technology. Especially programming, control engineering, artificial intelligent and math. Please feel free to update me if I miss something in blog post. You can reach me at <i class="fa fa-envelope-o"></i>neutrofoton[at]gmail.com
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/">Generate POJO and Hibernate Mapping Using Hibernate Tools</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2020/10/23/pptp-on-ubuntu/">PPTP on Ubuntu</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/09/16/configure-php-and-virtual-host-macos-high-sierra/">Configure PHP and Virtual Host macOS High Sierra</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/11/22/pptp-on-macos/">PPTP on macOS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
+      </li>
+    
+  </ul>
+</section>
+<!--
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list">
+    
+    
+    <li><a href="/blog/categories/csharp/index.html">csharp ( 10 )</a></li>
+    
+    
+    <li><a href="/blog/categories/php/index.html">php ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/macos/index.html">macos ( 14 )</a></li>
+    
+    
+    <li><a href="/blog/categories/apache/index.html">apache ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/java/index.html">java ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mono/index.html">mono ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/aspnet/index.html">aspnet ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xcode/index.html">xcode ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/xamarin/index.html">xamarin ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/octopress/index.html">octopress ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/spring/index.html">spring ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/code-block/index.html">code block ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/visual-studio/index.html">visual studio ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/linux/index.html">linux ( 6 )</a></li>
+    
+    
+    <li><a href="/blog/categories/windows/index.html">windows ( 3 )</a></li>
+    
+    
+    <li><a href="/blog/categories/cpp/index.html">cpp ( 5 )</a></li>
+    
+    
+    <li><a href="/blog/categories/virtualbox/index.html">virtualbox ( 2 )</a></li>
+    
+    
+    <li><a href="/blog/categories/git/index.html">git ( 4 )</a></li>
+    
+    
+    <li><a href="/blog/categories/arduino/index.html">arduino ( 1 )</a></li>
+    
+    
+    <li><a href="/blog/categories/c/index.html">c ( 1 )</a></li>
+    
+  </ul>
+</section>
+-->
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/apache/' class='badge1' data-badge='5'>apache</a></li>
+<li class='category'><a href='/blog/categories/arduino/' class='badge1' data-badge='1'>arduino</a></li>
+<li class='category'><a href='/blog/categories/aspnet/' class='badge1' data-badge='1'>aspnet</a></li>
+<li class='category'><a href='/blog/categories/c/' class='badge1' data-badge='1'>c</a></li>
+<li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
+<li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
+<li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='3'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
+<li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='5'>java</a></li>
+<li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
+<li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='6'>linux</a></li>
+<li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>
+<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='1'>mathematic</a></li>
+<li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
+<li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
+<li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>
+<li class='category'><a href='/blog/categories/pattern/' class='badge1' data-badge='2'>pattern</a></li>
+<li class='category'><a href='/blog/categories/php/' class='badge1' data-badge='4'>php</a></li>
+<li class='category'><a href='/blog/categories/spring/' class='badge1' data-badge='1'>spring</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/' class='badge1' data-badge='2'>virtualbox</a></li>
+<li class='category'><a href='/blog/categories/visual-studio/' class='badge1' data-badge='2'>visual studio</a></li>
+<li class='category'><a href='/blog/categories/windows/' class='badge1' data-badge='3'>windows</a></li>
+<li class='category'><a href='/blog/categories/xamarin/' class='badge1' data-badge='1'>xamarin</a></li>
+<li class='category'><a href='/blog/categories/xcode/' class='badge1' data-badge='4'>xcode</a></li>
+
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'neutrofoton',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos',
+            skip_repo: 'neutrofoton'+'.github.io'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section>
+  <h1>Site I Visit</h1>
+  <ul id="site_i_visit">
+
+      <li class="post">
+        <a href="http://www.cppreference.com">C++ Reference</a>
+      </li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2020 - neutro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'neutrofoton';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://neutrofoton.github.io/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/';
+        var disqus_url = 'http://neutrofoton.github.io/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

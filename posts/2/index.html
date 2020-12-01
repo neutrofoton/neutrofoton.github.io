@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="This post basically just a note for my self. In case I got the same condition in the next, it can help me to remember what I did in the past. I got &hellip;">
+  <meta name="description" content="priority_queue is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +104,458 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">C++ Priority Queue With Comparator</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-12-29T14:52:23+07:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:52 pm</span></time>
+        
+           | <a href="/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/cpp.png"></p>
+
+<p><code>priority_queue</code> is categorized as a STL container adaptor. It is like a queue that keeps its element in sorted order. Instead of a strict FIFO ordering, the element at the head of the queue at any given time is the one with the highest priority.</p>
+
+<p>The template class definition of <code>priority_queue</code> is as follow</p>
+
+<figure class='code'><figcaption><span>template definition</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">template</span> <span class="o">&lt;</span>
+</span><span class='line'>   <span class="k">class</span> <span class="nc">Type</span><span class="p">,</span>
+</span><span class='line'>   <span class="k">class</span> <span class="nc">Container</span><span class="o">=</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span>
+</span><span class='line'>   <span class="k">class</span> <span class="nc">Compare</span><span class="o">=</span><span class="n">less</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Container</span><span class="o">::</span><span class="n">value_type</span><span class="o">&gt;</span> <span class="o">&gt;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">priority_queue</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A user-provided compare can be supplied to change the ordering, e.g. using <code>std::greater<T></code> would cause the smallest element to appear as the top(). We also can create custom comparator for our need.</p>
+
+<p>Many samples available on net about <code>priority_queue</code> with default compare parameter. In this article let&rsquo;s create samples by specifying the compare parameter template.</p>
+
+<figure class='code'><figcaption><span>priority_queue with std::greater</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="c1">//helper function displays sorted data</span>
+</span><span class='line'><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">printQueue</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">q</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">q</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="n">SamplePriorityQueue</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">greater</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="nl">n</span> <span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
+</span><span class='line'>        <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">printQueue</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code above uses <code>std::greater</code> as a compare parameter template.</p>
+
+<figure class='code'><figcaption><span>output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>0
+</span><span class='line'>1
+</span><span class='line'>2
+</span><span class='line'>3
+</span><span class='line'>4
+</span><span class='line'>5
+</span><span class='line'>6
+</span><span class='line'>7
+</span><span class='line'>8
+</span><span class='line'>9
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Beside the <code>std::less</code> or <code>std::greater</code>, we can create our custom comparator with lamda or custom class or struct.</p>
+
+<figure class='code'><figcaption><span>lamda as compare parameter</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SamplePriorityQueueWithLamda</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// using lambda to compare elements.</span>
+</span><span class='line'>    <span class="k">auto</span> <span class="n">compare</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">lhs</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="k">return</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">decltype</span><span class="p">(</span><span class="n">compare</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">(</span><span class="n">compare</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="nl">n</span> <span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
+</span><span class='line'>        <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">printQueue</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To use the custom comparator, we just need to pass it as the third parameter of <code>priority_queue</code> template</p>
+
+<figure class='code'><figcaption><span>custom comparator</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">struct</span> <span class="n">CustomCompare</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>sample with custom comparator</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SamplePriorityQueueWithCustomComparator</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">CustomCompare</span> <span class="o">&gt;</span> <span class="n">pq</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">printQueue</span><span class="p">(</span><span class="n">pq</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The data stored in <code>priority_queue</code> is not limited to basic data type.
+We can store object in it. Let&rsquo;s create a sample of it.
+Let&rsquo;s say we have a <code>Person</code> class.</p>
+
+<figure class='code'><figcaption><span>Person.hpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#ifndef Person_hpp</span>
+</span><span class='line'><span class="cp">#define Person_hpp</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;string&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">Person</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">Person</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">age</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="o">~</span><span class="n">Person</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">string</span> <span class="n">getName</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">getAge</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">friend</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">friend</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="o">&gt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* Person_hpp */</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Person.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &quot;Person.hpp&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">bool</span> <span class="k">operator</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">bool</span> <span class="k">operator</span> <span class="o">&gt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">getAge</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Person</span><span class="o">::</span><span class="n">Person</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Person</span><span class="o">::</span><span class="n">Person</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span><span class="n">name</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">age</span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Person</span><span class="o">::~</span><span class="n">Person</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">string</span> <span class="n">Person</span><span class="o">::</span><span class="n">getName</span><span class="p">()</span> <span class="k">const</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">Person</span><span class="o">::</span><span class="n">getAge</span><span class="p">()</span> <span class="k">const</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">age</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On the <code>Person</code> class, we have friend overloading methods, right angle bracket and left angle bracket. The methods act as comparation operator. The operator overloading is needed if we want to use <code>std::less</code> or <code>std::greater</code>.</p>
+
+<figure class='code'><figcaption><span>sample priority_queue stores object</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="nf">SamplePriorityQueueStoreObject</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personVector</span> <span class="o">=</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 1&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 2&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span>
+</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 3&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span>
+</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 4&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+</span><span class='line'>        <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Person 5&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;======== Less Priority Queue ======= &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">less</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;::</span><span class="n">value_type</span><span class="o">&gt;&gt;</span> <span class="n">pqueue_less</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//fill pqueue_less</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">personVector</span><span class="p">.</span><span class="n">cbegin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">personVector</span><span class="p">.</span><span class="n">cend</span><span class="p">();</span> <span class="n">it</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">pqueue_less</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//iterate,display and pop</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">pqueue_less</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Person</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pqueue_less</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; : &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">pqueue_less</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;======== Greater Priority Queue ======= &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Person</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">greater</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;::</span><span class="n">value_type</span><span class="o">&gt;&gt;</span> <span class="n">pqueue_greater</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//fill pqueue_greater</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">personVector</span><span class="p">.</span><span class="n">cbegin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">personVector</span><span class="p">.</span><span class="n">cend</span><span class="p">();</span> <span class="n">it</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">pqueue_greater</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//iterate,display and pop</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">pqueue_greater</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Person</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pqueue_greater</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; : &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">pqueue_greater</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://en.cppreference.com/w/cpp/container/priority_queue">http://en.cppreference.com/w/cpp/container/priority_queue</a></li>
+<li><a href="https://support.microsoft.com/en-us/kb/837697">https://support.microsoft.com/en-us/kb/837697</a></li>
+<li><a href="http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html">http://www.wrox.com/WileyCDA/WroxTitle/Professional-C-2nd-Edition.productCd-0470932449.html</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1678,104 +2130,6 @@ To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Create iOS Ipa for In-House Distribution</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-08T23:10:44+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:10 pm</span></time>
-        
-           | <a href="/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/08/create-ios-ipa-for-in-house-distribution/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/images/logo/ios.png"></p>
-
-<p>Couple of month ago in the era of iphone 6, the company I work for was officially migrate official mobile device from BlackBerry to iphone 6. By the time of migration, development team also got initiative request from users to create an app for android. On the other hand, we also want to anticipate another request for ios platform. To simplify the porting to another platform, we use <a href="https://en.wikipedia.org/wiki/HTML5">HTML5</a>, <a href="http://www.telerik.com/kendo-ui"/>Kendo UI</a> and <a href="https://cordova.apache.org/">Apache Cordova</a> to build the app. The app just consumes data from REST services. The other requirement is the app will not be published to App Store. We have internal mobile device management (MDM) called <a href="https://www.mobileiron.com/"/>MobileIron</a>.</p>
-
-<p>In this post, I will not write about how to build the app with Apache Cordova, I just want to focus on how to create ipa distribution package for in house enterprise distribution. The steps should be the same for app that is created with native. I also will not discuss about how to deploy to MDM.</p>
-
-<p>The first requirement is we have to be a member of <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a> which costs $299. The steps how to register is clearly explained in apple developer site.</p>
-
-<p>At the time of write this post, my development environment :</p>
-
-<ol type="1">
-<li> OS X El Capitan (10.11.3)</li>
-<li>Xcode (7.2)</li>
-<li>iphone 6 (iOS 9.2)</li>
-</ol>
-
-
-<p>Before we start create ipa package, ensure our code runs well as expected on iphone simulator.</p>
-
-<p>The steps of creating ipa package for distribution basically similar to deploying to real device for development as explained on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>.
-In this post, I will only capture the things that are difference between them.</p>
-
-<h2>Certificate</h2>
-
-
-<p>While creating certificate preparation in <a href="https://developer.apple.com/account/ios/certificate/create">Apple Developer</a> portal, showed its slightly difference from <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a>
-<img class="center" src="/images/post/2016-03-09-pic01.png"></p>
-
-<p>In this case, I choose <code>In-House and Ad Hoc </code> distribution option instead of <code>iOS App Development</code>, since we plan to create ipa package for In House distribution. If we notice upon the above screenshot, in the <code>Production</code> section has option for <code>In-House and Ad Hoc </code> distribution. Meanwhile on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> has <code>App Store and Ad Hoc</code>. The difference because of the apple id I used on this post is enrolled as an <a href="https://developer.apple.com/programs/enterprise/">iOS Developer Enterprise Program</a>, and on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">my previous post</a> uses Individual Apple Developer Program. The detail difference between them and other developer license schema can found <a href="https://developer.apple.com/support/compare-memberships/">here</a>.</p>
-
-<p>The rest of preparing certificate installation for production is the same as <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">certificate installation for development</a>.</p>
-
-<h2>App IDs</h2>
-
-
-<p>The step of registering app <code>Bundle ID</code> is the same as <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">the previous post</a>. If we already registered for development, we should not do it again.</p>
-
-<h2>Provisioning Profiles</h2>
-
-
-<p>Creating provisioning also similar to the creation Provisioning for Development. Except at the wizard option we need to choose one of in the <code>Distribution</code> group instead of <code>Development</code> group. In this sample I select <code>In House</code>, since the ipa package we created will be deployed via MDM.</p>
-
-<p><img class="center" src="/images/post/2016-03-09-pic02.png"></p>
-
-<p>The next step is opening Xcode and add apple id via Xcode <code>Proferences > Accounts</code> as I did on <a href="/blog/2016/03/08/deploying-ios-app-to-real-device/">previous post</a>.
-Now we should get the similar picture as follow.</p>
-
-<p><img class="center" src="/images/post/2016-03-09-pic03.png"></p>
-
-<p>Ensure <code>distribution profile</code> already downloaded. If not we can click download button on the list above of picture.</p>
-
-<p>The next thing is opening iOS project with Xcode and ensuring we select <code>Distribution Profile</code> we installed on <code>Code signing</code> section group both on <code>Project</code> and <code>Target</code>.</p>
-
-<p><img class="center" src="/images/post/2016-03-09-pic04.png">
-<img class="center" src="/images/post/2016-03-09-pic05.png"></p>
-
-<p>The next step is select <code>Product</code> menu > <code>Archive</code>, then follow the wizard.</p>
-
-<p><img class="center" src="/images/post/2016-03-09-pic06.png">
-<img class="center" src="/images/post/2016-03-09-pic07.png">
-<img class="center" src="/images/post/2016-03-09-pic08.png">
-<img class="center" src="/images/post/2016-03-09-pic09.png">
-<img class="center" src="/images/post/2016-03-09-pic10.png"></p>
-
-<p>When the wizard finish, by default Xcode will create ipa package for us on desktop.</p>
-
-<p>That&rsquo;s all my share and thanks for reading :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1798,6 +2152,10 @@ Now we should get the similar picture as follow.</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/">Generate POJO and Hibernate Mapping Using Hibernate Tools</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2020/10/23/pptp-on-ubuntu/">PPTP on Ubuntu</a>
@@ -1823,10 +2181,6 @@ Now we should get the similar picture as follow.</p>
         <a href="/blog/2017/05/04/arduino-and-neo-6m-gps-module/">Arduino and NEO-6M GPS Module</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2017/04/17/import-existing-git-repository-to-another/">Import Existing Git Repository to Another</a>
-      </li>
-    
   </ul>
 </section>
 <!--
@@ -1850,7 +2204,7 @@ Now we should get the similar picture as follow.</p>
     <li><a href="/blog/categories/mysql/index.html">mysql ( 1 )</a></li>
     
     
-    <li><a href="/blog/categories/java/index.html">java ( 4 )</a></li>
+    <li><a href="/blog/categories/java/index.html">java ( 5 )</a></li>
     
     
     <li><a href="/blog/categories/mono/index.html">mono ( 4 )</a></li>
@@ -1862,7 +2216,7 @@ Now we should get the similar picture as follow.</p>
     <li><a href="/blog/categories/pattern/index.html">pattern ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 2 )</a></li>
+    <li><a href="/blog/categories/eclipse/index.html">eclipse ( 3 )</a></li>
     
     
     <li><a href="/blog/categories/xcode/index.html">xcode ( 4 )</a></li>
@@ -1925,10 +2279,10 @@ Now we should get the similar picture as follow.</p>
 <li class='category'><a href='/blog/categories/code-block/' class='badge1' data-badge='1'>code block</a></li>
 <li class='category'><a href='/blog/categories/cpp/' class='badge1' data-badge='5'>cpp</a></li>
 <li class='category'><a href='/blog/categories/csharp/' class='badge1' data-badge='10'>csharp</a></li>
-<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='2'>eclipse</a></li>
+<li class='category'><a href='/blog/categories/eclipse/' class='badge1' data-badge='3'>eclipse</a></li>
 <li class='category'><a href='/blog/categories/git/' class='badge1' data-badge='4'>git</a></li>
 <li class='category'><a href='/blog/categories/ios/' class='badge1' data-badge='2'>ios</a></li>
-<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='4'>java</a></li>
+<li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='5'>java</a></li>
 <li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
 <li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='6'>linux</a></li>
 <li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>
