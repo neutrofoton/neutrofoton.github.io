@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://neutrofoton.github.io/blog/2021/03/20/domain-driven-design-short-summary/</loc>
+<lastmod>2021-03-20T15:49:56+07:00</lastmod>
+</url>
+<url>
 <loc>http://neutrofoton.github.io/blog/2020/11/30/generate-pojo-and-hibernate-mapping-using-hibernate-tools/</loc>
 <lastmod>2020-11-30T18:13:54+07:00</lastmod>
 </url>
@@ -258,5 +262,8 @@
 </url>
 <url>
 <loc>http://neutrofoton.github.io/posts/4/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/posts/5/</loc>
 </url>
 </urlset>

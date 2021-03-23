@@ -4,7 +4,7 @@
   <title><![CDATA[neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2020-12-01T22:52:28+07:00</updated>
+  <updated>2021-03-23T19:31:28+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -12,6 +12,456 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Domain Driven Design Short Summary]]></title>
+    <link href="http://neutrofoton.github.io/blog/2021/03/20/domain-driven-design-short-summary/"/>
+    <updated>2021-03-20T15:49:56+07:00</updated>
+    <id>http://neutrofoton.github.io/blog/2021/03/20/domain-driven-design-short-summary</id>
+    <content type="html"><![CDATA[<p>I believe there are tons of articles and books out there that discuss about Domain Driven Design (DDD for short). This post essentially is taken from my note archieved when I explored about DDD from several resources. I rewrite it in here as a refresh for myself mainly.</p>
+
+<p>Domain Driven Design (DDD) is the concept that the structure and language of software code (class names, class methods, class variables) should match the business domain[1].  We don&rsquo;t need to kill a mosquito with a cannon. We need to choose the fittest method in solving a problem. As well as DDD, it is not always be a fit method in solving application design. A software application has several attributes. Some of them deal with[3]:</p>
+
+<ul>
+<li>Amount of Data</li>
+<li>Performance</li>
+<li>Business Logic complexity</li>
+<li>Tehnical Complexity.</li>
+</ul>
+
+
+<p>From the fourth software attributes, DDD is the most suitable with an application that has a <em>complex business logic</em>. DDD is designed to tackle the complexity of business rules. The main goals of DDD are[1]:</p>
+
+<ul>
+<li>Placing the project&rsquo;s primary focus on the core domain and domain logic;</li>
+<li>Basing complex designs on a model of the domain;</li>
+<li>Initiating a creative collaboration between technical and domain experts to iteratively refine a conceptual model that addresses particular domain problems.</li>
+</ul>
+
+
+<p>One of good resources about DDD is <a href="https://www.pluralsight.com/courses/domain-driven-design-in-practice">DDD course by Vladimir Khorikov</a>. I also cited a few/snippet code from his course to make my summary about DDD more clearer to understand.</p>
+
+<h1>Terms in DDD</h1>
+
+<h2>Ubiquitous Languange</h2>
+
+<p><em>Ubiquitous Languanges</em> brides the gab between developer and business expert/ domain expert/ subject matter expert (SME). The <em>Ubiquitous Languange</em> notion come up to avoid misunderstanding between them. For example, the developer has a class <code>Product</code> that represent business term <em>Product</em> (both product and package). On the other hand the business expert treat <em>Product</em> and <em>Package</em> as different things. By the condition, it is needed the same languange to avoid misunderstanding.</p>
+
+<h2>Bounded Context</h2>
+
+<p>Bounded Context is a central pattern in DDD. It is the focus of DDD&rsquo;s strategic design section which is all about dealing with large models and teams. DDD deals with large models by dividing them into different <em>Bounded Contexts</em> and being explicit about their interrelationships [Martin Fowler][8].</p>
+
+<p><em>Bounded Context</em> notion comes up to make clear boundries between different parts of the system. Let&rsquo;s say our system consist of <em>Sales</em> and <em>Support</em>, we can seperate Product into <em>Sales</em> and <em>Support</em> context to make clear boundries between the two.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2021-03-20-fig00.png"></p>
+
+<center><small>Figure 1: Bounded Contexts <br/>
+        Source: https://martinfowler.com/bliki/BoundedContext.html</small>
+</center>
+
+
+
+
+<p><p/></p>
+
+<p>Figure 1 shows that <em>Bounded Context</em> aims for separating the model and explicitly drawn the boundaries between pieces. The reason for context separation is that as the application grows, it becomes harder to maintain a single unified model as it becomes larger and more people get involved in the development process.</p>
+
+<h2>Sub Domain</h2>
+
+<p>The difference between <em>Sub Domain</em> and <em>Bounded Context</em> is that the <em>Sub Domain</em> is a <em>Problem Space</em>. Meanwhile <em>Bounded Context</em> is a <em>Solution Space</em>. <em>Sub Domain</em> and <em>Bounded Context</em> have a <strong>1-to-1</strong> relation. It means that a <em>Sub Domain</em> should be covered with exactly a <em>Bounded Context</em>.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2021-03-20-fig03.png"></p>
+
+<p><center><small>Figure 2: Sub Domain - Bounded Contexts</small>
+</center></p>
+
+<p>Since <em>Sub Domain</em> is a <em>Problem Space</em>, it should be defined by <em>Business Expert</em> or <em>Domain Experts</em>. The <em>Sub Domain</em> topic usually will come up when we have a talk with the <em>Domain Expert</em> while gathering requirement.</p>
+
+<h2>Core Domain</h2>
+
+<p>The notion that focuses on <em>Domain Model</em> which is the most important part of the system.</p>
+
+<h1>Onion Architecture</h1>
+
+<p>The implementation of DDD in onion architecture[3][5][6] showed in the Figure 2.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2021-03-20-fig01.png"></p>
+
+<p><center>
+    <small>Figure 2: DDD in onion architecture </small>
+</center>
+<br/></p>
+
+<p>Figure 2 shows that the core of the architecture is the <em>Domain Model</em>. The <em>Domain Model</em> is isolated from others for seperation of consern purpose. It consists of <em>Entities, Value Objects, Domain Events,</em> and <em>Agregates</em>. They are most important part in DDD since they represent business logic implementation.</p>
+
+<p>The outer layer in the onion architecture depends on the inner one. The inner layer is isolated from the outer layer that make the inner layer does not know the outer one. Figure 2 denotes that the <em>Domain Model</em> does not know how it is peristed to database. Since persisting model to database is handled by <em>Repository</em> on the outer layer.</p>
+
+<h1>Testing in TDD</h1>
+
+<p><em>Unit Testing</em> is one of important part in software development. Test coverage that reaches 100% has high effort. In practice the most important that should cover most unit test is the code base <em>(Domain Model)</em> at the inner most layer in the onion architecture. The closer to 100%, the better the <em>Unit Test</em> coverage will be. Meanwhile for the outer layer, the test schenario could be coveraged by integration test.</p>
+
+<h1>Entity vs Value Object</h1>
+
+<p>The difference between Entity and Value Object can be identified from several ways:</p>
+
+<ul>
+<li>Type of Equality</li>
+<li>Immutability</li>
+<li>Lifespan</li>
+</ul>
+
+
+<h2>1. Type of equality</h2>
+
+<p><em>Type Equality</em> is applied to the objects which have the same type. It is classified into 3 categories:</p>
+
+<ul>
+<li><p><em>Identifier Equality</em><br/>
+Two objects A and B are identified have <em>Identifier Equality</em> if they have the same <em>Id</em>.</p></li>
+<li><p><em>Reference Equality</em><br/>
+Two objects A and B are identified have <em>Reference Equality</em> if they point to the same <em>memory address</em>.</p></li>
+<li><p><em>Structural Equality</em><br/>
+Two objects A and B are identified have <em>Structural Equality</em> if <em>all the member values are matched</em>.</p></li>
+</ul>
+
+
+<p>The 3 types of Type Equality is summarized in the following Figure.</p>
+
+<p><img class="center" src="http://neutrofoton.github.io/images/post/2021-03-20-fig02.png"></p>
+
+<p><center><small>Figure 3: Type Equality classification</small>
+</center></p>
+
+<p><em>Identifier Equality</em> usually referes to <em>Entity</em>. Meanwhile <em>Structural Equality</em> refers to <em>Value Object</em>. The <em>Reference Equality</em> can be applied to <em>Entity</em> or <em>Value Object</em>. In practice, <em>Value Object</em> does not has an Id.</p>
+
+<h2>2. Immutability</h2>
+
+<p>The characteristic of <em>Entity</em>:</p>
+
+<ul>
+<li>Having identity <em>Id</em></li>
+<li>Mutable</li>
+</ul>
+
+
+<p>The characteristic of <em>Value Object</em>:</p>
+
+<ul>
+<li>Having no identity <em>Id</em></li>
+<li>Immutable</li>
+</ul>
+
+
+<h2>3. Lifespan</h2>
+
+<p>From the lifespan point of view, <em>Value Object</em> can not live by its own. It can be owned by one or several identities.
+For example <code>Address</code> object can not stay by its own. It should be belonged to <code>Person</code> object. From persistance perspective, <em>Value Object</em> does not have its own table in database.</p>
+
+<h1>How to Recognize Entity or Value Object</h1>
+
+<p>It is not always clear or specific characteristic if a term or notion in a business process is an <em>Entity</em> or <em>Value Object</em>. It depends on the business process itself. A good approach to identify whether a notion of object is an <em>Entity</em> or <em>Value Object</em> is by comparing to <em>integer</em>[3].</p>
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="c1">//Integer</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MethodA</span><span class="p">(){</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">value1</span> <span class="p">=</span> <span class="m">5</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">value2</span> <span class="p">=</span> <span class="m">5</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Value Object</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MethodB</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//money1 and money2 essentially the same. </span>
+</span><span class='line'>    <span class="c1">//since they have the same nominal in business process context.</span>
+</span><span class='line'>    <span class="c1">//programmatically they both have the same structure equality</span>
+</span><span class='line'>    <span class="n">Money</span> <span class="n">money1</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">5</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Money</span> <span class="n">money2</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">5</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Ideally most business logic elements are identified as <em>Value Objects</em>. The <em>Entity</em> act as a wrapper of <em>Value Object(s)</em>. However, don&rsquo;t hesitate to refactor <em>Value Object</em> to <em>Entity</em> or vise versa if we identify it should be.</p>
+
+<p><figure class='code'><figcaption><span>Entity Base Class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Entity</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">virtual</span> <span class="kt">long</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">protected</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">Equals</span><span class="p">(</span><span class="kt">object</span> <span class="n">obj</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">other</span> <span class="p">=</span> <span class="n">obj</span> <span class="k">as</span> <span class="n">Entity</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="k">null</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ReferenceEquals</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">other</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">GetRealType</span><span class="p">()</span> <span class="p">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">GetRealType</span><span class="p">())</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">Id</span> <span class="p">==</span> <span class="m">0</span> <span class="p">||</span> <span class="n">other</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Id</span> <span class="p">==</span> <span class="n">other</span><span class="p">.</span><span class="n">Id</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="p">==(</span><span class="n">Entity</span> <span class="n">a</span><span class="p">,</span> <span class="n">Entity</span> <span class="n">b</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="k">null</span><span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="k">null</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="k">null</span><span class="p">)</span> <span class="p">||</span> <span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="k">null</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">Equals</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="p">!=(</span><span class="n">Entity</span> <span class="n">a</span><span class="p">,</span> <span class="n">Entity</span> <span class="n">b</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">!(</span><span class="n">a</span> <span class="p">==</span> <span class="n">b</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">override</span> <span class="kt">int</span> <span class="nf">GetHashCode</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">(</span><span class="n">GetRealType</span><span class="p">().</span><span class="n">ToString</span><span class="p">()</span> <span class="p">+</span> <span class="n">Id</span><span class="p">).</span><span class="n">GetHashCode</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="n">Type</span> <span class="nf">GetRealType</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">NHibernateProxyHelper</span><span class="p">.</span><span class="n">GetClassWithoutInitializingProxy</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>Value Object base class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">ValueObject</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'>    <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">ValueObject</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">Equals</span><span class="p">(</span><span class="kt">object</span> <span class="n">obj</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">valueObject</span> <span class="p">=</span> <span class="n">obj</span> <span class="k">as</span> <span class="n">T</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">valueObject</span><span class="p">,</span> <span class="k">null</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nf">EqualsCore</span><span class="p">(</span><span class="n">valueObject</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">protected</span> <span class="k">abstract</span> <span class="kt">bool</span> <span class="nf">EqualsCore</span><span class="p">(</span><span class="n">T</span> <span class="n">other</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">override</span> <span class="kt">int</span> <span class="nf">GetHashCode</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nf">GetHashCodeCore</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">protected</span> <span class="k">abstract</span> <span class="kt">int</span> <span class="nf">GetHashCodeCore</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="p">==(</span><span class="n">ValueObject</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">ValueObject</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">b</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="k">null</span><span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="k">null</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="k">null</span><span class="p">)</span> <span class="p">||</span> <span class="n">ReferenceEquals</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="k">null</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">Equals</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">bool</span> <span class="k">operator</span> <span class="p">!=(</span><span class="n">ValueObject</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">ValueObject</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">b</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">!(</span><span class="n">a</span> <span class="p">==</span> <span class="n">b</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h1>Agregate</h1>
+
+<p><em>Aggregate</em> is a pattern in DDD. It is a cluster of domain objects that can be treated as a single unit[7]. <em>Aggregate</em> is an encapsulation of <em>Entities</em> and/or <em>Value Objects</em> (domain objects). An <em>Entity</em> can belong to a single <em>Agregate</em> only. Meanwhile a <em>Value Object</em> can belong to multiple <em>Agregates</em>.</p>
+
+<p>An <em>Agregate</em> contains a set of operations which those domain objects can be operated on. An <em>Agregate</em> also act as a single operation unit. Application layer should reload it from database, then perform action and store it back as a single object. Hence, the <em>Agregate</em> should not be too large. Commonly it contains maximum 3 <em>Entities</em>. On the contrary to <em>Entity</em>, we can have as many <em>Value Objects</em> in an <em>Agregate</em> as we want.</p>
+
+<p><figure class='code'><figcaption><span>Agregate Root</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">AggregateRoot</span> <span class="p">:</span> <span class="n">Entity</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>Repository for Database Operation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Repository</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">AggregateRoot</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="n">T</span> <span class="nf">GetById</span><span class="p">(</span><span class="kt">long</span> <span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">NotImplementedException</span><span class="p">(</span><span class="s">&quot;load data from database&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">Save</span><span class="p">(</span><span class="n">T</span> <span class="n">aggregateRoot</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">NotImplementedException</span><span class="p">(</span><span class="s">&quot;operation insert to database&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Domain Event</h2>
+
+<p><em>Domain Event</em> represents an event that&rsquo;s significant to the <em>Domain Model</em>. It&rsquo;s important to distinguish <em>Domain Event</em> to <em>System Event</em>. <em>System Event</em> deals with infrastructure event such as button click, timer tick, window close etc. On the other hand, <em>Domain Event</em> describe occasion which is important to the <em>Domain</em>. For example, when a button clicked <em>(System Event)</em>, it calls a domain operation. Domain operation trigger an event to change balance values in other <em>Bounded Context</em> for example head office.</p>
+
+<p><em>Domain Event</em> is often used to[3]:</p>
+
+<ul>
+<li>Decouple <em>Bounded Context</em></li>
+<li>Facilitate communication between <em>Bounded Context</em></li>
+<li>Decouple <em>Entities</em> within a <em>Bounded Context</em></li>
+</ul>
+
+
+<p>The guidelines in implementing <em>Domain Event</em> are[3]:</p>
+
+<ul>
+<li>Naming should be in <em>Past Tense</em>. Example: <code>BalanceChangedEvent</code></li>
+<li>Passing data as small/little as possible. Don&rsquo;t pass data/information more than needed.</li>
+<li>We should not pass <em>Entity</em> to an <em>Event</em>. Since it will produce additonal point of coupling. We should use primitive data type instead.</li>
+</ul>
+
+
+<h1>References</h1>
+
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Domain-driven_design">https://en.wikipedia.org/wiki/Domain-driven_design</a></li>
+<li><a href="https://www.amazon.com/gp/product/0321125215">Domain Driven Design: Tackling Complexity in the Heart of Software</a></li>
+<li><a href="https://www.pluralsight.com/courses/domain-driven-design-in-practice">https://www.pluralsight.com/courses/domain-driven-design-in-practice</a></li>
+<li><a href="https://www.baeldung.com/spring-data-ddd">https://www.baeldung.com/spring-data-ddd</a></li>
+<li><a href="https://www.baeldung.com/spring-boot-clean-architecture">https://www.baeldung.com/spring-boot-clean-architecture</a></li>
+<li><a href="https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/">https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/</a></li>
+<li><a href="https://martinfowler.com/bliki/DDD_Aggregate.html">https://martinfowler.com/bliki/DDD_Aggregate.html</a></li>
+<li><a href="https://martinfowler.com/bliki/BoundedContext.html">https://martinfowler.com/bliki/BoundedContext.html</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Generate POJO and Hibernate Mapping Using Hibernate Tools]]></title>
@@ -3676,106 +4126,6 @@ Sometime for some reasons when dealing with open source technology we have inter
 <li>http://blog.csdn.net/zlx510tsde/article/details/46241675</li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Math in Web]]></title>
-    <link href="http://neutrofoton.github.io/blog/2016/03/09/math-in-web/"/>
-    <updated>2016-03-09T21:41:47+07:00</updated>
-    <id>http://neutrofoton.github.io/blog/2016/03/09/math-in-web</id>
-    <content type="html"><![CDATA[<p>There are several frameworks that can be used to display math equation on web page. Usually math equestion written in <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> format. <a href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> is used for the communication and publication of scientific documents in many fields, including mathematics, physics, computer science, statistics etc.</p>
-
-<p><a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> are two popular javascript frameworks that can render LaTeX expression to beautiful math equation in browser.</p>
-
-<p>The following are examples math LaTeX expression rendered with <a href="https://khan.github.io/KaTeX/">KaTeX</a>.
-To use <a href="https://khan.github.io/KaTeX/">KaTeX</a> we just need to include <code>katex.min.css</code> and <code>katex.min.js</code></p>
-
-<figure class='code'><figcaption><span>KaTeX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;div&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq1&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq2&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq3&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq4&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq5&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq6&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;span</span> <span class="na">class=</span><span class="s">&quot;katex&quot;</span> <span class="na">id=</span><span class="s">&quot;eq7&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>KaTeX sample</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;c = \\pm\\sqrt{a^2 + b^2}&quot;</span><span class="p">,</span> <span class="nx">eq1</span><span class="p">);</span>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(a,b,c) = (a^2+b^2+c^2)^3&quot;</span><span class="p">,</span> <span class="nx">eq2</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx&quot;</span><span class="p">,</span> <span class="nx">eq3</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}&quot;</span><span class="p">,</span> <span class="nx">eq4</span><span class="p">);</span>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\oint \\vec{F} \\cdot d\\vec{s}=0&quot;</span><span class="p">,</span> <span class="nx">eq5</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)&quot;</span><span class="p">,</span> <span class="nx">eq6</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"/></p>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
-
-
-
-
-<div>
-<p><span class="katex" id="eq1"></span></p>
-<p><span class="katex" id="eq2"></span></p>
-<p><span class="katex" id="eq3"></span></p>
-<p><span class="katex" id="eq4"></span></p>
-<p><span class="katex" id="eq5"></span></p>
-<p><span class="katex" id="eq6"></span></p>
-<p><span class="katex" id="eq7"></span></p>
-</div>
-
-
-
-
-<script>
-
-    katex.render("c = \\pm\\sqrt{a^2 + b^2}", eq1);
-    katex.render("f(a,b,c) = (a^2+b^2+c^2)^3", eq2);
-
-    katex.render("\\int u \\frac{dv}{dx}\\,dx=uv-\\int \\frac{du}{dx}v\\,dx", eq3);
-
-    katex.render("f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}", eq4);
-    katex.render("\\oint \\vec{F} \\cdot d\\vec{s}=0", eq5);
-
-    katex.render("\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}^n a_k^2 \\right) \\left( \\sum_{k=1}^n b_k^2 \\right)", eq6);
-</script>
-
-
-<p>The comparison between <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://khan.github.io/KaTeX/">KaTeX</a> can be found <a href="http://www.intmath.com/cg5/katex-mathjax-comparison.php">here</a>. At the time of writing this blog post, I got <a href="https://khan.github.io/KaTeX/">KaTeX</a> is faster than <a href="https://www.mathjax.org/">MathJax</a>. But <a href="https://khan.github.io/KaTeX/">KaTeX</a> can not render a few expressions that <a href="https://www.mathjax.org/">MathJax</a> can.</p>
-
-<p>The comparison results could be changed in the next. Since both of them are actively developed.</p>
 ]]></content>
   </entry>
   
