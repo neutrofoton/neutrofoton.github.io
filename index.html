@@ -194,22 +194,22 @@ article img, article video, article .flash-video{
 
 <h1>Onion Architecture</h1>
 
-<p>The implementation of DDD in onion architecture[3][5][6] showed in the Figure 2.</p>
+<p>The implementation of DDD in onion architecture[3][5][6] showed in the Figure 3.</p>
 
 <p><img class="center" src="/images/post/2021-03-20-fig01.png"></p>
 
 <p><center>
-    <small>Figure 2: DDD in onion architecture </small>
+    <small>Figure 3: DDD in onion architecture </small>
 </center>
 <br/></p>
 
-<p>Figure 2 shows that the core of the architecture is the <em>Domain Model</em>. The <em>Domain Model</em> is isolated from others for seperation of consern purpose. It consists of <em>Entities, Value Objects, Domain Events,</em> and <em>Agregates</em>. They are most important part in DDD since they represent business logic implementation.</p>
+<p>Figure 3 shows that the core of the architecture is the <em>Domain Model</em>. The <em>Domain Model</em> is isolated from others for seperation of consern purpose. It consists of <em>Entities, Value Objects, Domain Events,</em> and <em>Agregates</em>. They are most important part in DDD since they represent business logic implementation.</p>
 
-<p>The outer layer in the onion architecture depends on the inner one. The inner layer is isolated from the outer layer that make the inner layer does not know the outer one. Figure 2 denotes that the <em>Domain Model</em> does not know how it is peristed to database. Since persisting model to database is handled by <em>Repository</em> on the outer layer.</p>
+<p>The outer layer in the onion architecture depends on the inner one. The inner layer is isolated from the outer layer that make the inner layer does not know the outer one. Figure 3 denotes that the <em>Domain Model</em> does not know how it is peristed to database. Since persisting model to database is handled by <em>Repository</em> on the outer layer.</p>
 
 <h1>Testing in TDD</h1>
 
-<p><em>Unit Testing</em> is one of important part in software development. Test coverage that reaches 100% has high effort. In practice the most important that should cover most unit test is the code base <em>(Domain Model)</em> at the inner most layer in the onion architecture. The closer to 100%, the better the <em>Unit Test</em> coverage will be. Meanwhile for the outer layer, the test schenario could be coveraged by integration test.</p>
+<p><em>Unit Test</em> is one of important part in software development. Test coverage that reaches 100% has high effort. In practice the most important that should cover most unit test is the code base <em>(Domain Model)</em> at the inner most layer in the onion architecture. The closer to 100%, the better the <em>Unit Test</em> coverage will be. Meanwhile for the outer layer, the test schenario could be coveraged by integration test.</p>
 
 <h1>Entity vs Value Object</h1>
 
@@ -240,7 +240,7 @@ Two objects A and B are identified have <em>Structural Equality</em> if <em>all 
 
 <p><img class="center" src="/images/post/2021-03-20-fig02.png"></p>
 
-<p><center><small>Figure 3: Type Equality classification</small>
+<p><center><small>Figure 4: Type Equality classification</small>
 </center></p>
 
 <p><em>Identifier Equality</em> usually referes to <em>Entity</em>. Meanwhile <em>Structural Equality</em> refers to <em>Value Object</em>. The <em>Reference Equality</em> can be applied to <em>Entity</em> or <em>Value Object</em>. In practice, <em>Value Object</em> does not has an Id.</p>
@@ -270,7 +270,7 @@ For example <code>Address</code> object can not stay by its own. It should be be
 
 <h1>How to Recognize Entity or Value Object</h1>
 
-<p>It is not always clear or specific characteristic if a term or notion in a business process is an <em>Entity</em> or <em>Value Object</em>. It depends on the business process itself. A good approach to identify whether a notion of object is an <em>Entity</em> or <em>Value Object</em> is by comparing to <em>integer</em>[3].</p>
+<p>It is not always clear having specific characteristic if a term or notion in a business process is an <em>Entity</em> or <em>Value Object</em>. It depends on the business process itself. A good approach to identify whether a notion of object is an <em>Entity</em> or <em>Value Object</em> is by comparing to <em>integer</em>[3].</p>
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
