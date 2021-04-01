@@ -57,22 +57,22 @@ The notion that focuses on *Domain Model* which is the most important part of th
 
 
 # Onion Architecture
-The implementation of DDD in onion architecture[3][5][6] showed in the Figure 2.
+The implementation of DDD in onion architecture[3][5][6] showed in the Figure 3.
 
 {% img center /images/post/2021-03-20-fig01.png %}
 
 <center>
-    <small>Figure 2: DDD in onion architecture </small>
+    <small>Figure 3: DDD in onion architecture </small>
 </center>
 <br/>
 
-Figure 2 shows that the core of the architecture is the *Domain Model*. The *Domain Model* is isolated from others for seperation of consern purpose. It consists of *Entities, Value Objects, Domain Events,* and *Agregates*. They are most important part in DDD since they represent business logic implementation. 
+Figure 3 shows that the core of the architecture is the *Domain Model*. The *Domain Model* is isolated from others for seperation of consern purpose. It consists of *Entities, Value Objects, Domain Events,* and *Agregates*. They are most important part in DDD since they represent business logic implementation. 
 
-The outer layer in the onion architecture depends on the inner one. The inner layer is isolated from the outer layer that make the inner layer does not know the outer one. Figure 2 denotes that the *Domain Model* does not know how it is peristed to database. Since persisting model to database is handled by *Repository* on the outer layer. 
+The outer layer in the onion architecture depends on the inner one. The inner layer is isolated from the outer layer that make the inner layer does not know the outer one. Figure 3 denotes that the *Domain Model* does not know how it is peristed to database. Since persisting model to database is handled by *Repository* on the outer layer. 
 
 
 # Testing in TDD
-*Unit Testing* is one of important part in software development. Test coverage that reaches 100% has high effort. In practice the most important that should cover most unit test is the code base *(Domain Model)* at the inner most layer in the onion architecture. The closer to 100%, the better the *Unit Test* coverage will be. Meanwhile for the outer layer, the test schenario could be coveraged by integration test.
+*Unit Test* is one of important part in software development. Test coverage that reaches 100% has high effort. In practice the most important that should cover most unit test is the code base *(Domain Model)* at the inner most layer in the onion architecture. The closer to 100%, the better the *Unit Test* coverage will be. Meanwhile for the outer layer, the test schenario could be coveraged by integration test.
 
 
 # Entity vs Value Object
@@ -98,7 +98,7 @@ The 3 types of Type Equality is summarized in the following Figure.
 
 {% img center /images/post/2021-03-20-fig02.png %}
 
-<center><small>Figure 3: Type Equality classification</small>
+<center><small>Figure 4: Type Equality classification</small>
 </center>
 
 *Identifier Equality* usually referes to *Entity*. Meanwhile *Structural Equality* refers to *Value Object*. The *Reference Equality* can be applied to *Entity* or *Value Object*. In practice, *Value Object* does not has an Id.
@@ -119,7 +119,7 @@ From the lifespan point of view, *Value Object* can not live by its own. It can 
 For example <code>Address</code> object can not stay by its own. It should be belonged to <code>Person</code> object. From persistance perspective, *Value Object* does not have its own table in database.
 
 # How to Recognize Entity or Value Object
-It is not always clear or specific characteristic if a term or notion in a business process is an *Entity* or *Value Object*. It depends on the business process itself. A good approach to identify whether a notion of object is an *Entity* or *Value Object* is by comparing to *integer*[3].
+It is not always clear having specific characteristic if a term or notion in a business process is an *Entity* or *Value Object*. It depends on the business process itself. A good approach to identify whether a notion of object is an *Entity* or *Value Object* is by comparing to *integer*[3].
 
 ```csharp
 
