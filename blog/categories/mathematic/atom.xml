@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mathematic | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/mathematic/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2021-04-19T10:05:49+07:00</updated>
+  <updated>2021-04-19T10:31:16+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -37,9 +37,7 @@
 
 
 <p><br/>
-<br/></p>
-
-<p>ANN is a supervised learning that its operation involves a dataset. The dataset is labeled and split into two part at least, namely training and testing. We have expected output (from the label) for each input. During the training process, the parameter weights and biases are updated in order to achieve a result that is close to the labeled data. To identify model performance, we evaluate the model to the testing dataset to verify how good the trained model is. To get more detail how ANN learn, let begin with the last two neurons connection.</p>
+ANN is a supervised learning that its operation involves a dataset. The dataset is labeled and split into two part at least, namely training and testing. We have expected output (from the label) for each input. During the training process, the parameter weights and biases are updated in order to achieve a result that is close to the labeled data. To identify model performance, we evaluate the model to the testing dataset to verify how good the trained model is. To get more detail how ANN learn, let begin with the last two neurons connection.</p>
 
 <p><img class="center" src="http://neutrofoton.github.io/images/post/2021-04-06-simple-neuron-connection.png" width="40%" height="40%"></p>
 
@@ -93,9 +91,8 @@
 </center>
 
 
-<p><br/></p>
-
-<p>In multivariable calculus, gradient of a function presented as <span  class="eq-expression katex" id="grad_f" ></span>. Gradient of a function <span  class="eq-expression katex" id="func_f" ></span> in the direction of vector <span  class="eq-expression katex" id="vector_u" ></span> in Figure 3 expressed as:</p>
+<p><br/>
+In multivariable calculus, gradient of a function presented as <span  class="eq-expression katex" id="grad_f" ></span>. Gradient of a function <span  class="eq-expression katex" id="func_f" ></span> in the direction of vector <span  class="eq-expression katex" id="vector_u" ></span> in Figure 3 expressed as:</p>
 
 <div class="eq">
         <span  class="eq-expression katex" id="grad_f_direction_u" ></span>
@@ -160,9 +157,8 @@
 </center>
 
 
-<p><br/></p>
-
-<p>Iterative training will let the cost function gradient move in the direction of green line to the local minimum as ilustrated in Figure 4. In fact, gaining global minimum is the ideal condition. However it is very difficult since we start the movement from a random location (random weight at initial training). Reaching local minimum is acceptable in finding the optimal model. If we want a better model, we can retrain the ANN by generating new random or setting different initial values of weights and biases.</p>
+<p><br/>
+Iterative training will let the cost function gradient move in the direction of green line to the local minimum as ilustrated in Figure 4. In fact, gaining global minimum is the ideal condition. However it is very difficult since we start the movement from a random location (random weight at initial training). Reaching local minimum is acceptable in finding the optimal model. If we want a better model, we can retrain the ANN by generating new random or setting different initial values of weights and biases.</p>
 
 <script>
     katex.render("\\nabla f", grad_f);
@@ -251,9 +247,8 @@
 </center>
 
 
-<p><br/></p>
-
-<p>The graphical correlation can be extended to the previous neuron.</p>
+<p><br/>
+The graphical correlation can be extended to the previous neuron.</p>
 
 <p><img class="center" src="http://neutrofoton.github.io/images/post/2021-04-06-two-neuron-chain-rule.png" width="40%" height="40%"></p>
 
@@ -524,18 +519,17 @@ The sensitivity of cost function to the change of weight is expressed as:</p>
 
 <h1>Numerical Computation</h1>
 
-<p>To complement the explanation about neural networks, in this post we will use an example provided by <a href="https://machinelearning.tobiashill.se/part-2-gradient-descent-and-backpropagation/">Tobias Hill</a> with a slight modification in notation to meet our notation convention in the previous chapter. The neural network structure showed in Figure 7.</p>
+<p>To complement the explanation about neural networks, in this post we will use an example provided by <a href="https://machinelearning.tobiashill.se/part-2-gradient-descent-and-backpropagation/">Tobias Hill</a> with a slight modification in notation to meet our notation convention in the previous chapter. The neural network structure showed in Figure 8.</p>
 
 <p><img class="center" src="http://neutrofoton.github.io/images/post/2021-04-06-nn-numerical.png" width="80%" height="80%"></p>
 
-<center><small>Figure 7: Neural network with numeric attributes<br/>
+<center><small>Figure 8: Neural network with numeric attributes<br/>
         </small>
 </center>
 
 
-<p><br/></p>
-
-<p>The activation function we use is sigmoid, and the learning rate of <span  class="eq-expression katex" id="eta_0_point_1" ></span></p>
+<p><br/>
+The activation function we use is sigmoid, and the learning rate of <span  class="eq-expression katex" id="eta_0_point_1" ></span></p>
 
 <div class="eq">
         <span  class="eq-expression katex" id="sigmoid_func" ></span>
