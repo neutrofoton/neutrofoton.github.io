@@ -21,11 +21,7 @@ An artificial neuron is a mathematical function that models biological neurons. 
 <center><small>Figure 1: Artificial Neuron <br/>
         </small>
 </center>
-
 <br/>
-<br/>
-
-
 ANN is a supervised learning that its operation involves a dataset. The dataset is labeled and split into two part at least, namely training and testing. We have expected output (from the label) for each input. During the training process, the parameter weights and biases are updated in order to achieve a result that is close to the labeled data. To identify model performance, we evaluate the model to the testing dataset to verify how good the trained model is. To get more detail how ANN learn, let begin with the last two neurons connection.
 
 <img class="center" src="/images/post/2021-04-06-simple-neuron-connection.png" width="40%" height="40%">
@@ -74,7 +70,6 @@ Equation (1) and (2) show that the closer the outcome of ANN to the expected res
         </small>
 </center>
 <br/>
-
 In multivariable calculus, gradient of a function presented as <span  class="eq-expression katex" id="grad_f" ></span>. Gradient of a function <span  class="eq-expression katex" id="func_f" ></span> in the direction of vector <span  class="eq-expression katex" id="vector_u" ></span> in Figure 3 expressed as:
 
 
@@ -132,7 +127,6 @@ The same method also implemented to get bias update.
         </small>
 </center>
 <br/>
-
 Iterative training will let the cost function gradient move in the direction of green line to the local minimum as ilustrated in Figure 4. In fact, gaining global minimum is the ideal condition. However it is very difficult since we start the movement from a random location (random weight at initial training). Reaching local minimum is acceptable in finding the optimal model. If we want a better model, we can retrain the ANN by generating new random or setting different initial values of weights and biases.
 
 <script>
@@ -211,9 +205,7 @@ Correlation between variables described graphically as:
 <center><small>Figure 5: A cost chaining rule in a layer<br/>
         </small>
 </center>
-
 <br/>
-
 The graphical correlation can be extended to the previous neuron.
 
 <img class="center" src="/images/post/2021-04-06-two-neuron-chain-rule.png" width="40%" height="40%">
@@ -221,9 +213,6 @@ The graphical correlation can be extended to the previous neuron.
 <center><small>Figure 6: A cost chaining rule in two layers<br/>
         </small>
 </center>
-
-
-
 <br/>
 The sensitivity of cost function to the change of weight is expressed as:
 <div class="eq">
@@ -337,9 +326,6 @@ To get a more comprehensive neuron connection, Figure 7 denotes ANN with a more 
         </small>
 </center>
 <br/>
-
-
-
 <div class="eq">
         <span  class="eq-expression katex" id="z_jL" ></span>
 </div>
@@ -354,7 +340,6 @@ So that,
 <script>
     katex.render("a_j^{(L)} = \\sigma( z_j^{(L)})" , a_jL_function_activation);
 </script>
-
 
 Figure 7 shows that  <span  class="eq-expression katex" id="a_k_01" ></span> impacts the value of <span  class="eq-expression katex" id="a_k_02" ></span> and <span  class="eq-expression katex" id="a_k_03" ></span>. Thus, the rate of changes <span  class="eq-expression katex" id="C_0" ></span> to <span  class="eq-expression katex" id="a_k_01_a" ></span> is evaluated as (sum over layer L):
 
@@ -425,15 +410,14 @@ If the cost function <span  class="eq-expression katex" id="C_def" ></span> defi
 
 # Numerical Computation
 
-To complement the explanation about neural networks, in this post we will use an example provided by [Tobias Hill](https://machinelearning.tobiashill.se/part-2-gradient-descent-and-backpropagation/) with a slight modification in notation to meet our notation convention in the previous chapter. The neural network structure showed in Figure 7.
+To complement the explanation about neural networks, in this post we will use an example provided by [Tobias Hill](https://machinelearning.tobiashill.se/part-2-gradient-descent-and-backpropagation/) with a slight modification in notation to meet our notation convention in the previous chapter. The neural network structure showed in Figure 8.
 
 <img class="center" src="/images/post/2021-04-06-nn-numerical.png" width="80%" height="80%">
 
-<center><small>Figure 7: Neural network with numeric attributes<br/>
+<center><small>Figure 8: Neural network with numeric attributes<br/>
         </small>
 </center>
 <br/>
-
 The activation function we use is sigmoid, and the learning rate of <span  class="eq-expression katex" id="eta_0_point_1" ></span>
 
 <div class="eq">
