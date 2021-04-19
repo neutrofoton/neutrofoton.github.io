@@ -9,7 +9,7 @@
   <meta name="author" content="neutro">
 
   
-  <meta name="description" content="std::set is a C++ STL container that store unique elements following a specific order. It is defined in the set header file. Benefits and Features &hellip;">
+  <meta name="description" content="Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,22 @@ article img, article video, article .flash-video{
   }
 </style>
 
+<!-- equation -->
+<style type="text/css">
+  .eq
+  {       text-align: center;
+          display: block;
+          margin-bottom: 13px;
+          clear:both;
+  }
+  .eq.eq-no { float:right }
+  span.eq-no {
+          float: right;
+  }
+  .eq.eq-expression { float:left }
+  span.eq-expression { float:center }
+
+</style>
   
 
 
@@ -104,6 +120,70 @@ article img, article video, article .flash-video{
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Working With Multiple Github Account on a Computer</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-03-26T23:47:22+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>11:47 pm</span></time>
+        
+           | <a href="/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/#disqus_thread"
+             data-disqus-identifier="http://neutrofoton.github.io/blog/2017/03/26/working-with-multiple-github-account-on-a-computer/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/images/logo/git.png">
+Source control is one of a basic need for software development, especially when we work on a team. Git is one of popular distributed source control. Working with multiple github account on the same computer need a few tricky way. Let&rsquo;s assume we have cloned the repository from github to local computer. The following ways are the simple ways I got on internet.</p>
+
+<h2>Change Remote URL to HTTPS</h2>
+
+<p>This way is by changing the remote URL to HTTPS with the following format.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote <span class="nb">set</span>-url origin https://USERNAME@github.com/USERNAME/PROJECTNAME.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then do normal git operation such as <code>commit</code>, <code>push</code> etc.
+To ensure that the commits appear as performed by USERNAME, we can configure the username and email on our working directory.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git config user.name USERNAME
+</span><span class='line'><span class="nv">$ </span>git config user.email USERNAME@example.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Multiple SSH Key</h2>
+
+<p>The other way is by using multiple SSH key. <a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">Here</a> is the complete tutorial by <a href="https://twitter.com/jeffrey_way">Jeffrey Way</a></p>
+
+<h2>References</h2>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer">http://stackoverflow.com/questions/3860112/multiple-github-accounts-on-the-same-computer</a></li>
+<li><a href="https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574">https://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2091,60 +2171,6 @@ As on OS X and Ubuntu, the last step quite take time.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/">GroovyDynamicElementReader Is Missing Import Spring Framework Source to Eclipse STS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-12T15:08:34+07:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:08 pm</span></time>
-        
-           | <a href="/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/#disqus_thread"
-             data-disqus-identifier="http://neutrofoton.github.io/blog/2016/03/12/groovydynamicelementreader-is-missing-import-spring-framework-source-to-eclipse-sts/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/images/logo/spring.png">
-Sometime for some reasons when dealing with open source technology we have interest to download the full source code of the frameworks we use. Either for customization, extending them or just for having a look to have more knowledge how exactly they work.</p>
-
-<p><a href="https://spring.io/">Spring</a> is a popular framework in Java world. It&rsquo;s one of my favorite framework in Java. At the time of this blog post, I have just grabbed the source of it from <a href="https://github.com/spring-projects/spring-framework">github repository</a>. The source code is fantastic. Nice coding style, project structure, build tool and of course its documentations. While following the guidance to build and import to <a href="https://spring.io/tools">Spring Tool Suite</a>, I got an error on <code>spring-beans-groovy</code> project in <code>GroovyBeanDefinitionReader.java</code>. Navigating to the errors, STS seems try to find a class <code>GroovyDynamicElementReader</code> but not found.</p>
-
-<p><img class="center" src="/images/post/2016-03-12-pic01.png"></p>
-
-<p> Honestly I have no any experience with groovy before. When I try to drill through <code>spring-beans-groovy/src/main/groovy/org/springframework/beans/factory/groovy</code>, finally get a clue <code>GroovyDynamicElementReader.groovy</code>.</p>
-
-<p>Installing <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> seems solve the problem.</p>
-
-<p><img class="center" src="/images/post/2016-03-12-pic02.png"></p>
-
-<p>In case you have the same problem as what I got, just ensure you have <a href="https://github.com/groovy/groovy-eclipse/wiki">Groovy Eclipse</a> on your eclipse base IDE.</p>
-
-<h3>Reference</h3>
-
-
-<ol>
-<li>https://github.com/groovy/groovy-eclipse/wiki</li>
-<li>http://blog.csdn.net/zlx510tsde/article/details/46241675</li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -2169,6 +2195,10 @@ Sometime for some reasons when dealing with open source technology we have inter
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/04/06/math-and-computation-in-neural-network/">Math and Computation in Neural Network</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/03/20/domain-driven-design-short-summary/">Domain Driven Design Short Summary</a>
       </li>
     
@@ -2190,10 +2220,6 @@ Sometime for some reasons when dealing with open source technology we have inter
     
       <li class="post">
         <a href="/blog/2017/09/14/create-and-consume-c-plus-plus-class-dll-on-windows/">Create and Consume C++ Class DLL on Windows</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/05/10/winmerge-and-diffmerge-as-git-diff-merge-tool/">WinMerge and DiffMerge as Git Diff Merge Tool</a>
       </li>
     
   </ul>
@@ -2246,7 +2272,7 @@ Sometime for some reasons when dealing with open source technology we have inter
     <li><a href="/blog/categories/ios/index.html">ios ( 2 )</a></li>
     
     
-    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 1 )</a></li>
+    <li><a href="/blog/categories/mathematic/index.html">mathematic ( 2 )</a></li>
     
     
     <li><a href="/blog/categories/javascript/index.html">javascript ( 1 )</a></li>
@@ -2281,6 +2307,9 @@ Sometime for some reasons when dealing with open source technology we have inter
     
     <li><a href="/blog/categories/c/index.html">c ( 1 )</a></li>
     
+    
+    <li><a href="/blog/categories/machine-learning/index.html">machine learning ( 1 )</a></li>
+    
   </ul>
 </section>
 -->
@@ -2300,8 +2329,9 @@ Sometime for some reasons when dealing with open source technology we have inter
 <li class='category'><a href='/blog/categories/java/' class='badge1' data-badge='5'>java</a></li>
 <li class='category'><a href='/blog/categories/javascript/' class='badge1' data-badge='1'>javascript</a></li>
 <li class='category'><a href='/blog/categories/linux/' class='badge1' data-badge='6'>linux</a></li>
+<li class='category'><a href='/blog/categories/machine-learning/' class='badge1' data-badge='1'>machine learning</a></li>
 <li class='category'><a href='/blog/categories/macos/' class='badge1' data-badge='14'>macos</a></li>
-<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='1'>mathematic</a></li>
+<li class='category'><a href='/blog/categories/mathematic/' class='badge1' data-badge='2'>mathematic</a></li>
 <li class='category'><a href='/blog/categories/mono/' class='badge1' data-badge='4'>mono</a></li>
 <li class='category'><a href='/blog/categories/mysql/' class='badge1' data-badge='1'>mysql</a></li>
 <li class='category'><a href='/blog/categories/octopress/' class='badge1' data-badge='1'>octopress</a></li>

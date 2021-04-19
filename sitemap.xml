@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://neutrofoton.github.io/blog/2021/04/06/math-and-computation-in-neural-network/</loc>
+<lastmod>2021-04-06T08:10:48+07:00</lastmod>
+</url>
+<url>
 <loc>http://neutrofoton.github.io/blog/2021/03/20/domain-driven-design-short-summary/</loc>
 <lastmod>2021-03-20T15:49:56+07:00</lastmod>
 </url>
@@ -253,6 +257,9 @@
 </url>
 <url>
 <loc>http://neutrofoton.github.io/blog/categories/c/</loc>
+</url>
+<url>
+<loc>http://neutrofoton.github.io/blog/categories/machine-learning/</loc>
 </url>
 <url>
 <loc>http://neutrofoton.github.io/posts/2/</loc>

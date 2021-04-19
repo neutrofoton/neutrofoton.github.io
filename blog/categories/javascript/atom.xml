@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | neutrofoton]]></title>
   <link href="http://neutrofoton.github.io/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://neutrofoton.github.io/"/>
-  <updated>2021-04-01T21:01:51+07:00</updated>
+  <updated>2021-04-19T10:05:49+07:00</updated>
   <id>http://neutrofoton.github.io/</id>
   <author>
     <name><![CDATA[neutro]]></name>
@@ -65,16 +65,14 @@ katex.render(&ldquo;\oint \vec{F} \cdot d\vec{s}=0&rdquo;, eq5);</p>
 
 
 <div>
-<p><span class="katex" id="eq1"></span></p>
-<p><span class="katex" id="eq2"></span></p>
-<p><span class="katex" id="eq3"></span></p>
-<p><span class="katex" id="eq4"></span></p>
-<p><span class="katex" id="eq5"></span></p>
-<p><span class="katex" id="eq6"></span></p>
-<p><span class="katex" id="eq7"></span></p>
+    <p><span class="katex" id="eq1"></span></p>
+    <p><span class="katex" id="eq2"></span></p>
+    <p><span class="katex" id="eq3"></span></p>
+    <p><span class="katex" id="eq4"></span></p>
+    <p><span class="katex" id="eq5"></span></p>
+    <p><span class="katex" id="eq6"></span></p>
+    <p><span class="katex" id="eq7"></span></p>
 </div>
-
-
 
 
 <script>
