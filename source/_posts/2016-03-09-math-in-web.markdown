@@ -46,15 +46,14 @@ katex.render("\\left( \\sum_{k=1}^n a_k b_k \\right)^2 \\leq \\left( \\sum_{k=1}
 
 
 <div>
-<p><span class="katex" id="eq1"></span></p>
-<p><span class="katex" id="eq2"></span></p>
-<p><span class="katex" id="eq3"></span></p>
-<p><span class="katex" id="eq4"></span></p>
-<p><span class="katex" id="eq5"></span></p>
-<p><span class="katex" id="eq6"></span></p>
-<p><span class="katex" id="eq7"></span></p>
+    <p><span class="katex" id="eq1"></span></p>
+    <p><span class="katex" id="eq2"></span></p>
+    <p><span class="katex" id="eq3"></span></p>
+    <p><span class="katex" id="eq4"></span></p>
+    <p><span class="katex" id="eq5"></span></p>
+    <p><span class="katex" id="eq6"></span></p>
+    <p><span class="katex" id="eq7"></span></p>
 </div>
-
 <script>
 
     katex.render("c = \\pm\\sqrt{a^2 + b^2}", eq1);
